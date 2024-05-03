@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ViewPetActivity">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scroll_datos_owner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="90dp"
+            >
+
+            <LinearLayout
+                android:id="@+id/lista_datos_pet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                >
+
+                <LinearLayout
+                    android:id="@+id/linear_pet_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shadow_border"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    />
+
+                <!-- related owners -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/prueba"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/shadow_border">
+
+                    <TextView
+                        android:id="@+id/titulo"
+                        style="@style/Base.TextAppearance.AppCompat.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <HorizontalScrollView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="8dp"
+                        android:padding="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titulo">
+
+                        <LinearLayout
+                            android:id="@+id/linear_owners"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"/>
+
+                    </HorizontalScrollView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/label_name"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name" />
+                <TextView
+                    android:id="@+id/txt_name"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/label_name_race"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="@string/name_race" />
+                <TextView
+                    android:id="@+id/txt_name_race"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/label_name_pelage"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name_pelage" />
+                <TextView
+                    android:id="@+id/txt_name_pelage"
+                    android:visibility="gone" 
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/label_name_gender"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name_gender" />
+                <TextView
+                    android:id="@+id/txt_name_gender"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/label_name_character"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name_character" />
+                <TextView
+                    android:id="@+id/txt_name_character"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/label_birthday"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nacimiento" />
+                <TextView
+                    android:id="@+id/txt_birthday"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/label_weight"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/peso" />
+                <TextView
+                    android:id="@+id/txt_weight"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/label_chip"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chip" />
+                <TextView
+                    android:id="@+id/txt_chip"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/label_notes"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notes" />
+                <TextView
+                    android:id="@+id/txt_notes"
+                    android:visibility="gone"
+                    style="@style/Base.TextAppearance.AppCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/chk_death"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:enabled="false"
+                    android:text="@string/deceso"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

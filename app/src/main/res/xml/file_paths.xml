@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path name="doctorvet_images" path="Android/data/com.xionce.doctorvet/files/Pictures" />
+    <external-path name="doctorvet_files" path="Android/data/com.xionce.doctorvet/files/Download" />
+    <external-path name="doctorvet_videos" path="Android/data/com.xionce.doctorvet/files/Movies" />
+    <external-path name="doctorvet_audios" path="Android/data/com.xionce.doctorvet/files/Music" />
+    <external-path name="external_files" path="." />
+</paths>

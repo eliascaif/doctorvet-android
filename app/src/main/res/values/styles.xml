@@ -1,0 +1,259 @@
+<resources>
+
+<!--    &lt;!&ndash; Base application theme. &ndash;&gt;-->
+<!--    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+<!--        &lt;!&ndash;<item name="colorAccent">@color/colorAccent</item>&ndash;&gt;-->
+<!--        &lt;!&ndash;<item name="colorAccent">#536DFE</item>&ndash;&gt;-->
+<!--        <item name="colorAccent">#448AFF</item>-->
+
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+
+<!--        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>-->
+
+<!--        &lt;!&ndash;<color name="primary">#3F51B5</color>&ndash;&gt;-->
+<!--        &lt;!&ndash;<color name="primary_dark">#303F9F</color>&ndash;&gt;-->
+<!--        &lt;!&ndash;<color name="primary_light">#C5CAE9</color>&ndash;&gt;-->
+<!--        &lt;!&ndash;<color name="accent">#448AFF</color>&ndash;&gt;-->
+<!--        &lt;!&ndash;<color name="primary_text">#212121</color>&ndash;&gt;-->
+<!--        &lt;!&ndash;<color name="secondary_text">#757575</color>&ndash;&gt;-->
+<!--        &lt;!&ndash;<color name="icons">#FFFFFF</color>&ndash;&gt;-->
+<!--        &lt;!&ndash;<color name="divider">#BDBDBD</color>&ndash;&gt;-->
+
+<!--        <item name="windowActionModeOverlay">true</item>-->
+
+<!--        <item name="android:actionBarStyle">@style/MyActionBar</item>-->
+
+<!--    </style>-->
+
+<!--    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">-->
+<!--        <item name="android:background">@color/colorPrimary</item>-->
+<!--    </style>-->
+
+<!--    <style name="AppTheme.NoActionBar">-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+
+
+<!--        <item name="windowActionModeOverlay">true</item>-->
+
+<!--    </style>-->
+
+<!--    <style-->
+<!--        name="AppTheme.AppBarOverlay"-->
+<!--        parent="ThemeOverlay.AppCompat.Dark.ActionBar">-->
+
+<!--    </style>-->
+
+<!--    <style-->
+<!--        name="AppTheme.PopupOverlay"-->
+<!--        parent="ThemeOverlay.AppCompat.Light">-->
+
+
+<!--    </style>-->
+
+<!--    <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">-->
+<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+<!--        <item name="colorAccent">@color/colorAccent</item>-->
+<!--    </style>-->
+
+    <!-- Base application theme.With ActionBar -->
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionModeStyle">@style/LStyled.ActionMode</item>
+        <item name="android:actionModeCloseDrawable">@drawable/ic_close</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
+    <!-- Base application theme.Without ActionBar -->
+
+    <style name="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="actionModeStyle">@style/LStyled.ActionMode</item>
+        <item name="android:actionModeCloseDrawable">@drawable/ic_close</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:configChanges">orientation</item>
+        <item name="android:screenOrientation">portrait</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="LStyled.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextLimitStyle" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextLimitError" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="PopUpMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:itemBackground">#FAFAFA</item>
+    </style>
+
+    <style name="RippleStyleWhite">
+        <item name="mrl_rippleOverlay">true</item>
+        <item name="mrl_rippleColor">#80FFFFFF</item>
+        <item name="mrl_rippleHover">true</item>
+        <item name="mrl_rippleAlpha">0.2</item>
+    </style>
+
+    <style name="RippleStyleBlack" parent="RippleStyleWhite">
+        <item name="mrl_rippleColor">#8096989A</item>
+    </style>
+
+
+    <!--<style name="Theme.App.Base" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <!--<item name="colorPrimary">#3F51B5</item>-->
+    <!--<item name="colorPrimaryDark">#303F9F</item>-->
+    <!--<item name="colorAccent">#536DFE</item>-->
+    <!--<item name="colorControlNormal">#c5c5c5</item>-->
+    <!--<item name="colorControlActivated">#303F9F</item>-->
+    <!--<item name="colorControlHighlight">#303F9F</item>-->
+    <!--</style>-->
+
+    <!--<style name="Widget.Design.TextInputLayout" parent="Theme.App.Base">-->
+    <!--<item name="hintTextAppearance">@style/AppTheme.TextFloatLabelAppearance</item>-->
+    <!--<item name="errorTextAppearance">@style/AppTheme.TextErrorAppearance</item>-->
+    <!--<item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>-->
+    <!--<item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>-->
+    <!--</style>-->
+
+    <!--<style name="AppTheme.TextFloatLabelAppearance" parent="TextAppearance.Design.Hint">-->
+    <!--&lt;!&ndash; Floating label appearance here &ndash;&gt;-->
+    <!--<item name="android:textColor">#303F9F</item>-->
+    <!--<item name="android:textSize">20sp</item>-->
+    <!--</style>-->
+
+    <!--<style name="AppTheme.TextErrorAppearance" parent="TextAppearance.Design.Error">-->
+    <!--&lt;!&ndash; Error message appearance here &ndash;&gt;-->
+    <!--<item name="android:textColor">#303F9F</item>-->
+    <!--<item name="android:textSize">20sp</item>-->
+    <!--</style>-->
+
+    <!--<style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">-->
+    <!--<item name="android:textColor">#303F9F</item>-->
+    <!--</style>-->
+
+    <!--<style name="TextLabel" parent="TextAppearance.AppCompat">-->
+    <!--<item name="android:textColor">#303F9F</item>-->
+    <!--</style>-->
+
+
+    <!---->
+
+    <!--<style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">-->
+    <!--<item name="android:textColor">#536DFE</item>-->
+    <!--</style>-->
+
+    <!--<style name="TextLabel" parent="TextAppearance.AppCompat">-->
+    <!--&lt;!&ndash; Hint color and label color in FALSE state &ndash;&gt;-->
+    <!--<item name="android:textColorHint">#536DFE</item>-->
+    <!--<item name="android:textSize">20sp</item>-->
+    <!--&lt;!&ndash; Label color in TRUE state and bar color FALSE and TRUE State &ndash;&gt;-->
+    <!--<item name="colorAccent">#536DFE</item>-->
+    <!--<item name="colorControlNormal">#536DFE</item>-->
+    <!--<item name="colorControlActivated">#536DFE</item>-->
+    <!--</style>-->
+
+    <!--SpinnerAsInputLayout-->
+    <style name="InputLabel" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:paddingBottom">@dimen/input_label_vertical_spacing</item>
+        <item name="android:paddingLeft">@dimen/input_label_horizontal_spacing</item>
+        <item name="android:paddingRight">@dimen/input_label_horizontal_spacing</item>
+    </style>
+    <!--SpinnerAsInputLayout-->
+
+    <!--/////////////////////////////////////////////////////////////////////////////////////////-->
+    <!--desde aca lo nuevo-->
+    <style name="TextAppearance" parent="android:TextAppearance">
+    </style>
+
+    <style name="TextAppearance.EditEvent_LabelSmall" parent="TextAppearance.EditEvent_Small">
+        <item name="android:minHeight">24dip</item>
+        <item name="android:layout_width">144dip</item>
+        <item name="android:layout_marginLeft">16dip</item>
+        <item name="android:layout_marginRight">16dip</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingRight">8dip</item>
+        <item name="android:layout_marginBottom">4dip</item>
+    </style>
+
+    <style name="TextAppearance.EditEvent_Small">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/edit_event_small_dark</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.EditEvent_Spinner" parent="android:style/Widget.Holo.Light.Spinner">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FF333333</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:popupBackground">@color/spinner_privacy_popupBackground</item>
+    </style>
+
+    <style name="TextAppearance.EditEvent_SpinnerButton" parent="TextAppearance.EditEvent_Spinner">
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:textColor">#757575</item>
+    </style>
+
+    <style name="TextAppearance.EditEvent_homeTime">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:paddingRight">2dip</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+<!--    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+<!--        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>-->
+<!--    </style>-->
+
+    <!-- bottom sheet -->
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="behavior_peekHeight">@dimen/custom_peek_height</item>
+        <item name="android:background">@drawable/rounded_dialog</item>
+    </style>
+
+    <style name="ActionButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/bottom_buttom_height</item>
+    </style>
+
+</resources>

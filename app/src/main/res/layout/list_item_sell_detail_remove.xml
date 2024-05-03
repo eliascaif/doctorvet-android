@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_general"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    >
+
+    <ImageView
+        android:id="@+id/img_thumb"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@color/cardview_dark_background" />
+
+    <TextView
+        android:id="@+id/txt_product"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="product/servicio"
+        app:layout_constraintStart_toEndOf="@+id/img_thumb"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_remove"
+        android:layout_marginHorizontal="8dp"
+        style="@style/TextAppearance.AppCompat.Caption"
+        />
+
+    <TextView
+        android:id="@+id/txt_item_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cant x price"
+        app:layout_constraintTop_toBottomOf="@id/txt_product"
+        app:layout_constraintStart_toStartOf="@id/txt_product"
+        style="@style/TextAppearance.AppCompat.Caption"
+        />
+
+    <TextView
+        android:id="@+id/txt_subtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="subtotal"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toBottomOf="@id/txt_product"
+        app:layout_constraintEnd_toStartOf="@id/img_remove"
+        style="@style/TextAppearance.AppCompat.Caption"
+        />
+
+    <ImageView
+        android:id="@+id/img_remove"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:src="@drawable/ic_cancel_item_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible"
+        android:scaleType="center"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

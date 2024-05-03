@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+    >
+
+    <group
+        android:id="@+id/menu_common"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="@string/inicio" />
+        <item
+            android:id="@+id/nav_pets"
+            android:title="@string/pets" />
+        <item
+            android:id="@+id/nav_owners"
+            android:title="@string/owners" />
+        <item
+            android:id="@+id/nav_agenda"
+            android:title="@string/agenda" />
+    </group>
+
+    <group
+        android:id="@+id/menu_finance"
+        android:checkableBehavior="single"
+        >
+
+        <item
+            android:id="@+id/nav_daily_cash"
+            android:title="@string/daily_cash" />
+
+        <item
+            android:id="@+id/nav_reportes"
+            android:title="@string/reportes" />
+    </group>
+
+    <group
+        android:id="@+id/menu_about"
+        >
+<!--        android:checkableBehavior="single"-->
+
+        <item
+            android:id="@+id/nav_about"
+            android:title="@string/about"
+            android:checkable="false"
+            />
+    </group>
+
+</menu>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="4dp"
+    >
+
+    <ImageView
+        android:id="@+id/img_thumb"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/cardview_dark_background" />
+
+    <TextView
+        android:id="@+id/txt_pet_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+        app:layout_constraintStart_toEndOf="@+id/img_thumb"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_check"
+        android:layout_marginHorizontal="8dp"
+        />
+
+    <TextView
+        android:id="@+id/txt_pet_owners"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/owners"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintStart_toEndOf="@id/img_thumb"
+        app:layout_constraintTop_toBottomOf="@id/txt_pet_name"
+        app:layout_constraintEnd_toStartOf="@id/img_check"
+        />
+
+    <TextView
+        android:id="@+id/txt_attended_by"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/user"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintStart_toEndOf="@id/img_thumb"
+        app:layout_constraintTop_toBottomOf="@id/txt_pet_owners"
+        app:layout_constraintEnd_toStartOf="@id/img_check"
+        />
+
+<!--    <TextView-->
+<!--        android:id="@+id/txt_attend"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="8dp"-->
+<!--        android:text="@string/attend"-->
+<!--        android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/img_remove"-->
+<!--        />-->
+
+    <ImageView
+        android:id="@+id/img_check"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ic_check_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_remove"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="center"
+        />
+
+    <ImageView
+        android:id="@+id/img_remove"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:src="@drawable/ic_cancel_item_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="8dp"
+        android:scaleType="center"
+        />
+
+    <!--This View serves as a visual divider between list items-->
+    <View
+        android:id="@+id/div_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#dadada"
+        app:layout_constraintTop_toBottomOf="@id/txt_attended_by"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

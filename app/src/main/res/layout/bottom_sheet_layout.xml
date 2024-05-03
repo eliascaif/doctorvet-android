@@ -1,0 +1,2295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        >
+
+        <!--Especifico de owners-->
+        <TextView
+            android:id="@+id/txt_actions_owners"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/actions"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_actions_owners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_agregar_pet"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_dog"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_agregar_pet_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_agregar_pet"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Agregar" />
+                <TextView
+                    android:id="@+id/txt_agregar_pet_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_agregar_pet_1"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="@string/pet_lcase" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_sell_to_owner"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_sell" />
+                <TextView
+                    android:id="@+id/txt_new_sell_to_owner_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_sell_to_owner"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Venta" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_owner_especifico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/owner"
+            android:layout_gravity="left"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_owner_especifico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_modificar_owner"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_edit_light"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_modificar_owner_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_modificar_owner"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Editar" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/txt_modificar_owner_1"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
+<!--                    android:text="@string/owner_lcase" />-->
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_eliminar_owner"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_eliminar_owner_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_eliminar_owner"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Eliminar" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/txt_eliminar_owner_1"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
+<!--                    android:text="@string/owner_lcase" />-->
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Especifico de usuarios-->
+        <TextView
+            android:id="@+id/txt_user_especifico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user"
+            android:layout_gravity="left"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_user_especifico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_modificar_user"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_edit_light"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_modificar_user_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_modificar_user"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Editar" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_change_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_user_change_password"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_change_password"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_user_change_password_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_user_change_password"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Cambiar" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_user_change_password_1"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="contraseña" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_user_close_session"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_close_session"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_user_close_session_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_user_close_session"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Cerrar" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_user_close_session_1"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="sesión" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Especifico de vets-->
+        <TextView
+            android:id="@+id/txt_vet_especific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vet"
+            android:layout_gravity="left"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_vet_especific"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_modificar_veterinaria"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_edit_light"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_modificar_veterinaria_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_modificar_veterinaria"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Editar" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_edit_vet_schedules"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_design_services" />
+                <TextView
+                    android:id="@+id/txt_edit_vet_services_schedule_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_edit_vet_schedules"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Servicios" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_edit_vet_services_schedule_1"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="y horarios" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_edit_vet_users"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_users" />
+                <TextView
+                    android:id="@+id/txt_edit_vet_users_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_edit_vet_users"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Usuarios" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_create_branch"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_vet_create_branch" />
+                <TextView
+                    android:id="@+id/txt_create_branch_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_create_branch"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Crear" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_create_branch_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="sucursal"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lyt_vet_especific_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_points_of_sell"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_sell"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_points_of_sell_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_points_of_sell"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Comprobantes" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/txt_points_of_sell_1"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:text="de comprobantes"-->
+<!--                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />-->
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_deposits"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_warehouse"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_deposits_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_deposits"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Almacenes" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Services schedules specific-->
+        <TextView
+            android:id="@+id/txt_service_schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Servicios y horarios"
+            android:layout_gravity="left"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_service_schedule_especific"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_add_service_schedule"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_light"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_add_service_schedule_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_add_service_schedule"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Nuevo" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Especifico de pets-->
+        <TextView
+            android:id="@+id/txt_actions_pets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/actions"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_actions_pets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_clinic"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_clinic" />
+                <TextView
+                    android:id="@+id/txt_nueva_clinica_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_clinic"
+                    android:layout_centerHorizontal="true"
+                    android:text="Nueva"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_nueva_clinica_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="clínica"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_clinic_2"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_clinic_est_2" />
+                <TextView
+                    android:id="@+id/txt_nueva_clinica_2_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_clinic_2"
+                    android:layout_centerHorizontal="true"
+                    android:text="Nueva"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_nueva_clinica_2_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="clínica ext."
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_suministro"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_vac" />
+                <TextView
+                    android:id="@+id/txt_nuevo_suministro_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_suministro"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Nuevo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_nuevo_suministro_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/suministo_lcase"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_estudio"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_labs_48px" />
+                <TextView
+                    android:id="@+id/txt_nuevo_estudio_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_estudio"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Nuevo" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_nuevo_estudio_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="estudio"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lyt_actions_pets_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_recipe"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_recipe"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_new_recipe_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_recipe"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Nueva" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_new_recipe_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="receta"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!-- new sell -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_sell_to_pet"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_sell" />
+                <TextView
+                    android:id="@+id/txt_new_sell_to_pet_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_sell_to_pet"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Venta" />
+
+            </RelativeLayout>
+
+            <!-- waiting rooms -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_waiting_room_pet"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_hourglass" />
+                <TextView
+                    android:id="@+id/txt_new_waiting_room_pet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_waiting_room_pet"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Sala" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_new_waiting_room_pet"
+                    android:layout_centerHorizontal="true"
+                    android:text="de espera"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!-- new agenda -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_pet_agenda"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_task"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_nuevo_agenda_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_pet_agenda"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Nueva" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_nuevo_agenda_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="cita / tarea"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_pet_especific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pet"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_pet_especific"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_modificar_pet"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_edit_light" />
+                <TextView
+                    android:id="@+id/txt_modificar_pet_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_modificar_pet"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Editar" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_eliminar_pet"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_eliminar_pet_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_eliminar_pet"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Eliminar" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Especifico de agenda-->
+        <TextView
+            android:id="@+id/txt_agenda_especifico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agenda"
+            android:layout_gravity="left"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_agenda_especifico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_modificar_agenda"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_edit_light"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_modificar_agenda_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_modificar_agenda"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Editar" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/txt_modificar_agenda_1"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
+<!--                    android:text="@string/agenda" />-->
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_eliminar_agenda"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_eliminar_agenda_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_eliminar_agenda"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Eliminar" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/txt_eliminar_agenda_1"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
+<!--                    android:text="@string/agenda" />-->
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_marcar_agenda"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_check_light"
+                    android:layout_centerHorizontal="true"
+                    />
+<!--                android:scaleType="center"-->
+
+                <TextView
+                    android:id="@+id/txt_marcar_agenda_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_marcar_agenda"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Realizado" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/txt_marcar_agenda_1"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
+<!--                    android:text="No realizado" />-->
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_product_especifico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/product"
+            android:layout_gravity="left"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_product_especifico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_modificar_product"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_edit_light"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_modificar_product_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_modificar_product"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Editar" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_eliminar_product"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_eliminar_product_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_eliminar_product"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Eliminar" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Especifico de sells-->
+        <TextView
+            android:id="@+id/txt_sell_specific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sell"
+            android:layout_gravity="left"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_sell_specific"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_delete_sell"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_delete_sell_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_delete_sell"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Eliminar" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_get_pdf"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_receipt"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_pdf_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_get_pdf"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="PDF" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Especifico de purchases-->
+        <TextView
+            android:id="@+id/txt_purchase_specific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/purchase"
+            android:layout_gravity="left"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_purchase_specific"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_delete_purchase"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_delete_purchase_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_delete_purchase"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Eliminar" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Movements specific-->
+        <TextView
+            android:id="@+id/txt_movement_specific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sell"
+            android:layout_gravity="left"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_movement_specific"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_delete_movement"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_delete_movement_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_delete_movement"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Eliminar" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_get_pdf_movement"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_receipt"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_pdf_movement_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_get_pdf_movement"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="PDF" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_accept_movement"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_check_light"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_accept_movement_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_accept_movement"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Aceptar" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Especifico de providers-->
+        <TextView
+            android:id="@+id/txt_actions_providers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/actions"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_actions_providers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_purchase_to_provider"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_buy_2" />
+                <TextView
+                    android:id="@+id/txt_new_purchase_to_provider_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_purchase_to_provider"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Compra" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_provider_especific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/providers"
+            android:layout_gravity="left"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_provider_especific"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_update_provider"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_edit_light"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_update_provider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_update_provider"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Editar" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_delete_provider"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_delete_provider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_delete_provider"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Eliminar" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Especifico de cash movements-->
+        <TextView
+            android:id="@+id/txt_cash_movement_specific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Movimiento manual"
+            android:layout_gravity="left"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_cash_movement_specific"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_delete_cash_movement"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_delete_cash_movement_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_delete_cash_movement"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Eliminar" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Especifico de spending-->
+        <TextView
+            android:id="@+id/txt_spending_specific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/spending"
+            android:layout_gravity="left"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_spending_specific"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_delete_spending"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_delete_spending_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_delete_spending"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Eliminar" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Especifico de comunicacion-->
+        <TextView
+            android:id="@+id/txt_especifico_comunicacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comunicación"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_especifico_comunicacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_com_telefono"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_phone_2"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_com_telefono_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_com_telefono"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Llamar" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_com_whatsapp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_whatsapp_svg"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_com_whatsapp_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_com_whatsapp"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="WhatsApp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_com_sms"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_sms"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_com_sms_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_com_sms"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="SMS" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_com_email"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_email"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_com_email_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_com_email"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Email" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--generals-->
+
+        <!--most used-->
+        <TextView
+            android:id="@+id/txt_most_used_general"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/most_used"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_most_used_general"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <!--new pet-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_pet"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_pet_2" />
+
+                <TextView
+                    android:id="@+id/txt_new_pet_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_pet"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/nuevo"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:id="@+id/txt_new_pet_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_new_pet_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="mascota"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!--search pet-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_search_pet"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_search_pet_2" />
+
+                <TextView
+                    android:id="@+id/txt_search_pet_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_search_pet"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/buscar"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:id="@+id/txt_search_pet_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_search_pet_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="mascota"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!--new owner-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_owner"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_person_2" />
+
+                <TextView
+                    android:id="@+id/txt_new_owner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_owner"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/nuevo"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:id="@+id/txt_new_owner_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_new_owner"
+                    android:layout_centerHorizontal="true"
+                    android:text="propietario"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!--search owner-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_search_owner"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_search_owner_2" />
+
+                <TextView
+                    android:id="@+id/txt_search_owner_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_search_owner"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/buscar"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:id="@+id/txt_search_owner_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_search_owner_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="propietario"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lyt_most_used_general_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            >
+
+            <!--search product-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_search_product"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_search_product" />
+
+                <TextView
+                    android:id="@+id/txt_search_product_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_search_product"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/buscar"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_search_product_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/product_lcase"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!--new sell-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_sell"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_sell" />
+                <TextView
+                    android:id="@+id/txt_sell_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_sell"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Venta" />
+
+            </RelativeLayout>
+
+            <!--new spending-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_spending"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_spending_2" />
+
+                <TextView
+                    android:id="@+id/txt_new_spending_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_spending"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/spending"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!--new agenda-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_agenda_global"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_task"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/txt_nuevo_agenda_global_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_agenda_global"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="@string/nuevo" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_nuevo_agenda_global_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="agenda"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--others-->
+        <TextView
+            android:id="@+id/txt_others_general"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/others"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:id="@+id/lyt_others_general"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:visibility="gone"
+            >
+
+            <!-- new purchase -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_purchase"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_buy_2" />
+                <TextView
+                    android:id="@+id/txt_purchase_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_purchase"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Compra" />
+
+            </RelativeLayout>
+
+            <!-- manual in/out -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_manual_in_out"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_in_out_2" />
+
+                <TextView
+                    android:id="@+id/txt_new_manual_in_out_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_manual_in_out"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/in_out"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_new_manual_in_out_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/manual"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!-- import -->
+            <RelativeLayout
+                android:id="@+id/relative_new_import"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_import"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_import_2" />
+                <TextView
+                    android:id="@+id/txt_import_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_import"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Importar" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_import_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/products_lcase"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!-- assoc -->
+            <RelativeLayout
+                android:id="@+id/relative_assoc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_asoc_product"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_assoc_products" />
+
+                <TextView
+                    android:id="@+id/txt_asoc_product_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_asoc_product"
+                    android:layout_centerHorizontal="true"
+                    android:text="Asociar"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_asoc_product_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="productos"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lyt_others_general_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            >
+
+            <!-- new product -->
+            <RelativeLayout
+                android:id="@+id/relative_new_product"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_product"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_product_2" />
+
+                <TextView
+                    android:id="@+id/txt_new_product_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_product"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/nuevo"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_new_product_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="producto"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!-- new service -->
+            <RelativeLayout
+                android:id="@+id/relative_new_service"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_service"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_service_2" />
+                <TextView
+                    android:id="@+id/txt_new_service_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_service"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="@string/nuevo" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_new_service_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="servicio"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <!-- new provider -->
+            <RelativeLayout
+                android:id="@+id/relative_new_provider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_provider"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_add_provider_2" />
+
+                <TextView
+                    android:id="@+id/txt_new_provider_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_provider"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/nuevo"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_new_provider_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="distribuidor"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_search_provider"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_search_provider" />
+
+                <TextView
+                    android:id="@+id/txt_search_provider_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_search_provider"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/buscar"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_search_provider_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="distribuidor"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lyt_others_general_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_search_manufacturer"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_search_manufacturer" />
+
+                <TextView
+                    android:id="@+id/txt_search_manufacturer_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_search_manufacturer"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/buscar"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_search_manufacturer_1"
+                    android:layout_centerHorizontal="true"
+                    android:text="fabricante"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/btn_new_movement"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_arrow_right_alt_48px" />
+                <TextView
+                    android:id="@+id/txt_new_movement_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_new_movement"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:text="Remito" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

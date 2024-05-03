@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".EditImportActivity_1">
+
+    <TextView
+        android:id="@+id/txt_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/TextAppearance.AppCompat"
+        android:text="Agrega tus productos y servicios a Doctor Vet en pocos pasos:\n\n1 - Presiona sobre '+' -> 'Asociar productos'. Observa los fabricantes y sus productos y selecciona todos aquellos productos que trabajes.\n\n2 - Ve a 'Reportes' -> 'Productos Excel' para exportar los productos a un archivo Excel, en el dispositivo, en la ruta 'android/com.xionce.doctorvetServices/files/'.\n\n3 - Edita el archivo Excel desde el mismo dispositivo o copialo a una PC de escritorio para editarlo allí.\n\n4 - Agrega todos los productos que desees al final de los ya existentes en el archivo Excel. Guarda el nuevo archivo y luego importalo presionando el botón de más abajo."
+        />
+
+    <Button
+        android:id="@+id/btn_select_xlsx"
+        style="@style/ActionButton"
+        app:layout_constraintTop_toBottomOf="@id/txt_info"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Seleccionar xlsx"
+        android:layout_margin="8dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

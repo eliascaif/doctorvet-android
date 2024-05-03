@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context=".ViewDailyCashDetails"
+    >
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/linear_totals"
+        >
+
+        <com.xionce.doctorvetServices.utilities.controls.PaginationRecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:clipToPadding="false"
+            android:paddingBottom="90dp"
+            />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linear_totals"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        >
+
+        <TextView
+            android:id="@+id/txt_total_sells"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ventas: "
+            />
+
+        <TextView
+            android:id="@+id/txt_total_manual_cash_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingresos manuales: "
+            />
+
+        <TextView
+            android:id="@+id/txt_total_spendings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gastos: "
+            />
+
+        <TextView
+            android:id="@+id/txt_total_manual_cash_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Egresos manuales: "
+            />
+
+        <TextView
+            android:id="@+id/txt_total_buys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Compras: "
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

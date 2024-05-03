@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- <uses-feature -->
+    <!-- android:name="android.hardware.camera2" -->
+    <!-- android:required="false" /> -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <application
+        android:name=".DoctorVetApp"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginChoiceActivity"
+            />
+        <activity android:name=".LoginForgotPassword" />
+        <activity android:name=".LoginForgotPassword_2" />
+        <activity android:name=".LoginForgotPassword_3" />
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewPetActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".EditProductAssocActivity" />
+        <activity android:name=".ViewDailyCashDetails" />
+        <activity android:name=".SearchOwnerActivity" />
+        <activity
+            android:name=".EditServiceActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ViewManufacturerActivity" />
+        <activity android:name=".SearchProductStudyActivity" />
+        <activity android:name=".SearchVetActivity" />
+        <activity android:name=".SearchProductCategoryActivity" />
+        <activity android:name=".SearchServiceCategoryActivity" />
+        <activity android:name=".EditProductCategoryActivity" />
+        <activity android:name=".ViewAgendaEventActivity" />
+        <activity android:name=".EditAgendaActivity" />
+        <activity android:name=".ViewSellActivity" />
+        <activity android:name=".ViewMovementActivity" />
+        <activity android:name=".ViewCashMovementActivity" />
+        <activity android:name=".ViewSpendingActivity" />
+        <activity android:name=".ViewPurchaseActivity" />
+        <activity android:name=".EditBaseActivity" />
+        <activity android:name=".ViewBaseActivity" />
+        <activity android:name=".EditUserChangePassword" />
+        <activity android:name=".LoginCheckValid" />
+        <activity
+            android:name=".LoginCreateAccount"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity android:name=".EditWaitingRoomActivity" />
+        <activity
+            android:name=".EditSupplyActivity_YesNo"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditStudyActivity_1"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditStudyActivity_1_1"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditManualCashActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditSpendingActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditMovementActivity_1"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditMovementActivity_1_1"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditMovementActivity_2"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditMovementActivity_3"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditSellActivity_1"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditSellActivity_1_1"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditSellActivity_2"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditSellActivity_3"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditSellActivity_4"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditClinicActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditRecipeActivity_1"
+            android:windowSoftInputMode="adjustResize" />
+<!--        android:theme="@style/AppTheme.NoActionBar"-->
+        <activity
+            android:name=".EditRecipeActivity_1_1"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditClinic2Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditPurchaseActivity_1"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditPurchaseActivity_1_1"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditPurchaseActivity_2"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditPurchaseActivity_3"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ViewVetServicesSchedulesActivity" />
+        <activity android:name=".ViewVetUsersActivity" />
+        <activity android:name=".ViewVetDepositsActivity" />
+        <activity android:name=".ViewVetPointsActivity" />
+        <activity
+            android:name=".EditUserActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditOwnerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditVetDepositActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditVetPointActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditSellPaymentActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditPurchasePaymentActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditProductActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditProviderActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewProductVetActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewProviderActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewProviderDebtsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewOwnerDebtsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewOwnerNotificationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewWaitingRoomsHistoricActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewOwnersHistoricActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewPetsHistoricActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditRegionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditPetRaceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditPetPelageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditPetCharacterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewOwnerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditVetScheduleActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditVetServiceAssocActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditPetActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditSDTActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditStudyItemActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditImportActivity_1"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditImportActivity_2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditVetActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ChangeVetActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewVetActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewUserActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchUserActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchPetActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchPetGenderActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchPetCharacterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchProductActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchServiceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchStudyItemActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchProductMeasureUnitActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchProviderActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchRegionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchPetRaceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchPetPelageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchManufacturerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchSymptomActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchDiagnosticActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchTreatmentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ViewFullScreenPhoto" />
+        <activity android:name=".ViewFullScreenVideo" />
+        <activity
+            android:name=".ScannerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditSellActivity_1_1_2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditPurchaseActivity_1_1_2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditMovementActivity_1_1_2"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".AboutActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- facebook -->
+        <!-- <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/> -->
+        <!-- <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/> -->
+        <!-- <activity android:name="com.facebook.FacebookActivity" -->
+        <!-- android:configChanges= -->
+        <!-- "keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
+        <!-- android:label="@string/app_name" /> -->
+        <!-- <activity -->
+        <!-- android:name="com.facebook.CustomTabActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.VIEW" /> -->
+        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+        <!-- <data android:scheme="@string/fb_login_protocol_scheme" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <!-- fin facebook -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
+</manifest>

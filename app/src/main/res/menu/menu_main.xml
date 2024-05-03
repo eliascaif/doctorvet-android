@@ -1,0 +1,39 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.xionce.doctorvetServices.MainActivity">
+
+    <item
+        android:id="@+id/action_search"
+        android:title="@string/action_search"
+        android:icon="@drawable/ic_action_search"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/action_more"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_more_vector"
+        app:showAsAction="always"
+        >
+
+        <menu>
+            <item
+                android:id="@+id/subitem_vista"
+                android:title="Vista">
+                <menu>
+                    <item
+                        android:id="@+id/action_compacto"
+                        android:title="Compacto"/>
+
+                    <item
+                        android:id="@+id/action_extendido"
+                        android:title="Extendido" />
+                </menu>
+            </item>
+        </menu>
+
+    </item>
+
+</menu>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="4dp"
+    >
+
+    <ImageView
+        android:id="@+id/img_thumb"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/cardview_dark_background" />
+
+    <TextView
+        android:id="@+id/txt_pet_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scrollHorizontally="true"
+        android:text="@string/name"
+        android:layout_marginHorizontal="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+        app:layout_constraintStart_toEndOf="@+id/img_thumb"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_comm"
+        />
+
+    <TextView
+        android:id="@+id/txt_pet_owners"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/owners"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        app:layout_constraintEnd_toStartOf="@id/img_comm"
+        app:layout_constraintStart_toEndOf="@id/img_thumb"
+        app:layout_constraintTop_toBottomOf="@id/txt_pet_name"
+        />
+
+    <TextView
+        android:id="@+id/txt_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:text="Info"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        app:layout_constraintEnd_toStartOf="@id/img_comm"
+        app:layout_constraintStart_toEndOf="@id/img_thumb"
+        app:layout_constraintTop_toBottomOf="@id/txt_pet_owners"
+        />
+
+    <ImageView
+        android:id="@+id/img_comm"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        app:srcCompat="@drawable/ic_communication"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_check"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="8dp"
+        android:scaleType="center"
+        />
+
+    <ImageView
+        android:id="@+id/img_check"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        app:srcCompat="@drawable/ic_check_light"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:scaleType="center"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linear_comunication"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/txt_info"
+        app:layout_constraintEnd_toStartOf="@id/img_comm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/btn_com_telefono"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/ic_call_light"
+            android:layout_marginHorizontal="16dp"
+            android:scaleType="center"
+            />
+
+        <ImageView
+            android:id="@+id/btn_com_whatsapp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/ic_whatsapp_svg"
+            android:scaleType="center"
+            />
+
+        <ImageView
+            android:id="@+id/btn_com_email"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/ic_email"
+            android:layout_marginHorizontal="16dp"
+            android:scaleType="center"
+            />
+
+        <ImageView
+            android:id="@+id/btn_com_sms"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/ic_sms"
+            android:scaleType="center"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <!--This View serves as a visual divider between list items-->
+    <View
+        android:id="@+id/div_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#dadada"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_comunication" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

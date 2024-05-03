@@ -1,0 +1,457 @@
+<resources>
+
+    <!--Google sign in-->
+    <string name="web_client_id">406028396488-7u5r86ht0q9df1dn8apufkqdbl7evnkr.apps.googleusercontent.com</string>
+
+    <!--facebook login-->
+<!--    <string name="facebook_app_id">1012773706414346</string>-->
+<!--    <string name="fb_login_protocol_scheme">fb1012773706414346</string>-->
+<!--    <string name="facebook_client_token">07f0dd70026207417f2b6183f68f1acb</string>-->
+
+    <!--sharedPreferences - keys -->
+    <string name="preference_private_file">com.xionce.doctorvet.preferences</string>
+    <string name="preference_unique_id">unique_id</string>
+    <string name="preference_user_email">user_email</string>
+    <string name="preference_user_password">user_password</string>
+    <string name="preference_user_login_type">user_login_type</string>
+    <string name="preference_user_token">user_token</string>
+    <string name="preference_owners_view_mode">owners_view_mode</string>
+
+    <!--sharedPreferences - Settings /////////////////////////////////////////////////////// -->
+    <string name="preference_settings_temp_unit">settings_temp_unit</string>
+    <string name="preference_settings_weight_unit">settings_weight_unit</string>
+
+    <!--sharedPreferences - Settings titles //////////////////////////////////////////////// -->
+    <string name="preference_settings_general_config_title">Unidad de peso</string>
+    <string name="preference_settings_temp_unit_title">Unidad de temperatura</string>
+    <string name="preference_settings_weight_unit_title">Unidad de peso</string>
+    <!-- //////////////////////////////////////////////////////////////////////////////////// -->
+
+    <string name="action_logout">Cerrar sesión</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_delete_pregunta">¿Eliminar?</string>
+    <string name="action_check_pregunta">¿Marcar como suministrado?</string>
+    <string name="action_check_in_transit">¿Aceptar remito?</string>
+    <string name="action_check_agenda">¿Marcar como realizado?</string>
+    <string name="err_action">No se pudo realizar la acción</string>
+
+    <!--General-->
+    <string name="app_name">Doctor Vet Services</string>
+    <string name="error_message">Ocurrió un error. Intenta nuevamente.</string>
+    <string name="bienvenido">¡Bienvenido!</string>
+    <string name="check">Guardar</string>
+    <string name="name">Nombre</string>
+    <string name="subscription_until">Suscripción hasta</string>
+    <string name="direccion">Dirección</string>
+    <string name="telefono">Teléfono</string>
+    <string name="email">Email</string>
+    <string name="email_invalido">Email inválido</string>
+    <string name="telefono_invalido">Sin teléfono</string>
+    <string name="agregar_email">Email</string>
+    <string name="agregar_movil">Móvil</string>
+    <string name="nuevo_pago">Nuevo pago</string>
+    <string name="nuevo_pago_monto">Ingresa el monto</string>
+    <string name="notes">Notas</string>
+    <string name="descripcion">Descripción</string>
+    <string name="anamnesis">Anamnesis</string>
+    <string name="desde">Desde</string>
+    <string name="hasta">Hasta</string>
+    <string name="error_campo_empty">Completa aquí</string>
+    <string name="error_contrasenas_no_coinciden">Las contraseñas no coinciden</string>
+    <string name="error_corrige_campo">Corrige aquí</string>
+    <string name="error_corrige_campo_vacio">Completa aquí</string>
+    <string name="error_corrige_campo_no_existe">Selecciona un ítem existente</string>
+    <string name="title_add_image">(imagen)</string>
+    <string name="take_photo">Cámara</string>
+    <string name="remove_photo">Remover</string>
+    <string name="open_gallery">Galería</string>
+    <string name="identificacion_regional">DNI / DU / Pasaporte / Identificación regional</string>
+    <string name="owner">Propietario</string>
+    <string name="owners">Propietarios</string>
+    <string name="recientes">(activos en los últimos 60 días)</string>
+    <string name="recientes_pets">(activas en los últimos 60 días)</string>
+    <string name="owner_lcase">propietario</string>
+    <string name="reason">Motivo</string>
+    <string name="owner_search">Buscar propietario</string>
+    <string name="user_search">Buscar usuario</string>
+    <string name="pet_search">Buscar mascota</string>
+    <string name="region_search">Buscar region</string>
+    <string name="vet_search">Buscar veterinaria</string>
+    <string name="race_search">Buscar raza</string>
+    <string name="pelage_search">Buscar pelaje</string>
+    <string name="symptom_search">Buscar síntoma</string>
+    <string name="diagnostic_search">Buscar diagnóstico</string>
+    <string name="treatment_search">Buscar tratamiento</string>
+    <string name="character_search">Buscar pelaje</string>
+    <string name="category_search">Buscar categoría</string>
+    <string name="search_measure_unit">Buscar unidad de medida</string>
+    <string name="buscar_estudio">Buscar estudio</string>
+    <string name="buscar_product_servicios">Buscar producto / servicio</string>
+    <string name="search_provider">Buscar distribuidor</string>
+    <string name="search_manufacturer">Buscar fabricante</string>
+    <string name="search">Buscar</string>
+    <string name="most_used">Más usados</string>
+    <string name="buscar_servicios">Buscar servicio</string>
+    <string name="pet_lcase">mascota</string>
+    <string name="related_owners">Propietarios relacionados</string>
+    <string name="related_pets">Mascotas relacionadas</string>
+    <string name="product_lcase">producto</string>
+    <string name="inicio">Inicio</string>
+    <string name="pagina_web">Pagina Web</string>
+    <string name="name_region">Región</string>
+    <string name="crear_veterinaria">Crear veterinaria</string>
+    <string name="registrar_veterinario">Crear veterinario/a particular</string>
+    <string name="unirse_a_veterinaria">Unirse a una veterinaria</string>
+    <string name="unirse">Unirse a establecimiento</string>
+    <string name="unirse_a_veterinaria_pregunta">¿Unirse a veterinaria?</string>
+    <string name="unirse_a_veterinaria_mensaje">Se enviará una solicitud para unirse a %1$s.</string>
+    <string name="veterinarias_no_hay_solicitudes_abiertas">No hay solicitudes pendientes. Vuelve atrás para unirte a una veterinaria.</string>
+    <string name="unirse_a_veterinaria_unirse">unirse</string>
+    <string name="verificar_solicitudes">Verificar solicitudes abiertas</string>
+    <string name="event_name">Servicio / Nombre del evento</string>
+    <string name="buscar">Buscar</string>
+    <string name="fail_search">No hay información para mostrar.</string>
+    <string name="start_search">Ingresa texto de búsqueda y luego presiona sobre buscar.</string>
+    <string name="empty_recordset">No hay datos sobre los que buscar. Intenta crear utilizando +</string>
+    <string name="solicitudes_user_no_aceptadas">Aún no hay solicitudes aceptadas, intenta nuevamente mas tarde</string>
+    <string name="solicitudes_user_aceptadas">Tienes una solicitud aceptada, reinicia la app.</string>
+    <string name="nuevo_item_descripcion">Sugiere un nuevo valor, ten en cuenta que será sometido a revisión y no estará disponible de inmediato.</string>
+    <string name="nueva_race">Nueva raza</string>
+    <string name="ingresando_nueva_race">Ingresando nueva raza</string>
+    <string name="nuevo_pelage">Nuevo pelaje</string>
+    <string name="new_sdt_ext">Nuevo síntoma / diagnóstico / tratamiento</string>
+    <string name="ingresando_nuevo_pelage">Ingresando nuevo pelaje</string>
+    <string name="nuevo_character">Nuevo carácter</string>
+    <string name="ingresando_nuevo_character">Ingresando nuevo carácter</string>
+    <string name="nueva_categoria">Nueva categoría</string>
+    <string name="ingresando_nueva_categoria">Ingresando nueva categoría</string>
+    <string name="ciudad">Ciudad</string>
+    <string name="ciudad_descripcion">Haz referencia al núcleo más pequeño y conocido de la región. Ej.: San Andrés de la Barca</string>
+    <string name="provincia">Provincia</string>
+    <string name="provincia_descripcion">Haz referencia al la zona geográfica que engloba a la anterior. Ej.: Barcelona</string>
+    <string name="pais">País</string>
+    <string name="pais_descripcion">El país. Ej.: España</string>
+    <string name="nueva_region">Nueva región</string>
+    <string name="ingresando_nueva_region">Ingresando nueva región</string>
+    <string name="aceptar_solucitud_pregunta">¿Aceptar solicitud?</string>
+    <string name="aceptar">aceptar</string>
+    <string name="cancelar">cancelar</string>
+    <string name="aceptar_solucitud_mensaje">Se incluirá a %1$s en los usuarios de la veterinaria.</string>
+    <string name="cancelar_unirse_a_veterinaria_cancelar">¿Eliminar solicitud?</string>
+    <string name="ok">OK</string>
+    <string name="si">SI</string>
+    <string name="no">NO</string>
+    <string name="vet">Veterinaria</string>
+    <string name="name_user">Usuario</string>
+    <string name="solicitud_aceptada">Solicitud aceptada</string>
+    <string name="ver_solicitudes_pendientes">Ver solicitudes pendientes</string>
+    <string name="error_sincro_google_facebook">No se puede conectar al servidor. Intenta nuevamente.</string>
+    <string name="solicitudes">Solicitudes</string>
+    <string name="solicitudes_aceptar_eliminar">Acepta o elimina solicitudes</string>
+    <string name="solicitud_pendiente">Solicitud pendiente</string>
+    <string name="asociado">asociado</string>
+    <string name="nuevo_owner">Nuevo propietario</string>
+    <string name="ingresando_nuevo_owner">Ingresando nuevo propietario</string>
+    <string name="edit_owner">Editar propietario</string>
+    <string name="editing_owner">Editando propietario</string>
+    <string name="edit_deposit">Editar almacen</string>
+    <string name="editing_deposit">Editando almacen</string>
+    <string name="new_deposit">Nuevo almacen</string>
+    <string name="adding_new_deposit">Ingresando nuevo almacen</string>
+    <string name="new_point">Nuevo punto de emisión</string>
+    <string name="adding_new_point">Ingresando nuevo punto de emisión de comprobantes</string>
+    <string name="edit_provider">Editar distribuidor</string>
+    <string name="editting_provider">Editando disctribuidor</string>
+    <string name="new_provider">Nuevo distribuidor</string>
+    <string name="creating_provider">Ingresando disctribuidor</string>
+    <string name="new_subtitle">Completa los datos</string>
+    <string name="edit_subtitle">Edita los datos</string>
+    <string name="new_vet">Nueva veterinaria</string>
+    <string name="adding_new_vet">Ingresando nueva veterinaria</string>
+    <string name="edit_vet">Editar veterinaria</string>
+    <string name="editing_vet">Editando veterinaria</string>
+    <string name="nueva_agenda">Nuevo evento</string>
+    <string name="Ingresando_nueva_agenda">Ingresando nuevo evento</string>
+    <string name="editar_agenda">Editar evento</string>
+    <string name="editando_agenda">Editando evento</string>
+    <string name="nuevo_user">Nuevo usuario</string>
+    <string name="nuevo">Nuevo</string>
+    <string name="nueva">Nueva</string>
+    <string name="Ingresando_nuevo_user">Ingresando nuevo usuario</string>
+    <string name="editar_user">Editar usuario</string>
+    <string name="editando_user">Editando usuario</string>
+    <string name="name_especie">Especie</string>
+    <string name="name_race">Raza</string>
+    <string name="diagnostic">Diagnóstico</string>
+    <string name="dosage">Dosis</string>
+    <string name="treatment">Tratamiento</string>
+    <string name="name_pelage">Pelaje</string>
+    <string name="name_gender">Género</string>
+    <string name="name_character">Carácter</string>
+    <string name="nacimiento">Nacimiento</string>
+    <string name="peso">Peso</string>
+    <string name="peso_en_default">Peso (%1$s)</string>
+    <string name="chip">Chip</string>
+    <string name="deceso">Deceso</string>
+    <string name="new_pet">Nueva mascota</string>
+    <string name="ingresando_nueva_pet">Ingresando nueva mascota</string>
+    <string name="editar_pet">Editar mascota</string>
+    <string name="editando_pet">Editando mascota</string>
+    <string name="action_search">Buscar…</string>
+    <string name="error_conexion_servidor">No hay conexión al servidor. Intenta nuevamente mas tarde.</string>
+    <string name="error_cargando_registro">Obteniendo información, espera unos segundos…</string>
+    <string name="error_borrando_registro">El registro no pudo ser eliminado</string>
+    <string name="error_update">El registro no pudo ser cambiado</string>
+    <string name="error_uploading">Error al subir archivos</string>
+    <string name="error_check_suministro">No se pudo establecer check de supply</string>
+    <string name="error_sin_permiso">Habilita el permiso requerido</string>
+    <string name="error_archivo_muy_grande">El tamaño del archivo excede los 5000kb</string>
+    <string name="error_update_pet">No pudo obtenerse el owner de la pet, intenta nuevamente</string>
+    <string name="error_update_agenda">No pudo obtenerse la pet, intenta nuevamente</string>
+    <string name="error_remove_photo">No se pudo remover la imagen, intenta nuevamente</string>
+    <string name="name_pet">Nombre mascota</string>
+    <string name="pets">Mascotas</string>
+    <string name="actions">Acciones</string>
+    <string name="others">Otros</string>
+    <string name="clinica">Clínica</string>
+    <string name="estudio">Estudio</string>
+    <string name="estudios">Estudios</string>
+    <string name="nuevo_estudio">Nuevo estudio</string>
+    <string name="ingresando_estudio">Ingresando nuevo estudio</string>
+    <string name="editar_estudio">Editando estudio</string>
+    <string name="editando_estudio">Editando estudio</string>
+    <string name="error_estudio_vacio">Ingresa al menos un valor para items</string>
+    <string name="suministrado">suministrado</string>
+    <string name="suministo_lcase">suministro</string>
+    <string name="no_suministrado">no suministrado</string>
+    <string name="suministro_duplicado">El suministro es duplicado, prueba cambiando la fecha</string>
+    <string name="nada_para_registrar">Ingresa elementos</string>
+    <string name="de">De: </string>
+    <string name="usuario_distinto">Solo puedes editar o eliminar regitros que tú hayas ingresado</string>
+    <string name="agenda_vacia">No hay agenda para el día %1$s</string>
+    <string name="supply">Suministro</string>
+    <string name="receta">Receta</string>
+    <string name="products">Productos</string>
+    <string name="products_lcase">productos</string>
+    <string name="product">Producto</string>
+    <string name="service">Servicio</string>
+    <string name="nuevo_product">Nuevo producto</string>
+    <string name="ingresando_nuevo_product">Ingresando nuevo producto</string>
+    <string name="nuevo_servicio">Nuevo servicio</string>
+    <string name="ingresando_nuevo_servicio">Ingresando nuevo servicio</string>
+    <string name="editar_product">Editar producto</string>
+    <string name="editando_product">Editando producto</string>
+    <string name="editar_servicio">Editar servicio</string>
+    <string name="editando_servicio">Editando servicio</string>
+    <string name="productos_seleccionados">%1$d productos seleccionados</string>
+    <string name="sell">Venta</string>
+    <string name="purchase">Compra</string>
+    <string name="error_lista_vacia">No hay nada aquí. Presiona + para crear o buscar.</string>
+    <string name="err_empty_agenda">No hay nada aquí. Cambia el selector de fecha o presiona + para crear.</string>
+    <string name="error_lista_vacia_2">No hay nada aquí. Presiona + para crear.</string>
+    <string name="notificacion">Notificación</string>
+    <string name="pending_supply">Suministro pendiente</string>
+    <string name="expired_supply">Suministro vencido</string>
+    <string name="pending_and_expired_supply">Suministro pendiente y vencido</string>
+    <string name="last_visit">Última visita: %1$s.</string>
+    <string name="hoy_cumple_anos">Hoy cumple años</string>
+    <string name="agenda">Agenda</string>
+    <string name="daily_cash">Caja diaria</string>
+    <string name="about">Acerca de Doctor Vet</string>
+    <string name="manufacturers">Fabricantes</string>
+    <string name="providers">Distribuidores</string>
+    <string name="provider">Distribuidor</string>
+    <string name="spending">Gasto</string>
+    <string name="in_out">Ingreso / egreso</string>
+    <string name="manual">manual</string>
+    <string name="reportes">Reportes</string>
+    <string name="nueva_clinica">Nueva clínica</string>
+    <string name="recipe_new">Nueva receta</string>
+    <string name="last_food">Último alimento: %1$s el %2$s.</string>
+    <string name="food_level">Nivel alimento: %1$s/100.</string>
+    <string name="ingresando_nueva_clinica">Ingresando nueva clínica</string>
+    <string name="editando_clinica">Editando clínica</string>
+    <string name="recipe_edit">Editando receta</string>
+    <string name="new_clinic_ext">Nueva clínica extendida</string>
+    <string name="edit_clinic_ext">Editando clínica extendida</string>
+    <string name="ingresando_nuevo_suministro">Ingresando nuevo suministro</string>
+    <string name="editando_suministro">Editando suministro</string>
+    <string name="seleccion">Selección: </string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="new_item">Nuevo</string>
+    <string name="attend">Atender</string>
+    <string name="continue_">Continuar</string>
+
+    <!--Login ///////////////////////////////////////////////////////////////////////////////////////  -->
+    <string name="user">Usuario</string>
+    <string name="user_lcase">usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="password_repeat">Reescribe contraseña</string>
+    <string name="login">Ingresar</string>
+    <string name="logout">Salir</string>
+    <string name="no_registrado">¿No registrado?</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+    <string name="usar_otra_cuenta">Usar otra cuenta</string>
+    <string name="check_login_valid">Enviamos un correo eléctronico a </string>
+    <string name="check_login_valid_2"> Clic en el link que contiene para continuar.</string>
+    <string name="login_invalid_account_password">Datos inválidos, intenta nuevamente.</string>
+    <string name="login_forgot_password">Olvidé mi contraseña</string>
+    <string name="login_forgot_ok">Tus datos de ingreso se enviaron a tu cuenta de correo electrónico.</string>
+    <string name="btn_forgot_password">Enviar</string>
+    <string name="title_activity_scanner">ScannerActivity</string>
+    <string name="vets">Veterinarias</string>
+    <string name="title_activity_edit_clinica">EditClinicaActivity</string>
+    <string name="anos">años</string>
+    <string name="meses">meses</string>
+    <string name="dias">dias</string>
+    <string name="fecha">Fecha</string>
+    <string name="fecha_inicio">Fecha inicio</string>
+    <string name="fecha_fin">Fecha fin</string>
+    <string name="hour">Hora</string>
+    <string name="starting_date">Fecha inicio</string>
+    <string name="ending_date">Fecha fin</string>
+    <string name="starting_hour">Hora inicio</string>
+    <string name="ending_hour">Hora fin</string>
+    <string name="temperatura">Temperatura</string>
+    <string name="temp.">Temp.</string>
+    <string name="temperatura_en_default">Temperatura (%1$s)</string>
+    <string name="editClinicaActivity_Procesando_video">Procesando video, espera unos segundos…</string>
+    <string name="editClinicaActivity_Maximo_video">Graba como máximo 30 segundos de video.</string>
+    <string name="editClinicaActivity_VideoNoAceptado">El video supera 30 segundos. Graba como máximo 30 segundos de video.</string>
+    <string name="pet">Mascota</string>
+    <string name="estado">Estado</string>
+    <string name="estado_realizado">Realizado</string>
+    <string name="estado_no_realizado">No realizado</string>
+
+    <!-- TODO: Sacar error general    -->
+    <string name="error_general">Error</string>
+    <string name="error_falta_pet">Error: No hay mascota seleccionada al ingresar clínica</string>
+    <string name="error_falta_estudio">Error: No hay estudio seleccionado al ingresar clínica</string>
+    <string name="error_no_audio">No es posible reproducir audio</string>
+    <string name="sumar_dias_a_fecha_actual">Sumar dias a fecha actual</string>
+    <string name="cuantos_dias">¿Cuántos dias?</string>
+    <string name="waiting_room">Sala de espera</string>
+    <string name="waiting_room_auto_deleted">Sala de espera (auto eliminados)</string>
+    <string name="error_falta_whatsapp">No se encontró WhatsApp en el sistema.</string>
+    <string name="error_falta_permiso">Activa el permiso para funcionar</string>
+    <string name="error_falta_telefono">Teléfono no registrado/inválido.</string>
+    <string name="error_falta_email">Email no registrado.</string>
+
+    <string name="err_pdf_viewer">App PDF no disponible.</string>
+
+    //
+    <string name="unidad">Unidad</string>
+    <string name="codigo_barras">Código barras</string>
+    <string name="codigo_qr">Código QR</string>
+    <string name="categorias">Categorías</string>
+    <string name="categoria">Categoría</string>
+    <string name="symptoms">Síntomas</string>
+    <string name="measure_unit">Unidad de medida</string>
+    <string name="es_categoria_alimentos">Es categoría de alimentos</string>
+    <string name="es_categoria_servicios">Es categoría de servicios</string>
+    <string name="Agregar_email_modal">Ingresa email</string>
+    <string name="Agregar_telefono_modal">Ingresa teléfono móvil</string>
+    <string name="duracion_servicio">Duración servicio</string>
+    <string name="servicio">Servicio</string>
+    <string name="servicio_min">servicio</string>
+    <string name="cantidad">Cantidad</string>
+    <string name="cantidad_actual">Cantidad actual</string>
+    <string name="every_x_hours">Cada x horas</string>
+    <string name="total_days">Días totales</string>
+    <string name="costo">Costo</string>
+    <string name="impuesto">Impuesto</string>
+    <string name="precio1">Precio 1</string>
+    <string name="precio2">Precio 2</string>
+    <string name="precio3">Precio 3</string>
+    <string name="precio4">Precio 4</string>
+    <string name="cantidad_minima">Cantidad mínima</string>
+    <string name="vence">Vence</string>
+    <string name="margen">Margen</string>
+    <string name="precio">Precio</string>
+    <string name="cantidad_unit_compleja">Cantidad unidad compleja</string>
+    <string name="precio_fijo">Fijo</string>
+    <string name="precio_costo_margen">Costo + margen</string>
+    <string name="precio_costo_margen_impuesto">Costo + margen + impuesto</string>
+    <string name="precio_costo_div_margen_impuesto">Costo / (1 - (0.(margen+impuesto)))</string>
+    <string name="paper">Papel</string>
+    <string name="electronic">Electrónico</string>
+
+    <!--accessibility/////////////////////////////////////////////////////////////-->
+    <string name="accessibility_pick_start_date">Fecha de inicio</string>
+    <string name="accessibility_pick_start_time">Hora de inicio</string>
+    <string name="accessibility_pick_end_date">Fecha de finalización</string>
+    <string name="accessibility_pick_end_time">Hora de finalización</string>
+
+    <string name="reports_select">Seleccionar</string>
+    <string name="reports_pending_appointments_tasks_vet">Agenda pendiente</string>
+    <string name="reports_pending_appointments_tasks_user">Agenda pendiente (usr)</string>
+    <string name="reports_expired_appointments_tasks_vet">Agenda vencida ayer</string>
+    <string name="reports_expired_appointments_tasks_user">Agenda vencida ayer (usr)</string>
+    <string name="reports_expired_appointments_tasks_all_vet">Agenda vencida</string>
+    <string name="reports_birthdays">Cumpleaños</string>
+    <string name="reports_pending_supply_vet">Suministro pendiente</string>
+    <string name="reports_pending_supply_user">Suministro pendiente (usr)</string>
+    <string name="reports_expired_supply_vet">Suministro vencido ayer</string>
+    <string name="reports_expired_supply_user">Suministro vencido ayer (usr)</string>
+    <string name="reports_domiciliary_pending_supply_vet">Suministro domiciliario pendiente</string>
+    <string name="reports_domiciliary_pending_supply_user">Suministro domiciliario pendiente (usr)</string>
+    <string name="reports_domiciliary_expired_supply_vet">Suministro domiciliario vencido ayer</string>
+    <string name="reports_domiciliary_expired_supply_user">Suministro domiciliario vencido ayer (usr)</string>
+    <string name="reports_expired_supply_all_vet">Suministro vencido</string>
+    <string name="reports_owners_notifications">Notificaciones</string>
+    <string name="reports_owners_debtors">Deudores</string>
+    <string name="reports_owners_debtors_tolerance">Deudores sin pagos por más de 35 días</string>
+    <string name="reports_providers_creditors">Acreedores</string>
+    <string name="reports_providers_creditors_tolerance">Acreedores sin pagos por más de 35 días</string>
+
+    <string name="title_activity_edit_venta">EditVentaActivity</string>
+    <string name="recent_owners">Propietarios recientes</string>
+    <string name="recent_pets">Mascotas recientes</string>
+    <string name="crear">Crear establecimiento</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="lorem_ipsum">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
+        volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
+        dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad
+        litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend
+        diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a,
+        ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.\n\n
+        Suspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus
+        egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed
+        neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada
+        fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae,
+        molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor
+        bibendum, vel congue leo egestas.\n\n
+        Sed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit
+        amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel,
+        molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer
+        interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at
+        lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula,
+        in lobortis sem porta sed. Integer id ultrices magna, in luctus elit. Sed a pellentesque
+        est.\n\n
+        Aenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh.
+        Morbi laoreet, tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui
+        non lorem. Nam mollis ipsum quis auctor varius. Quisque elementum eu libero sed commodo. In
+        eros nisl, imperdiet vel imperdiet et, scelerisque a mauris. Pellentesque varius ex nunc,
+        quis imperdiet eros placerat ac. Duis finibus orci et est auctor tincidunt. Sed non viverra
+        ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi a consectetur ipsum, a
+        placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet finibus
+        convallis.\n\n
+        Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa
+        gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper,
+        libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper
+        sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus
+        libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
+        vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
+    </string>
+
+</resources>

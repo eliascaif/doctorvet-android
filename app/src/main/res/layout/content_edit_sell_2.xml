@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".EditSellActivity_2">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_continue"
+        >
+
+        <LinearLayout
+            android:id="@+id/lista"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/txt_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:text="Total: "
+                android:textAlignment="center"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/txt_balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Deuda: "
+                android:layout_marginBottom="8dp"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/txt_return"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vuelto: "
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:visibility="gone"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dadada"
+                android:layout_marginBottom="8dp"
+                />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_payment_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:inputType="numberDecimal"
+                android:maxLength="15"
+                android:selectAllOnFocus="true"
+                />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/cmb_payment_methods"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                />
+
+            <!--        <androidx.appcompat.widget.LinearLayoutCompat-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:orientation="horizontal"-->
+            <!--            android:weightSum="2">-->
+
+            <!--&lt;!&ndash;            <androidx.appcompat.widget.AppCompatSpinner&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:id="@+id/cmb_payment_methods"&ndash;&gt;-->
+            <!--&lt;!&ndash;                style="@style/TextAppearance.AppCompat.Title"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:layout_height="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:layout_weight="1" />&ndash;&gt;-->
+
+            <!--&lt;!&ndash;            <com.google.android.material.textfield.TextInputEditText&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:id="@+id/txt_payment_amount"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:layout_weight="1"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:textAlignment="center"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:textSize="20sp"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:inputType="numberDecimal"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:maxLength="15"&ndash;&gt;-->
+            <!--&lt;!&ndash;                android:selectAllOnFocus="true"&ndash;&gt;-->
+            <!--&lt;!&ndash;                />&ndash;&gt;-->
+
+            <!--        </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+            <TextView
+                android:id="@+id/txt_multiple_payments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Agregar multiples pagos + "
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="#dadada" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_payments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btn_continue"
+        style="@style/ActionButton"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="CONTINUAR" />
+
+</RelativeLayout>

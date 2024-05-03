@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".EditImportActivity_2">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_continue"
+        >
+
+        <LinearLayout
+            android:id="@+id/lista"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btn_continue"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Observa el archivo xlsx y establece correspondencias" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_start_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:errorTextAppearance="@style/TextLimitError">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Fila inicio"
+                        android:inputType="number"
+                        android:maxLength="6" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--            <EditText-->
+                <!--                android:id="@+id/txt_first_row"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_weight="1"-->
+                <!--                android:hint="Fila inicio" />-->
+
+                <!--            <EditText-->
+                <!--                android:id="@+id/txt_end_row"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_weight="1"-->
+                <!--                android:hint="Fila fin" />-->
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_end_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:errorTextAppearance="@style/TextLimitError">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Fila fin"
+                        android:inputType="number"
+                        android:maxLength="6" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!--        <androidx.appcompat.widget.AppCompatSpinner-->
+            <!--            android:id="@+id/spinner_category"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginVertical="8dp" />-->
+
+            <!--        <androidx.appcompat.widget.AppCompatSpinner-->
+            <!--            android:id="@+id/spinner_price_format"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginBottom="8dp" />-->
+
+<!--            <include-->
+<!--                android:id="@+id/lyt_spinner_category"-->
+<!--                layout="@layout/list_item_xlsx_2" />-->
+
+<!--            <include-->
+<!--                android:id="@+id/lyt_price_format"-->
+<!--                layout="@layout/list_item_xlsx_2" />-->
+
+            <include
+                android:id="@+id/lyt_bar_code_column"
+                layout="@layout/list_item_xlsx" />
+
+            <include
+                android:id="@+id/lyt_name_column"
+                layout="@layout/list_item_xlsx" />
+
+            <include
+                android:id="@+id/lyt_category_column"
+                layout="@layout/list_item_xlsx" />
+
+            <include
+                android:id="@+id/lyt_unit_column"
+                layout="@layout/list_item_xlsx" />
+
+            <include
+                android:id="@+id/lyt_complex_quantity_column"
+                layout="@layout/list_item_xlsx" />
+
+            <include
+                android:id="@+id/lyt_cost_column"
+                layout="@layout/list_item_xlsx" />
+
+            <include
+                android:id="@+id/lyt_tax_column"
+                layout="@layout/list_item_xlsx" />
+
+            <include
+                android:id="@+id/lyt_min_quantity_column"
+                layout="@layout/list_item_xlsx" />
+
+            <include
+                android:id="@+id/lyt_expires_column"
+                layout="@layout/list_item_xlsx" />
+
+            <!-- price 1 -->
+            <include
+                android:id="@+id/lyt_fixed_price_column_1"
+                layout="@layout/list_item_xlsx" />
+            <include
+                android:id="@+id/lyt_price_format_column_1"
+                layout="@layout/list_item_xlsx" />
+            <include
+                android:id="@+id/lyt_margin_column_1"
+                layout="@layout/list_item_xlsx" />
+
+            <!-- price 2 -->
+            <include
+                android:id="@+id/lyt_fixed_price_column_2"
+                layout="@layout/list_item_xlsx" />
+            <include
+                android:id="@+id/lyt_price_format_column_2"
+                layout="@layout/list_item_xlsx" />
+            <include
+                android:id="@+id/lyt_margin_column_2"
+                layout="@layout/list_item_xlsx" />
+
+            <!-- price 3 -->
+            <include
+                android:id="@+id/lyt_fixed_price_column_3"
+                layout="@layout/list_item_xlsx" />
+            <include
+                android:id="@+id/lyt_price_format_column_3"
+                layout="@layout/list_item_xlsx" />
+            <include
+                android:id="@+id/lyt_margin_column_3"
+                layout="@layout/list_item_xlsx" />
+
+            <include
+                android:id="@+id/lyt_reset_quantity_column"
+                layout="@layout/list_item_xlsx" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_continue"
+        style="@style/ActionButton"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="CONTINUAR" />
+
+</RelativeLayout>

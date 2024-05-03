@@ -1,0 +1,21 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_take_photo"
+        android:title="@string/take_photo"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_open_gallery"
+        android:title="@string/open_gallery"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_remove_photo"
+        android:title="@string/remove_photo"
+        app:showAsAction="never"
+        android:visible="false" />
+
+</menu>

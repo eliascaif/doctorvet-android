@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ScrollView
+        android:id="@+id/scroll_datos_owner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:id="@+id/lista_datos_agenda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/label_pet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Caption"
+                android:text="@string/pet"
+                android:visibility="gone"
+                />
+            <TextView
+                android:id="@+id/txt_pet"
+                style="@style/Base.TextAppearance.AppCompat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/label_event_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Caption"
+                android:text="@string/event_name"/>
+            <TextView
+                android:id="@+id/txt_event_name"
+                style="@style/Base.TextAppearance.AppCompat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+            <TextView
+                android:id="@+id/label_begin_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Caption"
+                android:text="@string/accessibility_pick_start_date"/>
+            <TextView
+                android:id="@+id/txt_begin_time"
+                style="@style/Base.TextAppearance.AppCompat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+            <TextView
+                android:id="@+id/label_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Caption"
+                android:text="@string/accessibility_pick_end_date"
+                android:visibility="gone"
+                />
+            <TextView
+                android:id="@+id/txt_end_time"
+                style="@style/Base.TextAppearance.AppCompat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/label_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Caption"
+                android:text="@string/descripcion"
+                android:visibility="gone"
+                />
+            <TextView
+                android:id="@+id/txt_description"
+                style="@style/Base.TextAppearance.AppCompat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/label_name_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Caption"
+                android:text="@string/name_user"/>
+            <TextView
+                android:id="@+id/txt_name_user"
+                style="@style/Base.TextAppearance.AppCompat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+            <TextView
+                android:id="@+id/label_estado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Caption"
+                android:text="@string/estado"/>
+            <TextView
+                android:id="@+id/txt_estado"
+                style="@style/Base.TextAppearance.AppCompat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+            <CheckBox
+                android:id="@+id/chk_private_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:layout_marginTop="8dp"
+                android:text="Privado"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
