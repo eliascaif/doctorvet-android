@@ -1,0 +1,98 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.xionce.doctorvetServices"
+        minSdkVersion 24
+        targetSdkVersion 33
+        versionCode 46
+        versionName "2.7.35"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    buildTypes {
+        debug {
+            buildConfigField "String", "DOCTOR_VET_BASE_URL", "\"https://test.doctor-vet.app/\""
+            buildConfigField "String", "DOCTORVET_SOCKET_URL", "\"https://test.socket.doctor-vet.app/\""
+            buildConfigField "String", "CAPTCHA_API_KEY", "\"6Le4m7MoAAAAADG3Fubf8Bowvp35BbX5Jwhj74xj\""
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+
+            buildConfigField "String", "DOCTOR_VET_BASE_URL", "\"https://doctor-vet.app/\""
+            buildConfigField "String", "DOCTORVET_SOCKET_URL", "\"https://socket.doctor-vet.app/\""
+            buildConfigField "String", "CAPTCHA_API_KEY", "\"6Le4m7MoAAAAADG3Fubf8Bowvp35BbX5Jwhj74xj\""
+        }
+
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    namespace 'com.xionce.doctorvetServices'
+}
+
+dependencies {
+
+    //por defecto
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0' //temp fix for 1.10.0/1.9.0 navigationView bold text bug
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //testImplementation 'junit:junit:4.13.2'
+    //androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    //androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //Volley
+    implementation 'com.android.volley:volley:1.2.1'
+
+    //GoogleAccounts
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
+
+    //Facebook
+    //implementation 'com.facebook.android:facebook-login:latest.release'
+
+    //JSON to object, object to JSON
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+    //Zxing - Lector codigos barra
+    implementation('me.dm7.barcodescanner:zxing:1.9.13')
+
+    //Compresion de videos
+    implementation 'com.arthenica:ffmpeg-kit-full:4.5.1-1'
+
+    //ProgressBar circular customizable
+    implementation 'com.dinuscxj:circleprogressbar:1.3.0'
+
+    //Apache string utils
+    implementation 'org.apache.commons:commons-lang3:3.11'
+
+    //MaterialRippleLayout
+    implementation 'com.balysv:material-ripple:1.0.2'
+
+    //sockets
+    implementation ('io.socket:socket.io-client:2.1.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+
+    //embedded bar code scanner
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+
+    //reCaptcha
+    implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
+
+}
