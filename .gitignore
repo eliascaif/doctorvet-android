@@ -16,3 +16,5 @@ app/release/baselineProfiles/
 app/release/output-metadata.json
 
 .gitignore
+
+app/release/app-release.aab
