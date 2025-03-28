@@ -16,7 +16,7 @@ public class TokenStringRequest extends StringRequest {
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         HashMap headers = new HashMap();
-        headers.put("Authorization", "Bearer " + DoctorVetApp.get().preferences_getUserToken()); //.get_user_access_token());
+        headers.put("Authorization", "Bearer " + DoctorVetApp.get().preferences_getUserToken());
         return headers;
     }
 }

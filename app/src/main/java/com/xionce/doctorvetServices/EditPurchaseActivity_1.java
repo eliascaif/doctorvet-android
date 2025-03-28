@@ -39,7 +39,6 @@ public class EditPurchaseActivity_1 extends EditBaseActivity {
 
     private static final String TAG = "EditPurchaseActivity_1";
     private TextView txt_total;
-    //private TextView txt_products_details;
     private View list_item_provider;
     private TextInputLayout txtDate;
     private TextInputLayout txtHour;

@@ -16,15 +16,17 @@ public class Product implements Serializable, DoctorVetApp.IResourceObject {
     @Expose
     private Product_unit unit;
     @Expose
+    private BigDecimal quantity;
+    @Expose
     private BigDecimal complex_unit_quantity;
     @Expose
     private String bar_code;
     @Expose
     private String qr_code;
     @Expose
-    private Boolean expires;
+    private Integer expires;
     @Expose
-    private Boolean is_study;
+    private Integer is_study;
     @Expose
     private Integer service_duration;
     @Expose
@@ -66,7 +68,6 @@ public class Product implements Serializable, DoctorVetApp.IResourceObject {
     @Expose
     private Integer photo_deleted;
 
-    private BigDecimal quantity;
     private Boolean is_global;
     private String photo_url;
     private String thumb_url;
@@ -184,16 +185,16 @@ public class Product implements Serializable, DoctorVetApp.IResourceObject {
     public String getBar_code() {
         return bar_code;
     }
-    public Boolean getExpires() {
+    public Integer getExpires() {
         return expires;
     }
-    public void setExpires(Boolean expires) {
+    public void setExpires(Integer expires) {
         this.expires = expires;
     }
-    public Boolean getIs_study() {
+    public Integer getIs_study() {
         return is_study;
     }
-    public void setIs_study(Boolean is_study) {
+    public void setIs_study(Integer is_study) {
         this.is_study = is_study;
     }
     public Boolean getIs_global() {
@@ -276,7 +277,7 @@ public class Product implements Serializable, DoctorVetApp.IResourceObject {
         if (quantity_detail != null) {
             for (Product_qty_detail qd:quantity_detail) {
                 quantityDetail += qd.deposit_name + ": ";
-                quantityDetail += qd.quantity.setScale(2, RoundingMode.HALF_UP).toString() + " " + getUnit().getSecond_unit_string() + " | ";
+                quantityDetail += qd.quantity.setScale(2, RoundingMode.HALF_UP).toString() + " " + getUnit().getSecond_unit_string() + "\r\n"; //" | ";
             }
         }
 
@@ -287,7 +288,7 @@ public class Product implements Serializable, DoctorVetApp.IResourceObject {
         if (quantity_detail_branchs != null) {
             for (Product_qty_detail qd:quantity_detail_branchs) {
                 quantityDetail += qd.deposit_name + ": ";
-                quantityDetail += qd.quantity.setScale(2, RoundingMode.HALF_UP).toString() + " " + getUnit().getSecond_unit_string() + " | ";
+                quantityDetail += qd.quantity.setScale(2, RoundingMode.HALF_UP).toString() + " " + getUnit().getSecond_unit_string() + "\r\n"; //" | ";
             }
         }
 

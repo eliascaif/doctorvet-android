@@ -55,9 +55,9 @@ public class Pet_racesAutocompleteAdapter extends ArrayAdapter<Pet_race> {
 
             String thumb_url = petrace.getThumb_url();
             if (thumb_url != null) {
-                Glide.with(img_thumb.getContext()).load(thumb_url).apply(RequestOptions.circleCropTransform()).apply(RequestOptions.placeholderOf(R.drawable.ic_dog)).into(img_thumb);
+                Glide.with(img_thumb.getContext()).load(thumb_url).apply(RequestOptions.circleCropTransform()).apply(RequestOptions.placeholderOf(R.drawable.ic_pets_light)).into(img_thumb);
             } else {
-                Glide.with(img_thumb.getContext()).load(R.drawable.ic_dog).apply(RequestOptions.circleCropTransform()).into(img_thumb);
+                Glide.with(img_thumb.getContext()).load(R.drawable.ic_pets_light).apply(RequestOptions.circleCropTransform()).into(img_thumb);
             }
         }
 

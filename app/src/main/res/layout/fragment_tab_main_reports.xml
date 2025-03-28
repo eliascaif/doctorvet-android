@@ -40,6 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/txt_info"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
         >
 
         <FrameLayout
@@ -50,7 +51,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/img_go"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="visible"
             >
 
             <!-- from to -->
@@ -168,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="2"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginHorizontal="8dp"
                     app:layout_constraintTop_toBottomOf="@id/linear_from_to"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -181,6 +181,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Total: "
+                        android:layout_marginHorizontal="8dp"
                         />
 
                     <TextView
@@ -189,6 +190,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Balance: "
+                        android:layout_marginHorizontal="8dp"
                         />
 
                 </LinearLayout>
@@ -201,7 +203,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -229,7 +231,7 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <AutoCompleteTextView
-                                android:id="@+id/actv_product"
+                                android:id="@+id/actv_product_traceability"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:completionThreshold="1"
@@ -237,7 +239,6 @@
                                 android:imeOptions="actionNext"
                                 android:inputType="textAutoComplete"
                                 android:maxLength="250"
-                                android:nextFocusForward="@id/txt_dosage"
                                 android:selectAllOnFocus="true" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -278,18 +279,159 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- products -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_products"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:visibility="gone"
+                >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_filter_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorTextAppearance="@style/TextLimitError">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Filtrar productos"
+                        android:maxLength="250"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- sells by products -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_sells_by_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:visibility="gone"
+                >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_product_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    app:errorTextAppearance="@style/TextLimitError"
+                    app:layout_constraintEnd_toStartOf="@+id/img_search_product_2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_product_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:hint="@string/product"
+                        android:imeOptions="actionNext"
+                        android:inputType="textAutoComplete"
+                        android:maxLength="250"
+                        android:selectAllOnFocus="true" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/img_search_product_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/img_search_barcode_2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_search" />
+
+                <ImageView
+                    android:id="@+id/img_search_barcode_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_barcode_scan" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- sells by owners -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_sells_by_owner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:visibility="gone"
+                >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_owner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    app:errorTextAppearance="@style/TextLimitError"
+                    app:layout_constraintEnd_toStartOf="@+id/img_search_owner"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_owner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:hint="@string/owner"
+                        android:imeOptions="actionNext"
+                        android:inputType="textAutoComplete"
+                        android:maxLength="250"
+                        android:selectAllOnFocus="true" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/img_search_owner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_search" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </FrameLayout>
 
         <ImageView
             android:id="@+id/img_go"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/ic_refresh"
+            app:layout_constraintEnd_toStartOf="@id/img_download"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="4dp"
+            android:scaleType="center"
+            />
+
+        <ImageView
+            android:id="@+id/img_download"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_download"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_margin="8dp"
+            android:layout_margin="4dp"
             android:scaleType="center"
+            android:visibility="gone"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -128,7 +128,11 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.txt_subtitle.setText(subTitulo);
         holder.txt_descripcion.setText(text);
 
-        //La edad mostrarla en base a configuracion si o no
+        holder.txt_age.setVisibility(View.GONE);
+        if (clinica.getAge() != null) {
+            holder.txt_age.setText("Edad:" + clinica.getAge());
+            holder.txt_age.setVisibility(View.VISIBLE);
+        }
 
         DoctorVetApp.get().setThumb(clinica.getUser().getThumb_url(), holder.img_image, R.drawable.ic_account_circle_light);
 
@@ -140,6 +144,12 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         Context dateCtx = holder.txt_title.getContext();
         Date fecha_suministro = (Date)supply.getDate_supply();
         holder.txt_subtitle.setText(HelperClass.getDateTimeInLocale(fecha_suministro, dateCtx));
+
+        holder.txt_age.setVisibility(View.GONE);
+        if (supply.getAge() != null) {
+            holder.txt_age.setText("Edad:" + supply.getAge());
+            holder.txt_age.setVisibility(View.VISIBLE);
+        }
 
         holder.txt_product.setText(supply.getProduct().getName());
 
@@ -162,6 +172,12 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.txt_title.setText(titulo);
         holder.txt_subtitle.setText(subTitulo);
 
+        holder.txt_age.setVisibility(View.GONE);
+        if (study.getAge() != null) {
+            holder.txt_age.setText("Edad:" + study.getAge());
+            holder.txt_age.setVisibility(View.VISIBLE);
+        }
+
         holder.txt_name_estudio.setText(study.getProduct().getName());
 
         holder.txt_notes.setText(notes);
@@ -183,45 +199,19 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.txt_title.setText(titulo);
         holder.txt_subtitle.setText(subTitulo);
 
-        DoctorVetApp.get().setThumb(recipe.getUser().getThumb_url(), holder.img_image, R.drawable.ic_account_circle_light);
+        holder.txt_age.setVisibility(View.GONE);
+        if (recipe.getAge() != null) {
+            holder.txt_age.setText("Edad:" + recipe.getAge());
+            holder.txt_age.setVisibility(View.VISIBLE);
+        }
 
-//        if (recipe.getProduct() != null) {
-//            holder.txt_product.setText(recipe.getProduct().getName());
-//        } else {
-//            holder.txt_product.setVisibility(View.GONE);
-//        }
+        DoctorVetApp.get().setThumb(recipe.getUser().getThumb_url(), holder.img_image, R.drawable.ic_account_circle_light);
 
         if (recipe.getTreatment() != null) {
             holder.txt_treatment.setText(recipe.getTreatment().getName());
         } else {
             holder.txt_treatment.setVisibility(View.GONE);
         }
-
-//        String starting_to_ending_date = "";
-//        if (recipe.getStarting_date() != null) {
-//            starting_to_ending_date = android.text.TextUtils.concat("Inicio: ", HelperClass.getDateInLocaleShort(recipe.getStarting_date())).toString();
-//        }
-//        if (recipe.getEnding_date() != null) {
-//            starting_to_ending_date = android.text.TextUtils.concat(starting_to_ending_date, " Fin: ", HelperClass.getDateInLocaleShort(recipe.getEnding_date())).toString();
-//        }
-//        if (starting_to_ending_date.isEmpty()) {
-//            holder.txt_starting_to_ending_date.setVisibility(View.GONE);
-//        } else {
-//            holder.txt_starting_to_ending_date.setText(starting_to_ending_date);
-//        }
-
-//        String dosage_for_x_hours = "";
-//        if (recipe.getDosage() != null) {
-//            dosage_for_x_hours = android.text.TextUtils.concat("Dósis: ", recipe.getDosage()).toString();
-//        }
-//        if (recipe.getEvery_hours() != null) {
-//            dosage_for_x_hours = android.text.TextUtils.concat(dosage_for_x_hours, " cada ", recipe.getEvery_hours().toString(), " horas").toString();
-//        }
-//        if (dosage_for_x_hours.isEmpty()) {
-//            holder.txt_dosage.setVisibility(View.GONE);
-//        } else {
-//            holder.txt_dosage.setText(dosage_for_x_hours);
-//        }
 
         if (recipe.getNotes() != null) {
             holder.txt_notes.setText(recipe.getNotes());
@@ -238,6 +228,12 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         holder.txt_title.setText(titulo);
         holder.txt_subtitle.setText(subTitulo);
+
+        holder.txt_age.setVisibility(View.GONE);
+        if (clinic2.getAge() != null) {
+            holder.txt_age.setText("Edad:" + clinic2.getAge());
+            holder.txt_age.setVisibility(View.VISIBLE);
+        }
 
         String anamnesis = clinic2.getAnamnesis();
         if (anamnesis != null && !anamnesis.isEmpty()) {
@@ -370,6 +366,7 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private final ImageView img_image;
         private final TextView txt_title;
         private final TextView txt_subtitle;
+        private final TextView txt_age;
         private final TextView txt_descripcion;
         private final RecyclerView recyclerView;
 
@@ -377,6 +374,7 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(view);
             txt_title = view.findViewById(R.id.txt_title);
             txt_subtitle = view.findViewById(R.id.txt_subtitle);
+            txt_age = view.findViewById(R.id.txt_age);
             img_image = view.findViewById(R.id.img_thumb);
             txt_descripcion = view.findViewById(R.id.txt_description);
             recyclerView = view.findViewById(R.id.recyclerview);
@@ -414,6 +412,7 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private final ImageView img_image;
         private final TextView txt_title;
         private final TextView txt_subtitle;
+        private final TextView txt_age;
         private final ImageView img_thumb;
         private final TextView txt_product;
 
@@ -421,6 +420,7 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(view);
             txt_title = view.findViewById(R.id.txt_title);
             txt_subtitle = view.findViewById(R.id.txt_subtitle);
+            txt_age = view.findViewById(R.id.txt_age);
             img_image = view.findViewById(R.id.img_thumb);
             img_thumb = view.findViewById(R.id.img_product);
             txt_product = view.findViewById(R.id.txt_name_product);
@@ -451,6 +451,7 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private final ImageView img_image;
         private final TextView txt_title;
         private final TextView txt_subtitle;
+        private final TextView txt_age;
         private final TextView txt_name_estudio;
         private final TextView txt_notes;
         private final RecyclerView recyclerView_study_items;
@@ -460,6 +461,7 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(view);
             txt_title = view.findViewById(R.id.txt_title);
             txt_subtitle = view.findViewById(R.id.txt_subtitle);
+            txt_age = view.findViewById(R.id.txt_age);
             img_image = view.findViewById(R.id.img_thumb);
             txt_name_estudio = view.findViewById(R.id.txt_name_estudio);
             txt_notes = view.findViewById(R.id.txt_notes);
@@ -503,10 +505,8 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private final ImageView img_image;
         private final TextView txt_title;
         private final TextView txt_subtitle;
-//        private final TextView txt_product;
+        private final TextView txt_age;
         private final TextView txt_treatment;
-//        private final TextView txt_dosage;
-//        private final TextView txt_starting_to_ending_date;
         private final TextView txt_notes;
         private final RecyclerView recycler_products;
 
@@ -514,11 +514,9 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(view);
             txt_title = view.findViewById(R.id.txt_title);
             txt_subtitle = view.findViewById(R.id.txt_subtitle);
+            txt_age = view.findViewById(R.id.txt_age);
             img_image = view.findViewById(R.id.img_thumb);
-//            txt_product = view.findViewById(R.id.txt_product);
             txt_treatment = view.findViewById(R.id.txt_treatment);
-//            txt_dosage = view.findViewById(R.id.txt_dosage);
-            //txt_starting_to_ending_date = view.findViewById(R.id.txt_starting_to_ending_date);
             txt_notes = view.findViewById(R.id.txt_notes);
 
             recycler_products = view.findViewById(R.id.recycler_products);
@@ -555,6 +553,7 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private final ImageView img_image;
         private final TextView txt_title;
         private final TextView txt_subtitle;
+        private final TextView txt_age;
         private final TextView label_anamnesis;
         private final TextView txtAnamnesis;
         private final TextView label_temp;
@@ -589,6 +588,7 @@ public class Pet_clinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(view);
             txt_title = view.findViewById(R.id.txt_title);
             txt_subtitle = view.findViewById(R.id.txt_subtitle);
+            txt_age = view.findViewById(R.id.txt_age);
             img_image = view.findViewById(R.id.img_thumb);
             label_anamnesis = view.findViewById(R.id.label_anamnesis);
             txtAnamnesis = view.findViewById(R.id.txt_anamnesis);

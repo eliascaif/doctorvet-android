@@ -19,7 +19,7 @@ import com.xionce.doctorvetServices.utilities.TokenStringRequest;
 
 import java.net.URL;
 
-public class ViewManufacturerActivity extends ViewBaseActivity implements BottomSheetDialog.BottomSheetListener {
+public class ViewManufacturerActivity extends ViewBaseActivity implements BottomSheetDialog.BottomSheetListener2 {
 
     private static final String TAG = "ViewManufacturerActivit";
     private Product_manufacturer productmanufacturer = null;
@@ -32,11 +32,8 @@ public class ViewManufacturerActivity extends ViewBaseActivity implements Bottom
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                b.putString("manufacturer_specific", "true");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewManufacturerActivity.this, "ViewManufacturerActivity");
+                bottomSheetDialog.show(getSupportFragmentManager(), null);
             }
         });
 
@@ -134,7 +131,7 @@ public class ViewManufacturerActivity extends ViewBaseActivity implements Bottom
     @Override
     protected void invisibilizeEmptyViews() {
         LinearLayout linear = findViewById(R.id.lista_datos_fabricante);
-        DoctorVetApp.invisibilizeEmptyTextView(linear);
+        DoctorVetApp.setTextViewVisibility(linear);
     }
 
     private Integer getIdManufacturer() {
@@ -142,7 +139,7 @@ public class ViewManufacturerActivity extends ViewBaseActivity implements Bottom
     }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         if (!loadedFinished) {
             Snackbar.make(DoctorVetApp.getRootForSnack(this), R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
             return;

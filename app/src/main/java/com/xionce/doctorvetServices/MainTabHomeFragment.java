@@ -1,7 +1,5 @@
 package com.xionce.doctorvetServices;
 
-import static com.xionce.doctorvetServices.utilities.NetworkUtils.DOCTOR_VET_BASE_URL;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,8 +15,6 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.reflect.TypeToken;
@@ -35,7 +31,7 @@ import java.util.List;
 
 public class MainTabHomeFragment extends FragmentBase {
 
-    private static final String TAG = "MainTabInicioFragment";
+    private static final String TAG = "MainTabHomeFragment";
     private View rootView;
 
     private MainActivity getMainActivity() {
@@ -434,6 +430,18 @@ public class MainTabHomeFragment extends FragmentBase {
                 });
                 container.addView(view);
                 break;
+            case LIFE_EXPECTANCY:
+                Glide.with(img_thumb).load(R.drawable.pets).apply(RequestOptions.fitCenterTransform()).into(img_thumb);
+                txt_notificacion.setText("Espectativa de vida superada");
+                cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getMainActivity().set_view_pager_current_item(MainActivity.TAB_NAV_PANELS.REPORTS);
+                        getMainActivity().getMainTabReportsFragment().setReport(DoctorVetApp.reports.LIFE_EXPECTANCY);
+                    }
+                });
+                container.addView(view);
+                break;
             case WAITING_ROOM:
                 Glide.with(img_thumb).load(R.drawable.ic_hourglass).apply(RequestOptions.fitCenterTransform()).into(img_thumb);
                 txt_notificacion.setText(getString(R.string.waiting_room));
@@ -510,7 +518,7 @@ public class MainTabHomeFragment extends FragmentBase {
                 break;
             case PAYMENT_RECEIVED:
                 Glide.with(img_thumb).load(R.drawable.ic_creditors_tolerance).apply(RequestOptions.fitCenterTransform()).into(img_thumb);
-                txt_notificacion.setText("Pago recibido, gracias por suscribirte a Doctor Vet");
+                txt_notificacion.setText("Pago recibido ¡Gracias por suscribirte a Doctor Vet!");
                 container.addView(view);
                 break;
         }

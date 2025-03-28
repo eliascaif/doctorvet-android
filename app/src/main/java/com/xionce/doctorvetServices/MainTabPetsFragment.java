@@ -8,9 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,7 +35,9 @@ import com.xionce.doctorvetServices.utilities.MySqlGson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -84,7 +89,7 @@ public class MainTabPetsFragment extends FragmentBase {
         txtAllUsersSwitch = root_view.findViewById(R.id.txt_all_users_switch);
         txtAgendaAllUsersSwitch = root_view.findViewById(R.id.txt_agenda_all_users_switch);
 
-        LinearLayoutCompat waitingRoomLinearLayout = root_view.findViewById(R.id.linear_waiting_rooms);
+        //LinearLayoutCompat waitingRoomLinearLayout = root_view.findViewById(R.id.linear_waiting_rooms);
 
         recyclerViewWaitingRoom = root_view.findViewById(R.id.recycler_waiting_room);
         waitingRoomLayoutManager = new LinearLayoutManager(getActivity());
@@ -256,6 +261,12 @@ public class MainTabPetsFragment extends FragmentBase {
                 checkAgenda((Agenda) data);
             }
         });
+        inAgendaAdapter.setOnRescheduleClickHandler(new HelperClass.AdapterOnClickHandler() {
+            @Override
+            public void onClick(Object data, View view, int pos) {
+                rescheduleAgenda((Agenda) data);
+            }
+        });
         txtAgendaAllUsersSwitch.setTag(AgendaAdapter.AgendaUsersType.ALL_USERS);
         txtAgendaAllUsersSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -361,7 +372,7 @@ public class MainTabPetsFragment extends FragmentBase {
 
     private void checkAgenda(Agenda agenda_event) {
         if (agenda_event.getExecuted() == 1) {
-            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "La cita/tarea ya está realizada", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Agenda ya realizada", Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -382,6 +393,55 @@ public class MainTabPetsFragment extends FragmentBase {
                 });
             }
         });
+    }
+    private void rescheduleAgenda(Agenda agenda_event) {
+        if (agenda_event.getExecuted() == 1) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Agenda ya realizada", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Crear el diálogo
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // Inflar el diseño personalizado
+        final LinearLayout linear = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_date_picker, null);
+        final DatePicker datePicker = linear.findViewById(R.id.date_picker);
+
+        builder
+                .setView(linear)
+                .setTitle("Reagendar para")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showWaitDialog();
+
+                        Calendar selectedDate = Calendar.getInstance();
+                        selectedDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), agenda_event.getBegin_time().getHours(), agenda_event.getBegin_time().getMinutes(), 0);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String formattedDate = dateFormat.format(selectedDate.getTime());
+
+                        DoctorVetApp.get().rescheduleAgenda(agenda_event.getId(), formattedDate, new DoctorVetApp.VolleyCallback() {
+                            @Override
+                            public void onSuccess(Boolean result) {
+                                hideWaitDialog();
+                                if (result) {
+                                    deleteInAgendaFromSocket(agenda_event);
+                                } else {
+                                    Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), getString(R.string.err_action), Snackbar.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        // Mostrar el diálogo
+        builder.create().show();
     }
     private void checkWaitingRooms(Waiting_room waitingRoom) {
         HelperClass.getOKCancelDialog(getContext(), getString(R.string.action_check_agenda), new DialogInterface.OnClickListener() {
@@ -449,11 +509,15 @@ public class MainTabPetsFragment extends FragmentBase {
                             }
                         } else if (table_name.equalsIgnoreCase("agenda")) {
                             Agenda agenda = MySqlGson.getGson().fromJson(incomingData.getString("data"), Agenda.class);
-                            if (operation.equalsIgnoreCase("created")) {
-                                insertInAgendaFromSocket(agenda);
-                            } else if (operation.equalsIgnoreCase("deleted")) {
-                                deleteInAgendaFromSocket(agenda);
+
+                            if (agenda.getPet() != null) {
+                                if (operation.equalsIgnoreCase("created")) {
+                                    insertInAgendaFromSocket(agenda);
+                                } else if (operation.equalsIgnoreCase("deleted")) {
+                                    deleteInAgendaFromSocket(agenda);
+                                }
                             }
+
                         } else if (table_name.equalsIgnoreCase("pets_recent")) {
                             refreshLastMovementsFromSocket();
 //                            Pet pet = MySqlGson.getGson().fromJson(incomingData.getJSONObject("data").getString("pet"), Pet.class);

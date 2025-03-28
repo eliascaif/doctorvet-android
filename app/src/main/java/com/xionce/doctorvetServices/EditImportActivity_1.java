@@ -52,86 +52,6 @@ public class EditImportActivity_1 extends EditBaseActivity {
                 selectXlxs();
             }
         });
-
-//        Button btn_continue = findViewById(R.id.btn_continue);
-//        btn_continue.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                next();
-//            }
-//        });
-
-    }
-
-    private void next() {
-        if (uploading) {
-            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Please wait while uploading file", Snackbar.LENGTH_LONG).show();
-            return;
-        }
-
-        if (xlsx_identifier == null) {
-            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Selecciona archivo xlsx", Snackbar.LENGTH_LONG).show();
-            return;
-        }
-
-        Intent intent = new Intent(EditImportActivity_1.this, EditImportActivity_2.class);
-        intent.putExtra("xlsx_identifier", xlsx_identifier.getFile_identifier());
-        startActivityForResult(intent, 1);
-    }
-
-    private void upload_xlsx(Upload_file xlsx) {
-        if (xlsx == null) {
-            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Selecciona archivo xlsx", Snackbar.LENGTH_LONG).show();
-            return;
-        }
-
-        try {
-            showWaitDialog();
-            uploading = true;
-            String file_json_object = MySqlGson.getGson().toJson(xlsx);
-            URL xlsxEndPoint = NetworkUtils.buildGetXlsx1Url();
-            TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.POST, xlsxEndPoint.toString(), new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        String data = MySqlGson.getDataFromResponse(response).toString();
-                        xlsx_identifier = MySqlGson.getGson().fromJson(data, Xlsx_identifier.class);
-                        Snackbar.make(DoctorVetApp.getRootForSnack(EditImportActivity_1.this), "upload complete", Snackbar.LENGTH_LONG).show();
-                        uploading = false;
-                        next();
-                    } catch (Exception ex) {
-                        DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
-                    } finally {
-                        hideWaitDialog();
-                        uploading = false;
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    DoctorVetApp.get().handle_volley_error(error, TAG, true);
-                    hideWaitDialog();
-                    uploading = false;
-                }
-            })
-            {
-                @Override
-                public byte[] getBody() {
-                    return file_json_object.getBytes();
-                }
-            };
-            DoctorVetApp.get().addToRequestQueque(stringRequest);
-        } catch (Exception e) {
-            DoctorVetApp.get().handle_error(e, TAG, true);
-        }
-    }
-
-    private void selectXlxs() {
-        Intent intent = new Intent();
-        //intent.setType("application/excel");
-        intent.setType("application/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, REQUEST_CREATE);
     }
 
     @Override
@@ -224,6 +144,75 @@ public class EditImportActivity_1 extends EditBaseActivity {
     @Override
     protected void restoreFromBundle(Bundle savedInstanceState) {
 
+    }
+
+    private void next() {
+        if (uploading) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Please wait while uploading file", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        if (xlsx_identifier == null) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Selecciona archivo xlsx", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent intent = new Intent(EditImportActivity_1.this, EditImportActivity_2.class);
+        intent.putExtra("xlsx_identifier", xlsx_identifier.getFile_identifier());
+        startActivityForResult(intent, 1);
+    }
+    private void upload_xlsx(Upload_file xlsx) {
+        if (xlsx == null) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Selecciona archivo xlsx", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        try {
+            showWaitDialog();
+            uploading = true;
+            String file_json_object = MySqlGson.getGson().toJson(xlsx);
+            URL xlsxEndPoint = NetworkUtils.buildGetXlsx1Url();
+            TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.POST, xlsxEndPoint.toString(), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        String data = MySqlGson.getDataFromResponse(response).toString();
+                        xlsx_identifier = MySqlGson.getGson().fromJson(data, Xlsx_identifier.class);
+                        Snackbar.make(DoctorVetApp.getRootForSnack(EditImportActivity_1.this), "upload complete", Snackbar.LENGTH_LONG).show();
+                        uploading = false;
+                        next();
+                    } catch (Exception ex) {
+                        DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
+                    } finally {
+                        hideWaitDialog();
+                        uploading = false;
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    DoctorVetApp.get().handle_volley_error(error, TAG, true);
+                    hideWaitDialog();
+                    uploading = false;
+                }
+            })
+            {
+                @Override
+                public byte[] getBody() {
+                    return file_json_object.getBytes();
+                }
+            };
+            DoctorVetApp.get().addToRequestQueque(stringRequest);
+        } catch (Exception e) {
+            DoctorVetApp.get().handle_error(e, TAG, true);
+        }
+    }
+    private void selectXlxs() {
+        Intent intent = new Intent();
+        //intent.setType("application/excel");
+        intent.setType("application/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, REQUEST_CREATE);
     }
 
 }

@@ -88,7 +88,7 @@ public class SearchUserActivity extends SearchActivityBase implements HelperClas
         if (intent.getBooleanExtra(DoctorVetApp.INTENT_SEARCH_VIEW, false)) {
             Intent activity = new Intent(SearchUserActivity.this, ViewUserActivity.class);
             activity.putExtra(DoctorVetApp.INTENT_VALUES.USER_ID.name(), user.getId());
-            activity.putExtra(DoctorVetApp.INTENT_UPDATE_LAST_VIEW, 1);
+            //activity.putExtra(DoctorVetApp.INTENT_UPDATE_LAST_VIEW, 1);
             startActivity(activity);
         } else if (intent.getBooleanExtra(DoctorVetApp.INTENT_SEARCH_RETURN, false)) {
             Intent dataBackIntent = getIntent();

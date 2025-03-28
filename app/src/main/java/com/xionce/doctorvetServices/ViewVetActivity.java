@@ -22,7 +22,7 @@ import com.xionce.doctorvetServices.utilities.TokenStringRequest;
 import java.net.URL;
 
 public class ViewVetActivity extends ViewBaseActivity
-        implements BottomSheetDialog.BottomSheetListener {
+        implements BottomSheetDialog.BottomSheetListener2 {
 
     private static final String TAG = "ViewVetActivity";
     private Vet vet = null;
@@ -35,17 +35,13 @@ public class ViewVetActivity extends ViewBaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                if (DoctorVetApp.get().userIsAdmin()) b.putString("veterinaria_especifico", "true");
-                b.putString("communication_specific", "true");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewVetActivity.this, "ViewVetActivity");
+                bottomSheetDialog.show(getSupportFragmentManager(), null);
             }
         });
 
-        TextView txt_subscription_exp = findViewById(R.id.txt_about_subscription_exp);
-        txt_subscription_exp.setText("Si tu suscripción está vencida, no te preocupes, Doctor Vet funcionará normalmente y podrás acceder a todos los datos almacenados. La app no se bloquea. Con suscripción vencida no puedes ingresar información nueva, como nuevos " + DoctorVetApp.get().getPetNamingPlural().toLowerCase() + " o nuevos " + DoctorVetApp.get().getOwnerNamingPlural().toLowerCase() + ".");
+//        TextView txt_subscription_exp = findViewById(R.id.txt_about_subscription_exp);
+//        txt_subscription_exp.setText("Si tu suscripción está vencida, no te preocupes, Doctor Vet funcionará normalmente y podrás acceder a todos los datos almacenados. Con suscripción vencida no puedes ingresar información nueva, como nuevos " + DoctorVetApp.get().getPetNamingPlural().toLowerCase() + " o nuevos " + DoctorVetApp.get().getOwnerNamingPlural().toLowerCase() + ".");
 
         hideActivityContainer();
         setSwipeRefreshLayout();
@@ -123,20 +119,20 @@ public class ViewVetActivity extends ViewBaseActivity
         toolbar_subtitle.setText(vet.getEmail());
 
         DoctorVetApp.ObjectToTextView(findViewById(R.id.linear_vet_data), vet, "txt_");
-        TextView txt_subscription_until = findViewById(R.id.txt_subscription_until);
-        txt_subscription_until.setText(HelperClass.getShortDate_inStr(vet.getSubscription_until(), ViewVetActivity.this));
+//        TextView txt_subscription_until = findViewById(R.id.txt_subscription_until);
+//        txt_subscription_until.setText(HelperClass.getShortDate_inStr(vet.getSubscription_until(), ViewVetActivity.this));
 
         Glide.with(getApplicationContext()).load(R.drawable.ic_store_holo_dark).apply(RequestOptions.fitCenterTransform()).into(toolbar_image);
         super.setPhoto(vet.getThumb_url(), vet.getPhoto_url());
 
-        findViewById(R.id.btn_extend_subscription).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = NetworkUtils.buildGetExtendSuscriptionUrl(getIdVeterinaria(), vet.getRegion().getCountry());
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(browserIntent);
-            }
-        });
+//        findViewById(R.id.btn_extend_subscription).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Uri uri = NetworkUtils.buildGetExtendSuscriptionUrl(getIdVeterinaria(), vet.getRegion().getCountry());
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
+//                startActivity(browserIntent);
+//            }
+//        });
 
         invisibilizeEmptyViews();
     }
@@ -144,7 +140,7 @@ public class ViewVetActivity extends ViewBaseActivity
     @Override
     protected void invisibilizeEmptyViews() {
         LinearLayout linearVets = findViewById(R.id.linear_vet_data);
-        DoctorVetApp.invisibilizeEmptyTextView(linearVets);
+        DoctorVetApp.setTextViewVisibility(linearVets);
     }
 
     private Integer getIdVeterinaria() {
@@ -152,7 +148,7 @@ public class ViewVetActivity extends ViewBaseActivity
     }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         if (!loadedFinished) {
             Snackbar.make(DoctorVetApp.getRootForSnack(this), R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
             return;
@@ -182,6 +178,10 @@ public class ViewVetActivity extends ViewBaseActivity
             case VET_DEPOSITS:
                 Intent intent_deposits = new Intent(this, ViewVetDepositsActivity.class);
                 startActivity(intent_deposits);
+                break;
+            case VET_ELECTRONIC_INVOICING:
+                Intent intent_electronic_invoicing = new Intent(this, EditElectronicInvoicing.class);
+                startActivity(intent_electronic_invoicing);
                 break;
             case COMUNICATION_CALL:
                 sendCall(vet.getPhone());

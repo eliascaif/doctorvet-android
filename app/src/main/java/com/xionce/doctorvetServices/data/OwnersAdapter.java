@@ -141,7 +141,8 @@ public class OwnersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         //ultima visita
         DoctorVetApp.get().setLastVisit(owner.getLast_visit(), holder.txt_last_visit);
 
-        holder.txt_reason.setText(DoctorVetApp.get().reasonToString(owner.getReason()));
+        //holder.txt_reason.setText(DoctorVetApp.get().reasonToString(owner.getReason()));
+        holder.txt_reason.setText(owner.getReason_es());
 
         if (DoctorVetApp.get().getVet().getMultiuser() > 1 && owner.getUser() != null) {
             holder.txt_user.setVisibility(View.VISIBLE);
@@ -228,7 +229,8 @@ public class OwnersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         //ultima visita
         DoctorVetApp.get().setLastVisit(owner.getLast_visit(), holder.txt_last_visit);
 
-        holder.txt_reason.setText(DoctorVetApp.get().reasonToString(owner.getReason()));
+        //holder.txt_reason.setText(DoctorVetApp.get().reasonToString(owner.getReason()));
+        holder.txt_reason.setText(owner.getReason_es());
 
         if (DoctorVetApp.get().getVet().getMultiuser() > 1 && owner.getUser() != null) {
             holder.txt_user.setVisibility(View.VISIBLE);
@@ -245,7 +247,7 @@ public class OwnersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 txt_name_pet.setText(pet.getName());
 
                 ImageView image_pet = mascota_min.findViewById(R.id.img_thumb);
-                DoctorVetApp.get().setThumb(pet.getThumb_url(), image_pet, R.drawable.ic_dog);
+                DoctorVetApp.get().setThumb(pet.getThumb_url(), image_pet, R.drawable.ic_pets_light);
 
                 holder.linear_pets.addView(mascota_min);
                 mascota_min.setOnClickListener(new OnClickListener() {

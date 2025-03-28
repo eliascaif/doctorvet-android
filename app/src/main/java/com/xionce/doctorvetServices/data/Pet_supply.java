@@ -14,8 +14,12 @@ public class Pet_supply implements Cloneable {
     private Date date_supply;
     @Expose
     private Product product;
-
+    @Expose
     private Pet pet;
+    @Expose
+    private Integer planning_activity_new;
+
+    private String age;
     private User user;
     private Vet vet;
 
@@ -66,6 +70,15 @@ public class Pet_supply implements Cloneable {
     }
     public Vet getVet() {
         return vet;
+    }
+    public String getAge() {
+        return age;
+    }
+    public Integer getPlanning_activity_new() {
+        return planning_activity_new;
+    }
+    public void setPlanning_activity_new(Integer planning_activity_new) {
+        this.planning_activity_new = planning_activity_new;
     }
 
     public Object clone() {

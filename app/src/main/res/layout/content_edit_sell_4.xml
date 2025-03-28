@@ -1,58 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".EditSellActivity_4">
 
-    <TextView
-        android:id="@+id/txt_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="La venta se registró con éxito"
-        android:textSize="22sp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/linear_actions"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_title">
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_end">
 
-        <Button
-            android:id="@+id/btn_show_receipt"
+        <LinearLayout
+            android:id="@+id/lista"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/bottom_buttom_height"
-            android:text="Ver comprobante" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp">
 
-        <Button
-            android:id="@+id/btn_close"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/bottom_buttom_height"
-            android:text="Cerrar" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Revisa que este todo bien"
+                android:textSize="20sp"
+                android:visibility="gone"
+                />
 
-<!--        <Button-->
-<!--            android:id="@+id/btn_show_receipt"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Ver comprobante" />-->
+            <include
+                android:id="@+id/sell_to_owner"
+                layout="@layout/pet_and_owner_selector" />
 
-<!--        <Button-->
-<!--            android:id="@+id/btn_show_receipt"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Ver comprobante" />-->
+            <TextView
+                android:id="@+id/txt_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:text="Total: "
+                android:textAlignment="center"
+                android:textSize="24sp" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <TextView
+                android:id="@+id/txt_balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Deuda: "
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:visibility="gone"
+                />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dadada" />
 
+            <TextView
+                android:id="@+id/txt_deposit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:text="Almacen: "
+                android:visibility="gone"
+                />
+            <TextView
+                android:id="@+id/txt_sell_point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:text="Emite: "
+                android:visibility="gone"
+                />
 
+            <TextView
+                android:id="@+id/txt_payments_caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:text="Pagos"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_payments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dadada" />
+
+            <TextView
+                android:id="@+id/txt_products_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_products"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dadada" />
+
+            <TextView
+                android:id="@+id/txt_supply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:text="Suministro nuevo y/o modificado por la venta"
+                android:visibility="gone"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_supply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btn_end"
+        style="@style/ActionButton"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="FINALIZAR" />
+
+</RelativeLayout>

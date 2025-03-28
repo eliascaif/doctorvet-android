@@ -24,6 +24,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private HelperClass.AdapterOnClickHandler upgradeClickHandler;
     private HelperClass.AdapterOnClickHandler downgradeClickHandler;
     private HelperClass.AdapterOnClickHandler removeClickHandler;
+    private HelperClass.AdapterOnClickHandler editClickHandler;
 
     public UsersAdapter(ArrayList<User> users, Adapter_types type) {
         this.users = users;
@@ -97,6 +98,21 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         });
 
+        holder.img_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (editClickHandler != null) {
+                    editClickHandler.onClick(user, holder.img_edit, position);
+                }
+            }
+        });
+
+        if (user.getRol().equalsIgnoreCase("owner")) {
+            holder.img_upgrade.setVisibility(View.GONE);
+            holder.img_downgrade.setVisibility(View.GONE);
+            holder.img_remove.setVisibility(View.GONE);
+            holder.img_edit.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -115,6 +131,9 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
     public void setOnRemoveClickHandler(HelperClass.AdapterOnClickHandler clickHandler) {
         this.removeClickHandler = clickHandler;
+    }
+    public void setOnEditClickHandler(HelperClass.AdapterOnClickHandler clickHandler) {
+        this.editClickHandler = clickHandler;
     }
 
     public ArrayAdapter<String> getArrayAdapter(Context ctx) {
@@ -162,6 +181,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private final ImageView img_upgrade;
         private final ImageView img_downgrade;
         private final ImageView img_remove;
+        private final ImageView img_edit;
 
         public PromoteViewHolder(View view) {
             super(view);
@@ -172,6 +192,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             img_upgrade = view.findViewById(R.id.img_upgrade);
             img_downgrade = view.findViewById(R.id.img_downgrade);
             img_remove = view.findViewById(R.id.img_delete);
+            img_edit = view.findViewById(R.id.img_edit);
         }
     }
 }

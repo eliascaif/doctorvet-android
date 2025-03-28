@@ -178,25 +178,25 @@ public class EditPetActivity extends EditBaseActivity {
             }
         });
 
-        ImageView searchCaracter = findViewById(R.id.img_search_character);
-        searchCaracter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(EditPetActivity.this, SearchPetCharacterActivity.class);
-                intent.putExtra(DoctorVetApp.REQUEST_SEARCH_FOR, DoctorVetApp.INTENT_VALUES.PET_CHARACTER_OBJ.name());
-                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
-            }
-        });
+//        ImageView searchCaracter = findViewById(R.id.img_search_character);
+//        searchCaracter.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(EditPetActivity.this, SearchPetCharacterActivity.class);
+//                intent.putExtra(DoctorVetApp.REQUEST_SEARCH_FOR, DoctorVetApp.INTENT_VALUES.PET_CHARACTER_OBJ.name());
+//                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
+//            }
+//        });
 
-        ImageView searchSex = findViewById(R.id.img_search_gender);
-        searchSex.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(EditPetActivity.this, SearchPetGenderActivity.class);
-                intent.putExtra(DoctorVetApp.REQUEST_SEARCH_FOR, DoctorVetApp.INTENT_VALUES.PET_GENDER_OBJ.name());
-                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
-            }
-        });
+//        ImageView searchSex = findViewById(R.id.img_search_gender);
+//        searchSex.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(EditPetActivity.this, SearchPetGenderActivity.class);
+//                intent.putExtra(DoctorVetApp.REQUEST_SEARCH_FOR, DoctorVetApp.INTENT_VALUES.PET_GENDER_OBJ.name());
+//                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
+//            }
+//        });
 
         ImageView dateSearch = findViewById(R.id.img_search_date);
         dateSearch.setOnClickListener(new View.OnClickListener() {
@@ -288,7 +288,7 @@ public class EditPetActivity extends EditBaseActivity {
                 getObject().setPelage(petpelage);
                 txtPelage.getEditText().setText(petpelage.getName());
                 DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtGender);
-            } else if (searchFor.equals(DoctorVetApp.INTENT_VALUES.PET_CHARACTER_OBJ.name())) {
+            }/* else if (searchFor.equals(DoctorVetApp.INTENT_VALUES.PET_CHARACTER_OBJ.name())) {
                 Pet_character petcharacter = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.PET_CHARACTER_OBJ.name()), Pet_character.class);
                 getObject().setCharacter(petcharacter);
                 txtCharacter.getEditText().setText(petcharacter.getName());
@@ -298,7 +298,7 @@ public class EditPetActivity extends EditBaseActivity {
                 getObject().setGender(petgender);
                 txtGender.getEditText().setText(petgender.getName());
                 DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtCharacter);
-            }
+            }*/
         }
 
         //creacion de propietarios

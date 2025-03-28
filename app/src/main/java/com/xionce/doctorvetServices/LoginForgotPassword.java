@@ -70,7 +70,7 @@ public class LoginForgotPassword extends AppCompatActivity {
                                 Snackbar.make(rootCoodinatorLayout, "No es posible resetear contraseña", Snackbar.LENGTH_LONG).show();
                             }
                         } catch (Exception ex) {
-                            DoctorVetApp.get().handle_error(ex, /*LoginForgotPassword.this,*/ TAG, true);
+                            DoctorVetApp.get().handle_error(ex, TAG, true);
                         } finally {
                             pb_loading_indicator.setVisibility(View.INVISIBLE);
                             mOverlayDialog.dismiss();
@@ -81,7 +81,7 @@ public class LoginForgotPassword extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         pb_loading_indicator.setVisibility(View.INVISIBLE);
                         mOverlayDialog.dismiss();
-                        DoctorVetApp.get().handle_volley_error(error, /*LoginForgotPassword.this,*/ "LoginForgotPassword", true);
+                        DoctorVetApp.get().handle_volley_error(error, "LoginForgotPassword", true);
                     }
                 })
                 {

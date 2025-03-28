@@ -45,6 +45,20 @@ public class Vet implements DoctorVetApp.IResourceObject {
     private ArrayList<Resource> resources;
     @Expose
     private Integer email_messaging;
+    @Expose
+    private Integer sells_save_p1;
+    @Expose
+    private Integer sells_planning_activity;
+    @Expose
+    private Integer sells_accept_suggested;
+    @Expose
+    private Integer sells_lock_price;
+    @Expose
+    private Vet_point default_sell_point;
+    @Expose
+    private String fiscal_id;
+    @Expose
+    private Finance_types_fiscal fiscal_type;
 
     private String photo_url;
     private String thumb_url;
@@ -66,10 +80,14 @@ public class Vet implements DoctorVetApp.IResourceObject {
     }
 
     public Vet Init() {
-        hour_format = "24_HS";
-        mobile_services = 0;
         owner_naming = DoctorVetApp.Owners_naming.OWNER;
         pet_naming = DoctorVetApp.Pets_naming.PATIENT;
+        hour_format = "24_HS";
+        mobile_services = 0;
+        email_messaging = 1;
+        sells_save_p1 = 0;
+        sells_planning_activity = 1;
+        sells_accept_suggested = 1;
         return this;
     }
 
@@ -196,13 +214,53 @@ public class Vet implements DoctorVetApp.IResourceObject {
     public void setSubscription_until(Date subscription_until) {
         this.subscription_until = subscription_until;
     }
-
     public Integer getEmail_messaging() {
         return email_messaging;
     }
-
     public void setEmail_messaging(Integer email_messaging) {
         this.email_messaging = email_messaging;
+    }
+    public Integer getSells_save_p1() {
+        return sells_save_p1;
+    }
+    public void setSells_save_p1(Integer sells_save_p1) {
+        this.sells_save_p1 = sells_save_p1;
+    }
+    public Integer getSells_planning_activity() {
+        return sells_planning_activity;
+    }
+    public void setSells_planning_activity(Integer sells_planning_activity) {
+        this.sells_planning_activity = sells_planning_activity;
+    }
+    public Integer getSells_accept_suggested() {
+        return sells_accept_suggested;
+    }
+    public void setSells_accept_suggested(Integer sells_accept_suggested) {
+        this.sells_accept_suggested = sells_accept_suggested;
+    }
+    public Integer getSells_lock_price() {
+        return sells_lock_price;
+    }
+    public void setSells_lock_price(Integer sells_lock_price) {
+        this.sells_lock_price = sells_lock_price;
+    }
+    public String getFiscal_id() {
+        return fiscal_id;
+    }
+    public void setFiscal_id(String fiscal_id) {
+        this.fiscal_id = fiscal_id;
+    }
+    public Vet_point getDefault_sell_point() {
+        return default_sell_point;
+    }
+    public void setDefault_sell_point(Vet_point default_sell_point) {
+        this.default_sell_point = default_sell_point;
+    }
+    public Finance_types_fiscal getFiscal_type() {
+        return fiscal_type;
+    }
+    public void setFiscal_type(Finance_types_fiscal finance_types_fiscal) {
+        this.fiscal_type = finance_types_fiscal;
     }
 
     @Override

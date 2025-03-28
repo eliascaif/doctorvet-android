@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,7 +64,7 @@ public class PetsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private void bindExtended(Pet pet, ExtendedPetsHolder holder, int position) {
-        DoctorVetApp.get().setThumb(pet.getThumb_url(), holder.img_thumb, R.drawable.ic_dog);
+        DoctorVetApp.get().setThumb(pet.getThumb_url(), holder.img_thumb, R.drawable.ic_pets_light);
 
         holder.txt_name.setText(pet.getName());
 
@@ -73,7 +74,8 @@ public class PetsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //DoctorVetApp.getInstance().fillOwnersInLinear(ctx, pet.getOwners(), holder.linear_owners);
         holder.txt_owners.setText("De: " + pet.getOwnersNames());
 
-        holder.txt_reason.setText(DoctorVetApp.get().reasonToString(pet.getReason()));
+        //holder.txt_reason.setText(DoctorVetApp.get().reasonToString(pet.getReason()));
+        holder.txt_reason.setText(pet.getReason_es());
 
         if (DoctorVetApp.get().getVet().getMultiuser() > 1 && pet.getUser() != null) {
             holder.txt_user.setVisibility(View.VISIBLE);
@@ -87,7 +89,7 @@ public class PetsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void bindSearch(Pet pet, SearchPetsAdapterViewHolder holder/*, int position*/) {
         holder.txt_name.setText(pet.getName());
         holder.txt_owners.setText("De: " + pet.getOwnersNames());
-        DoctorVetApp.get().setThumb(pet.getThumb_url(), holder.img_thumb, R.drawable.ic_dog);
+        DoctorVetApp.get().setThumb(pet.getThumb_url(), holder.img_thumb, R.drawable.ic_pets_light);
     }
 
     @Override
@@ -188,6 +190,11 @@ public class PetsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void addItems(ArrayList<Pet> items) {
         pets.addAll(items);
         notifyDataSetChanged();
+    }
+
+    public ArrayAdapter<Pet> getArrayAdapter(Context ctx) {
+        ArrayAdapter<Pet> arrayAdapter = new ArrayAdapter<Pet>(ctx, android.R.layout.simple_dropdown_item_1line, pets);
+        return arrayAdapter;
     }
 
     public class ExtendedPetsHolder extends RecyclerView.ViewHolder implements OnClickListener {

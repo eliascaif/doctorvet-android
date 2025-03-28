@@ -27,7 +27,7 @@ public class ViewOwnerDebtsActivity extends ViewBaseActivity {
         recyclerView.setHasFixedSize(true);
 
         toolbar_title.setText("Ventas con saldo impago");
-        toolbar_subtitle.setText(/*"Propietario: " +*/ getOwnerName());
+        toolbar_subtitle.setText(getOwnerName());
         hideToolbarImage();
         hideFab();
 

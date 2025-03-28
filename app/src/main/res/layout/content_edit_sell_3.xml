@@ -6,119 +6,180 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".EditSellActivity_2">
+    tools:context=".EditSellActivity_3">
 
-    <LinearLayout
-        android:id="@+id/lista"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_end"
-        android:layout_marginBottom="4dp"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="8dp"
-        android:paddingRight="16dp">
+        android:layout_above="@id/btn_continue"
+        >
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/lista"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Revisa que este todo bien"
-            android:textSize="20sp"
-            android:visibility="gone"
-            />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp">
 
-        <include
-            android:id="@+id/sell_to_owner"
-            layout="@layout/pet_and_owner_selector" />
+            <TextView
+                android:id="@+id/label_pet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pet"
+                android:layout_marginStart="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                />
 
-        <TextView
-            android:id="@+id/txt_total"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="Total: "
-            android:textAlignment="center"
-            android:textSize="24sp" />
+            <!-- pet -->
+            <Spinner
+                android:id="@+id/spinner_pets"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                />
 
-        <TextView
-            android:id="@+id/txt_balance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Deuda: "
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:visibility="gone"
-            />
+            <!--fecha y hora-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-<!--        <TextView-->
-<!--            android:id="@+id/txt_products_details"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            style="@style/TextAppearance.AppCompat.Caption"-->
-<!--            android:textAlignment="center"-->
-<!--            android:layout_marginVertical="8dp"-->
-<!--            android:visibility="gone"-->
-<!--            />-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_date_tentative"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:errorTextAppearance="@style/TextLimitError"
+                    app:layout_constraintEnd_toStartOf="@+id/img_search_date"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#dadada" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="Fecha próxima visita"
+                        android:imeOptions="actionNext"
+                        android:inputType="date"
+                        android:maxLength="12" />
 
-        <TextView
-            android:id="@+id/txt_deposit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="Almacen: "
-            android:visibility="gone"
-            />
-        <TextView
-            android:id="@+id/txt_sell_point"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="Emite: "
-            android:visibility="gone"
-            />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/txt_payments_caption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="Pagos"
-            />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_payments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+                <ImageView
+                    android:id="@+id/img_search_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/img_add_days"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_calendar_search" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#dadada" />
+                <ImageView
+                    android:id="@+id/img_add_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_calendar_add_on_24px" />
 
-        <TextView
-            android:id="@+id/txt_products_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/label_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:layout_marginStart="8dp"
+                android:visibility="gone"
+                />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_products"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                >
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_name_product"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:errorTextAppearance="@style/TextLimitError"
+                    app:layout_constraintEnd_toStartOf="@+id/img_search_product"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-    </LinearLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:hint="@string/product"
+                        android:imeOptions="actionDone"
+                        android:inputType="textAutoComplete"
+                        android:maxLength="250" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/img_search_product"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/img_search_barcode"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_search" />
+
+                <ImageView
+                    android:id="@+id/img_search_barcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toStartOf="@id/img_insert"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_barcode_scan"
+                    />
+
+                <ImageView
+                    android:id="@+id/img_insert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_enter_return"
+                    android:visibility="visible"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_supply"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="8dp"
+                />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:id="@+id/btn_end"
+        android:id="@+id/btn_continue"
         style="@style/ActionButton"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
@@ -126,6 +187,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="FINALIZAR" />
+        android:text="CONTINUAR" />
 
 </RelativeLayout>

@@ -62,6 +62,7 @@ public final class NetworkUtils {
     private static final String TREATMENTS_URL = DOCTORVET_ROOT_URL + "treatments";
     private static final String SDT_SUGGESTED_URL = DOCTORVET_ROOT_URL + "sdt_suggested";
     private static final String WAITING_ROOMS_URL = DOCTORVET_ROOT_URL + "waiting_rooms";
+    private static final String ELECTRONIC_INVOICING_ARG_URL = DOCTORVET_ROOT_URL + "electronic_invoicing_arg";
 
     public static URL buildUsersRequestCreate() {
         Uri.Builder uriBuilder = Uri.parse(USERS_REQUESTS_URL).buildUpon();
@@ -90,21 +91,21 @@ public final class NetworkUtils {
         return buildUri(builtUri);
     }
 
-    public static Uri buildGetExtendSuscriptionUrl(Integer idVet, String country) {
-        return Uri.parse(DOCTOR_VET_BASE_URL + "payments.php?id_vet="+idVet+"&region="+country);
-    }
-
     public enum ProductsUrlEnum {
         FOR_INPUT, FOR_ASSOC, ASSOCIATES, RESTORE, SERVICES_FOR_INPUT
     }
 
     public enum SellsUrlEnum {
-        VET_DEFAULTS, FOR_INPUT
+        VET_DEFAULTS, FOR_INPUT, SUGGESTED_PRODUCTS, PLANNING_ACTIVITY
     }
 
-    public static URL buildSellsUrl(SellsUrlEnum type) {
+    public static URL buildSellsUrl(SellsUrlEnum type, @Nullable Integer id_owner) {
         Uri.Builder uriBuilder = Uri.parse(SELLS_URL).buildUpon();
         uriBuilder.appendQueryParameter(type.name().toLowerCase(), "");
+
+        if (id_owner != null)
+            uriBuilder.appendQueryParameter("id_owner", id_owner.toString());
+
         Uri builtUri = uriBuilder.build();
         return buildUri(builtUri);
     }
@@ -149,13 +150,17 @@ public final class NetworkUtils {
         CREATE_ACCOUNT, EMAIL_PRE_AUTH, EMAIL_AUTH, FACEBOOK_GOOGLE_PRE_AUTH, FACEBOOK_GOOGLE_AUTH,
         CHECK_FOR_VALID_ACCOUNT, VALIDATE_ACCOUNT, FORGOT_ACCOUNT, DELETE_UNVERIFIED_ACCOUNT,
         USER_VETS, USER_AND_VET_BY_TOKEN, LOGOUT_ACCOUNT, CHANGE_VET, USER_VETS_BY_TOKEN, PROMOTE,
-        REMOVE_FROM_VET, UPDATE, IS_IN_PASSWORD_RESTORE, FORGOT_ACCOUNT_3, PASSWORD_CHANGE, VERIFY_CAPTCHA
+        REMOVE_FROM_VET, UPDATE, IS_IN_PASSWORD_RESTORE, FORGOT_ACCOUNT_3, PASSWORD_CHANGE, VERIFY_CAPTCHA,
+        PERMISSIONS, SET_PERMISSIONS, SET_NOTIFICATION_TOKEN, DELETE_NOTIFICATION_TOKEN
     }
     public static URL buildUsersUrl(UsersUrlEnum type, @Nullable Integer id_user, @Nullable String email, @Nullable String return_option) {
         Uri.Builder uriBuilder = Uri.parse(USERS_URL).buildUpon();
         uriBuilder.appendQueryParameter(type.name().toLowerCase(), "");
 
-        if (id_user != null)
+        if (type == UsersUrlEnum.PERMISSIONS || type == UsersUrlEnum.SET_PERMISSIONS)
+            uriBuilder.appendQueryParameter("id_user", id_user.toString());
+
+        if (id_user != null && !(type == UsersUrlEnum.PERMISSIONS || type == UsersUrlEnum.SET_PERMISSIONS))
             uriBuilder.appendQueryParameter("id", id_user.toString());
 
         if (email != null)
@@ -167,13 +172,19 @@ public final class NetworkUtils {
         Uri builtUri = uriBuilder.build();
         return buildUri(builtUri);
     }
+    public static URL buildUsersDeleteNotificationUrl(String token) {
+        Uri.Builder uriBuilder = Uri.parse(USERS_URL).buildUpon();
+        uriBuilder.appendQueryParameter(UsersUrlEnum.DELETE_NOTIFICATION_TOKEN.name().toLowerCase(), "");
+        uriBuilder.appendQueryParameter("token", token);
+        Uri builtUri = uriBuilder.build();
+        return buildUri(builtUri);
+    }
     public static URL buildUsersMinUrl() {
         Uri.Builder uriBuilder = Uri.parse(USERS_URL).buildUpon();
         appendMinOption(uriBuilder);
         Uri builtUri = uriBuilder.build();
         return buildUri(builtUri);
     }
-
 
     public static URL buildUsersCheckAccountUrl() {
         Uri.Builder uriBuilder = Uri.parse(USERS_URL).buildUpon();
@@ -215,13 +226,20 @@ public final class NetworkUtils {
         Uri builtUri = uriBuilder.build();
         return buildUri(builtUri);
     }
-
-    public static URL buildGetReportsUrl(DoctorVetApp.reports reporte_type, Integer page) {
+    public static URL buildGetReportsUrl(String report_name, Integer page) {
         Uri.Builder uriBuilder = Uri.parse(REPORTS_URL).buildUpon();
-        uriBuilder.appendQueryParameter("type", reporte_type.name());
+        uriBuilder.appendQueryParameter("type", report_name);
         uriBuilder.appendQueryParameter("page", page.toString());
         Uri builtUri = uriBuilder.build();
         return buildUri(builtUri);
+    }
+    public static URL buildGetReportsUrl(DoctorVetApp.reports reporte_type, Integer page) {
+//        Uri.Builder uriBuilder = Uri.parse(REPORTS_URL).buildUpon();
+//        uriBuilder.appendQueryParameter("type", reporte_type.name());
+//        uriBuilder.appendQueryParameter("page", page.toString());
+//        Uri builtUri = uriBuilder.build();
+//        return buildUri(builtUri);
+        return buildGetReportsUrl(reporte_type.name(), page);
     }
     public static URL buildGetTraceabilityReportUrl(Integer page, Integer product_id, Integer deposit_id) {
         Uri.Builder uriBuilder = Uri.parse(REPORTS_URL).buildUpon();
@@ -232,13 +250,47 @@ public final class NetworkUtils {
         Uri builtUri = uriBuilder.build();
         return buildUri(builtUri);
     }
+    public static URL buildGetSellsByProductReportUrl(Integer page, Integer product_id) {
+        Uri.Builder uriBuilder = Uri.parse(REPORTS_URL).buildUpon();
+        uriBuilder.appendQueryParameter("type", DoctorVetApp.reports.SELLS_BY_PRODUCT.name());
+        uriBuilder.appendQueryParameter("page", page.toString());
+        uriBuilder.appendQueryParameter("id_product", product_id.toString());
+        Uri builtUri = uriBuilder.build();
+        return buildUri(builtUri);
+    }
+    public static URL buildGetSellsByOwnerReportUrl(Integer page, Integer owner_id) {
+        Uri.Builder uriBuilder = Uri.parse(REPORTS_URL).buildUpon();
+        uriBuilder.appendQueryParameter("type", DoctorVetApp.reports.SELLS_BY_OWNER.name());
+        uriBuilder.appendQueryParameter("page", page.toString());
+        uriBuilder.appendQueryParameter("id_owner", owner_id.toString());
+        Uri builtUri = uriBuilder.build();
+        return buildUri(builtUri);
+    }
 
     public static URL buildGetReportsFromToUrl(DoctorVetApp.reports reporte_type, Integer page, String from, String to) {
+//        Uri.Builder uriBuilder = Uri.parse(REPORTS_URL).buildUpon();
+//        uriBuilder.appendQueryParameter("type", reporte_type.name());
+//        uriBuilder.appendQueryParameter("page", page.toString());
+//        uriBuilder.appendQueryParameter("from", from);
+//        uriBuilder.appendQueryParameter("to", to);
+//        Uri builtUri = uriBuilder.build();
+//        return buildUri(builtUri);
+        return buildGetReportsFromToUrl(reporte_type.name(), page, from, to);
+    }
+    public static URL buildGetReportsFromToUrl(String reportName, Integer page, String from, String to) {
         Uri.Builder uriBuilder = Uri.parse(REPORTS_URL).buildUpon();
-        uriBuilder.appendQueryParameter("type", reporte_type.name());
+        uriBuilder.appendQueryParameter("type", reportName);
         uriBuilder.appendQueryParameter("page", page.toString());
         uriBuilder.appendQueryParameter("from", from);
         uriBuilder.appendQueryParameter("to", to);
+        Uri builtUri = uriBuilder.build();
+        return buildUri(builtUri);
+    }
+    public static URL buildGetReportsProductsUrl(Integer page, String product_filter) {
+        Uri.Builder uriBuilder = Uri.parse(REPORTS_URL).buildUpon();
+        uriBuilder.appendQueryParameter("type", "PRODUCTS");
+        uriBuilder.appendQueryParameter("page", page.toString());
+        uriBuilder.appendQueryParameter("product_filter", product_filter);
         Uri builtUri = uriBuilder.build();
         return buildUri(builtUri);
     }
@@ -277,6 +329,13 @@ public final class NetworkUtils {
 
     public static URL buildGetPetsForInputUrl() {
         Uri.Builder uriBuilder = Uri.parse(PETS_URL).buildUpon();
+        uriBuilder.appendQueryParameter("for_input", "");
+        Uri builtUri = uriBuilder.build();
+        return buildUri(builtUri);
+    }
+
+    public static URL buildGetOwnersForInputUrl() {
+        Uri.Builder uriBuilder = Uri.parse(OWNERS_URL).buildUpon();
         uriBuilder.appendQueryParameter("for_input", "");
         Uri builtUri = uriBuilder.build();
         return buildUri(builtUri);
@@ -353,6 +412,13 @@ public final class NetworkUtils {
     public static URL buildReceiptTypesUrl() {
         Uri.Builder uriBuilder = Uri.parse(FINANCE_URL).buildUpon();
         uriBuilder.appendQueryParameter("receipt_types", "");
+        Uri builtUri = uriBuilder.build();
+        return buildUri(builtUri);
+    }
+    public static URL buildFiscalTypesUrl(String country) {
+        Uri.Builder uriBuilder = Uri.parse(FINANCE_URL).buildUpon();
+        uriBuilder.appendQueryParameter("fiscal_types", "");
+        uriBuilder.appendQueryParameter("country_name", country);
         Uri builtUri = uriBuilder.build();
         return buildUri(builtUri);
     }
@@ -784,8 +850,8 @@ public final class NetworkUtils {
 
     public enum vetsUrl {
         CREATE_VET, CREATE_BRANCH, CREATE_DEPOSIT, CREATE_POINT, DEPOSITS,
-        SELL_POINTS, UPDATE_DEPOSIT, DELETE_DEPOSIT, DELETE_POINT, MOVEMENT_POINTS,
-        ALL_POINTS
+        /*SELL_POINTS,*/ UPDATE_DEPOSIT, DELETE_DEPOSIT, DELETE_POINT, /*MOVEMENT_POINTS,*/
+        ALL_POINTS, SET_ELECTRONIC_INVOICING_ARG
     }
     public static URL buildVetUrl(@Nullable vetsUrl type, @Nullable Integer vet_id) {
         Uri.Builder uriBuilder = Uri.parse(VETS_URL).buildUpon();
@@ -1068,6 +1134,12 @@ public final class NetworkUtils {
         return buildUri(builtUri);
     }
 
+    public static URL buildElectronicInvoicingArgUrl() {
+        Uri.Builder uriBuilder = Uri.parse(ELECTRONIC_INVOICING_ARG_URL).buildUpon();
+        Uri builtUri = uriBuilder.build();
+        return buildUri(builtUri);
+    }
+
     public static URL buildS3UploadPrepareUrl() {
         Uri.Builder uriBuilder = Uri.parse(S3_UPLOAD_PREPARE_URL).buildUpon();
         Uri builtUri = uriBuilder.build();
@@ -1198,6 +1270,14 @@ public final class NetworkUtils {
         uriBuilder.appendQueryParameter("id", id_agenda.toString());
         uriBuilder.appendQueryParameter("set_executed", "");
 
+        Uri builtUri = uriBuilder.build();
+        return buildUri(builtUri);
+    }
+    public static URL buildAgendaRescheduleUrl(Integer id_agenda, String begin_time) {
+        Uri.Builder uriBuilder = Uri.parse(AGENDA_URL).buildUpon();
+        uriBuilder.appendQueryParameter("id", id_agenda.toString());
+        uriBuilder.appendQueryParameter("reschedule", "");
+        uriBuilder.appendQueryParameter("begin_time", begin_time);
         Uri builtUri = uriBuilder.build();
         return buildUri(builtUri);
     }

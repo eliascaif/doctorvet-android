@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.xionce.doctorvetServices.data.Agenda;
@@ -24,7 +26,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import io.socket.client.Socket;
@@ -176,11 +180,11 @@ public class ViewPetTabInfo extends FragmentBase {
             }
         }
 
-        //citas/tareas
+        //agenda
         for (Agenda agendaItem: petstates.getAppointments_tasks()) {
             View list_item_agenda = getLayoutInflater().inflate(R.layout.list_item_state_agenda, null);
             TextView titulo = list_item_agenda.findViewById(R.id.txt_title);
-            titulo.setText("Cita/tarea: " + agendaItem.getEvent_name() + " " + HelperClass.getTimeInLocale(agendaItem.getBegin_time(), getContext()));
+            titulo.setText("Agenda: " + agendaItem.getEvent_name() + " " + HelperClass.getTimeInLocale(agendaItem.getBegin_time(), getContext()));
             titulo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -195,12 +199,12 @@ public class ViewPetTabInfo extends FragmentBase {
                     checkAgenda(agendaItem.getId());
                 }
             });
-//            list_item_agenda.findViewById(R.id.img_remove).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    deleteAgenda(agendaItem);
-//                }
-//            });
+            list_item_agenda.findViewById(R.id.img_reschedule).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    rescheduleAgenda(agendaItem);
+                }
+            });
             linear_estados_pet.addView(list_item_agenda);
         }
 
@@ -261,6 +265,24 @@ public class ViewPetTabInfo extends FragmentBase {
             linear_estados_pet.addView(list_item);
         }
 
+        //age
+        if (pet.getAge() != null) {
+            View list_item = getLayoutInflater().inflate(R.layout.list_item_state, null);
+            TextView titulo = list_item.findViewById(R.id.txt_title);
+            String textToDisplay = "Edad: " + pet.getAge();
+            titulo.setText(textToDisplay);
+            linear_estados_pet.addView(list_item);
+        }
+
+        //life expectancy
+        if (petstates.getLife_expectancy() != null && petstates.getLife_expectancy()) {
+            View list_item = getLayoutInflater().inflate(R.layout.list_item_state, null);
+            TextView titulo = list_item.findViewById(R.id.txt_title);
+            String textToDisplay = "Espectativa de vida superada";
+            titulo.setText(textToDisplay);
+            linear_estados_pet.addView(list_item);
+        }
+
         //llenar linear de propietarios
         final LinearLayout listaOwners = viewPetActivity.findViewById(R.id.linear_owners);
         listaOwners.removeAllViews();
@@ -296,9 +318,7 @@ public class ViewPetTabInfo extends FragmentBase {
             }
         }
 
-        //invisibilize
-        //DoctorVetApp.invisibilizeEmptyTextView(linearPetData);
-        DoctorVetApp.visibilizeNonEmptyTextView(linearPetData);
+        DoctorVetApp.setTextViewVisibility(linearPetData);
 
         if (pet.getDeath() != null && pet.getDeath() == 1)
             chkDeath.setChecked(true);
@@ -324,6 +344,50 @@ public class ViewPetTabInfo extends FragmentBase {
                 });
             }
         });
+    }
+    private void rescheduleAgenda(Agenda agenda_event) {
+        // Crear el diálogo
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // Inflar el diseño personalizado
+        final LinearLayout linear = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_date_picker, null);
+        final DatePicker datePicker = linear.findViewById(R.id.date_picker);
+
+        builder
+                .setView(linear)
+                .setTitle("Reagendar para")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showWaitDialog();
+
+                        Calendar selectedDate = Calendar.getInstance();
+                        selectedDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), agenda_event.getBegin_time().getHours(), agenda_event.getBegin_time().getMinutes(), 0);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String formattedDate = dateFormat.format(selectedDate.getTime());
+
+                        DoctorVetApp.get().rescheduleAgenda(agenda_event.getId(), formattedDate, new DoctorVetApp.VolleyCallback() {
+                            @Override
+                            public void onSuccess(Boolean result) {
+                                hideWaitDialog();
+                                if (result) {
+                                    refreshView();
+                                } else {
+                                    Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), getString(R.string.err_action), Snackbar.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        // Mostrar el diálogo
+        builder.create().show();
     }
     private void checkWaitingRooms(Integer idWaitingRoom) {
         HelperClass.getOKCancelDialog(getContext(), getString(R.string.action_check_agenda), new DialogInterface.OnClickListener() {

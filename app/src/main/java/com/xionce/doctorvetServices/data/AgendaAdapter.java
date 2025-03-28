@@ -22,13 +22,13 @@ public class AgendaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private HelperClass.AdapterOnClickHandler clickHandler;
     private final ArrayList<Agenda> agenda;
-//    private HelperClass.AdapterOnCancelClickHandler removeClickHandler;
     private HelperClass.AdapterOnClickHandler checkClickHandler;
+    private HelperClass.AdapterOnClickHandler rescheduleClickHandler;
 
     public enum AgendaUsersType { USER, ALL_USERS }
     private AgendaUsersType adapterUsersType;
 
-    public enum AgendaAdapterTypes { NORMAL, DASHBOARD }
+    public enum AgendaAdapterTypes { NORMAL, DASHBOARD, RESCHEDULE }
     private final AgendaAdapterTypes adapterType;
 
     public AgendaAdapter(ArrayList<Agenda> agenda, AgendaAdapterTypes adapterType) {
@@ -41,12 +41,11 @@ public class AgendaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
-//    public void setOnRemoveClickHandler(HelperClass.AdapterOnCancelClickHandler removeClickHandler) {
-//        this.removeClickHandler = removeClickHandler;
-//    }
-
     public void setOnCheckClickHandler(HelperClass.AdapterOnClickHandler checkClickHandler) {
         this.checkClickHandler = checkClickHandler;
+    }
+    public void setOnRescheduleClickHandler(HelperClass.AdapterOnClickHandler rescheduleClickHandler) {
+        this.rescheduleClickHandler = rescheduleClickHandler;
     }
 
     @Override
@@ -59,6 +58,9 @@ public class AgendaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             case DASHBOARD:
                 View view_search = inflater.inflate(R.layout.list_item_agenda_dashboard, viewGroup, false);
                 return new DashboardHolder(view_search);
+            case RESCHEDULE:
+                View view_reschedule = inflater.inflate(R.layout.list_item_agenda_reschedule, viewGroup, false);
+                return new RescheduleHolder(view_reschedule);
             default:
                 throw new RuntimeException("non-existent viewType");
         }
@@ -73,6 +75,9 @@ public class AgendaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 break;
             case DASHBOARD:
                 bindDashboard(agenda_event, (DashboardHolder)holder/*, position*/);
+                break;
+            case RESCHEDULE:
+                bindReschedule(agenda_event, (RescheduleHolder) holder/*, position*/);
                 break;
         }
     }
@@ -119,7 +124,7 @@ public class AgendaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private void bindDashboard(Agenda agenda, DashboardHolder holder/*, int position*/) {
         Context ctx = holder.img_thumb.getContext();
 
-        DoctorVetApp.get().setThumb(agenda.getPet().getThumb_url(), holder.img_thumb, R.drawable.ic_dog);
+        DoctorVetApp.get().setThumb(agenda.getPet().getThumb_url(), holder.img_thumb, R.drawable.ic_pets_light);
 
         holder.txt_pet_name.setText(agenda.getPet().getName());
 
@@ -147,6 +152,46 @@ public class AgendaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         } else {
             holder.itemView.setVisibility(View.VISIBLE);
             holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+
+    }
+    private void bindReschedule(Agenda agenda, RescheduleHolder holder/*, int position*/) {
+        final Context ctx = holder.txt_event_info.getContext();
+
+        String event_name = HelperClass.getDateTimeInLocaleShort(agenda.getBegin_time());
+        if (agenda.getEnd_time() != null)
+            event_name += " - " + HelperClass.getDateTimeInLocaleShort(agenda.getEnd_time());
+
+        event_name += ". " + agenda.getEvent_name();
+        event_name += ". " + agenda.getUser().getName() + ". ";
+        holder.txt_event_info.setText(event_name);
+
+        Glide.with(ctx).load(R.drawable.ic_time).apply(RequestOptions.fitCenterTransform()).into(holder.img_thumb);
+        if (agenda.getProduct() != null)
+            DoctorVetApp.get().setThumb(agenda.getProduct().getThumb_url(), holder.img_thumb, R.drawable.ic_time);
+
+        //petinfo
+        String pet_info = "";
+        if (agenda.getPet() != null)
+            pet_info += agenda.getPet().getName();
+        holder.txt_pet_info.setText(pet_info);
+
+        //ownerinfo
+        String owner = "";
+        if (agenda.getOwner() != null) {
+            owner = "De: " + agenda.getOwner().getName();
+            holder.txt_owner_info.setText(owner);
+        } else {
+            holder.txt_owner_info.setVisibility(View.GONE);
+        }
+
+        //state
+        holder.img_check.setVisibility(View.VISIBLE);
+        holder.img_reschedule.setVisibility(View.VISIBLE);
+
+        if (agenda.getExecuted() == 1) {
+            holder.img_check.setVisibility(View.GONE);
+            holder.img_reschedule.setVisibility(View.GONE);
         }
 
     }
@@ -255,6 +300,7 @@ public class AgendaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         //private View div_line;
         private final ImageView imgCheck;
         private final TextView txt_supply_event;
+        private final ImageView img_reschedule;
 
         public DashboardHolder(View view) {
             super(view);
@@ -277,6 +323,18 @@ public class AgendaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
 
+            img_reschedule = view.findViewById(R.id.img_reschedule);
+            img_reschedule.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (rescheduleClickHandler != null) {
+                        int pos = getAdapterPosition();
+                        Agenda agenda_item = agenda.get(pos);
+                        rescheduleClickHandler.onClick(agenda_item, img_reschedule, pos);
+                    }
+                }
+            });
+
             view.setOnClickListener(this);
         }
 
@@ -288,6 +346,56 @@ public class AgendaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             Agenda agenda_event = agenda.get(pos);
             if (agenda_event.getPet() != null)
                 clickHandler.onClick(agenda_event.getPet(), this.itemView, pos);
+        }
+    }
+    public class RescheduleHolder extends RecyclerView.ViewHolder implements OnClickListener {
+        private final ImageView img_thumb;
+        private final TextView txt_event_info;
+        private final TextView txt_pet_info;
+        private final TextView txt_owner_info;
+        private final ImageView img_check;
+        private final ImageView img_reschedule;
+
+        public RescheduleHolder(View view) {
+            super(view);
+            img_thumb = view.findViewById(R.id.img_thumb);
+            txt_event_info = view.findViewById(R.id.txt_event_info);
+            txt_pet_info = view.findViewById(R.id.txt_pet_info);
+            txt_owner_info = view.findViewById(R.id.txt_owner_info);
+            img_check = view.findViewById(R.id.img_check);
+            img_check.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (checkClickHandler != null) {
+                        int pos = getAdapterPosition();
+                        Agenda agenda_item = agenda.get(pos);
+                        checkClickHandler.onClick(agenda_item, img_check, pos);
+                    }
+                }
+            });
+
+            img_reschedule = view.findViewById(R.id.img_reschedule);
+            img_reschedule.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (rescheduleClickHandler != null) {
+                        int pos = getAdapterPosition();
+                        Agenda agenda_item = agenda.get(pos);
+                        rescheduleClickHandler.onClick(agenda_item, img_reschedule, pos);
+                    }
+                }
+            });
+
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (clickHandler != null) {
+                int pos = getAdapterPosition();
+                Agenda agenda_event = agenda.get(pos);
+                clickHandler.onClick(agenda_event, this.itemView, pos);
+            }
         }
     }
 

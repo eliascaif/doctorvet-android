@@ -1,5 +1,6 @@
 package com.xionce.doctorvetServices;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -37,6 +38,18 @@ public class ViewOwnersHistoricActivity extends RecyclerViewActivity implements 
                     if (ownersAdapter.getItemCount() == 0) {
                         showEmptyListMessage();
                     } else {
+
+                        ownersAdapter.setOnClickHandler(new HelperClass.AdapterOnClickHandler() {
+                            @Override
+                            public void onClick(Object data, View view, int pos) {
+                                Owner owner = (Owner) data;
+                                Intent activity = new Intent(ViewOwnersHistoricActivity.this, ViewOwnerActivity.class);
+                                activity.putExtra(DoctorVetApp.INTENT_VALUES.OWNER_ID.name(), owner.getId());
+                                startActivity(activity);
+                                finish();
+                            }
+                        });
+
                         recyclerView.setAdapter(ownersAdapter);
 
                         //pagination
@@ -46,7 +59,7 @@ public class ViewOwnersHistoricActivity extends RecyclerViewActivity implements 
                         showRecyclerView();
                     }
                 } catch (Exception ex) {
-                    DoctorVetApp.get().handle_error(ex, /*ViewOwnersHistoricActivity.this,*/ TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                    DoctorVetApp.get().handle_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
                 } finally {
                     hideProgressBar();
                     hideSwipeRefreshLayoutProgressBar();
@@ -69,7 +82,7 @@ public class ViewOwnersHistoricActivity extends RecyclerViewActivity implements 
                     ownersAdapter.addItems(owners);
                     recyclerView.finishLoading();
                 } else {
-                    DoctorVetApp.get().handle_null_adapter("owners", /*ViewOwnersHistoricActivity.this,*/ TAG, true);
+                    DoctorVetApp.get().handle_null_adapter("owners", TAG, true);
                     showErrorMessage();
                 }
             }

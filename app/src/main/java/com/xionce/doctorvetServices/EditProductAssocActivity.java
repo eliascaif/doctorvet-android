@@ -100,7 +100,7 @@ public class EditProductAssocActivity extends EditBaseActivity
     public void onClick(Object data, View view, int pos) {
         if (data.getClass().equals(Product.class)) {
             Product product = (Product) data;
-            Intent activity = new Intent(EditProductAssocActivity.this, ViewProductVetActivity.class);
+            Intent activity = new Intent(EditProductAssocActivity.this, ViewProductActivity.class);
             activity.putExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_ID.name(), product.getId());
             startActivity(activity);
         } else {

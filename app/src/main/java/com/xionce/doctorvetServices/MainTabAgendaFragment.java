@@ -8,15 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.xionce.doctorvetServices.data.Agenda;
 import com.xionce.doctorvetServices.data.AgendaAdapter;
 import com.xionce.doctorvetServices.data.Get_pagination;
@@ -33,6 +37,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import io.socket.client.Socket;
@@ -152,7 +157,7 @@ public class MainTabAgendaFragment extends FragmentBase
             public void onSuccess(Get_pagination pagination) {
                 try {
                     ArrayList<Agenda> agenda = ((Agenda.Get_pagination_agendas) pagination).getContent();
-                    agendaAdapter = new AgendaAdapter(agenda, AgendaAdapter.AgendaAdapterTypes.NORMAL);
+                    agendaAdapter = new AgendaAdapter(agenda, AgendaAdapter.AgendaAdapterTypes.RESCHEDULE);
 
                     if (agendaAdapter.getItemCount() != 0) {
                         recyclerView.setAdapter(agendaAdapter);
@@ -172,6 +177,12 @@ public class MainTabAgendaFragment extends FragmentBase
                             @Override
                             public void onClick(Object data, View view, int pos) {
                                 checkAgenda((Agenda)data, pos);
+                            }
+                        });
+                        agendaAdapter.setOnRescheduleClickHandler(new HelperClass.AdapterOnClickHandler() {
+                            @Override
+                            public void onClick(Object data, View view, int pos) {
+                                rescheduleAgenda((Agenda)data);
                             }
                         });
 
@@ -197,8 +208,8 @@ public class MainTabAgendaFragment extends FragmentBase
             public void onClick(DialogInterface dialog, int which) {
                 showWaitDialog();
                 final Integer idAgenda = agenda.getId();
-                URL delete_ownerUrl = NetworkUtils.buildCheckAgendaUrl(idAgenda);
-                TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.PUT, delete_ownerUrl.toString(),
+                URL url = NetworkUtils.buildCheckAgendaUrl(idAgenda);
+                TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.PUT, url.toString(),
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -265,6 +276,55 @@ public class MainTabAgendaFragment extends FragmentBase
             }
         });
     }
+    private void rescheduleAgenda(Agenda agenda) {
+        if (agenda.getExecuted() == 1) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Agenda ya realizada", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Crear el diálogo
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // Inflar el diseño personalizado
+        final LinearLayout linear = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_date_picker, null);
+        final DatePicker datePicker = linear.findViewById(R.id.date_picker);
+
+        builder
+                .setView(linear)
+                .setTitle("Reagendar para")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showWaitDialog();
+
+                        Calendar selectedDate = Calendar.getInstance();
+                        selectedDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), agenda.getBegin_time().getHours(), agenda.getBegin_time().getMinutes(), 0);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String formattedDate = dateFormat.format(selectedDate.getTime());
+
+                        DoctorVetApp.get().rescheduleAgenda(agenda.getId(), formattedDate, new DoctorVetApp.VolleyCallback() {
+                            @Override
+                            public void onSuccess(Boolean result) {
+                                hideWaitDialog();
+                                if (result) {
+                                    refreshView();
+                                } else {
+                                    Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), getString(R.string.err_action), Snackbar.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        // Mostrar el diálogo
+        builder.create().show();
+    }
 
     private Emitter.Listener serverMessage = new Emitter.Listener() {
         @Override
@@ -282,7 +342,7 @@ public class MainTabAgendaFragment extends FragmentBase
                         incomingData = new JSONObject(args[0].toString());
 
                         String table_name = incomingData.getString("table_name");
-                        String operation = incomingData.getString("operation");
+                        //String operation = incomingData.getString("operation");
 
                         if (table_name.equalsIgnoreCase("agenda")) {
                             refreshView();

@@ -28,7 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class ViewOwnerActivity extends ViewBaseActivity
-        implements BottomSheetDialog.BottomSheetListener, DoctorVetApp.IProgressBarActivity {
+        implements BottomSheetDialog.BottomSheetListener2, DoctorVetApp.IProgressBarActivity {
 
     private static final String TAG = "ViewOwnerActivity";
     private Owner owner = null;
@@ -41,11 +41,8 @@ public class ViewOwnerActivity extends ViewBaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                b.putString("propietario_especifico", "true");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewOwnerActivity.this, "ViewOwnerActivity");
+                bottomSheetDialog.show(getSupportFragmentManager(), null);
             }
         });
 
@@ -74,7 +71,7 @@ public class ViewOwnerActivity extends ViewBaseActivity
                         showErrorMessage();
                     }
                 } catch (Exception ex) {
-                    DoctorVetApp.get().handle_error(ex, /*ViewOwnerActivity.this,*/ TAG, true);
+                    DoctorVetApp.get().handle_error(ex, TAG, true);
                     showErrorMessage();
                 } finally {
                     hideProgressBar();
@@ -149,22 +146,20 @@ public class ViewOwnerActivity extends ViewBaseActivity
 
         super.setPhoto(owner.getThumb_url(), owner.getPhoto_url());
 
-        //llenar linear de mascotas
+        //fill pets
         final LinearLayout listaPets = findViewById(R.id.linear_pets);
         final Context ctx = this;
         listaPets.removeAllViews();
         ArrayList<Pet> mascotas_del_owner = owner.getPets();
         if (!mascotas_del_owner.isEmpty()) {
-            //listaPets.setVisibility(View.VISIBLE);
             for (final Pet pet : mascotas_del_owner) {
                 View newMascotaRectangle = getLayoutInflater().inflate(R.layout.list_item_rectangle, null);
 
                 ImageView thumb = newMascotaRectangle.findViewById(R.id.scuare_thumb);
                 TextView name = newMascotaRectangle.findViewById(R.id.txt_scuare);
-                TextView info = newMascotaRectangle.findViewById(R.id.txt_info);
                 name.setText(pet.getName());
 
-                DoctorVetApp.get().setThumb(pet.getThumb_url(), thumb, R.drawable.ic_dog);
+                DoctorVetApp.get().setThumb(pet.getThumb_url(), thumb, R.drawable.ic_pets_light);
 
                 newMascotaRectangle.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -181,8 +176,10 @@ public class ViewOwnerActivity extends ViewBaseActivity
                 listaPets.addView(newMascotaRectangle);
             }
         } else {
-            //sin mascotas asociadas
+            //owner without pets
             View list_item_sin_relaciones = getLayoutInflater().inflate(R.layout.list_item_no_relations, null);
+            TextView txt_owner_without_pets = list_item_sin_relaciones.findViewById(R.id.txt_owner_without_pets);
+            txt_owner_without_pets.setText(getString(R.string.owner_without_pets, DoctorVetApp.get().getPetNamingPlural().toLowerCase()));
             listaPets.addView(list_item_sin_relaciones);
         }
 
@@ -204,7 +201,7 @@ public class ViewOwnerActivity extends ViewBaseActivity
     @Override
     protected void invisibilizeEmptyViews() {
         LinearLayout linearOwners = findViewById(R.id.lista_datos_owner);
-        DoctorVetApp.visibilizeNonEmptyTextView(linearOwners);
+        DoctorVetApp.setTextViewVisibility(linearOwners);
     }
 
     @Override
@@ -288,7 +285,7 @@ public class ViewOwnerActivity extends ViewBaseActivity
     }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         if (!loadedFinished) {
             Snackbar.make(DoctorVetApp.getRootForSnack(this), R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
             return;

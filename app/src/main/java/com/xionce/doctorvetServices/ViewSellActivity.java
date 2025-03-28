@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 
 public class ViewSellActivity extends ViewBaseActivity
-        implements BottomSheetDialog.BottomSheetListener, DoctorVetApp.IProgressBarActivity {
+        implements BottomSheetDialog.BottomSheetListener2, DoctorVetApp.IProgressBarActivity {
 
     private static final String TAG = "ViewSellActivity";
     private TextView txt_date;
@@ -72,12 +72,8 @@ public class ViewSellActivity extends ViewBaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                b.putString("sell_specific", "true");
-                //b.putString("general", "false");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewSellActivity.this, "ViewSellActivity");
+                bottomSheetDialog.show(getSupportFragmentManager(), null);
             }
         });
 
@@ -148,9 +144,9 @@ public class ViewSellActivity extends ViewBaseActivity
         if (items_adapter.getItemCount() > 0)
             recycler_products.setVisibility(View.VISIBLE);
 
-        //Hide payments delete for sell/purcahses without customer/provider
+        //Hide payments delete for sell/purcahses without customer/provider. Check permission
         Finance_payment_methodsAdapter.Finance_payment_methodsAdapter_types adapterType = Finance_payment_methodsAdapter.Finance_payment_methodsAdapter_types.NONE;
-        if (sell.getOwner() != null)
+        if (sell.getOwner() != null && DoctorVetApp.get().getUser().getPermissions().actions_permissions.sells_payments.delete == 1)
             adapterType = Finance_payment_methodsAdapter.Finance_payment_methodsAdapter_types.REMOVE;
 
         Finance_payment_methodsAdapter payments_adapter = new Finance_payment_methodsAdapter(sell.getPayments(), adapterType);
@@ -268,7 +264,7 @@ public class ViewSellActivity extends ViewBaseActivity
     }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         if (!loadedFinished) {
             Snackbar.make(DoctorVetApp.getRootForSnack(this), R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
             return;

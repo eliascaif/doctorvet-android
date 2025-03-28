@@ -19,12 +19,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     private TextInputLayout textInputLayout;
     private RunnableWithArg onDateSet;
     private Date selectedDate = null;
-    //private View view = null;
-    //private int year, month, day;
     private Date init_date = null;
-
     private TextView txt_output;
-
 
     public DatePickerFragment() {
     }
@@ -79,16 +75,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         newFragment.show(fragmentManager, "datePicker");
     }
 
-    //    public void showDatePickerDialog(FragmentManager fragmentManager, TextInputLayout returnText, Date init_date) { // int year, int month, int day) {
-////        Calendar cal = Calendar.getInstance();
-////        cal.setTime(init_date);
-////        this.year = cal.get(Calendar.YEAR);
-////        this.month = cal.get(Calendar.MONTH);
-////        this.day = cal.get(Calendar.DAY_OF_MONTH);
-//        DatePickerFragment newFragment = new DatePickerFragment();
-//        newFragment.textInputLayout = returnText;
-//        newFragment.show(fragmentManager, "datePicker");
-//    }
     public void showDatePickerDialog(FragmentManager fragmentManager, RunnableWithArg<Date> onDateSet) {
         DatePickerFragment newFragment = new DatePickerFragment(this.init_date);
         newFragment.onDateSet = onDateSet;

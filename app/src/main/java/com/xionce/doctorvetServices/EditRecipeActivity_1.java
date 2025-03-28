@@ -333,7 +333,7 @@ public class EditRecipeActivity_1 extends EditBaseActivity {
     protected void setObjectToUI(Object object) {
         Pet_recipe petRecipe = (Pet_recipe) object;
 
-        DoctorVetApp.get().setThumb(petRecipe.getPet().getThumb_url(), toolbar_image, R.drawable.ic_dog_holo_dark);
+        DoctorVetApp.get().setThumb(petRecipe.getPet().getThumb_url(), toolbar_image, R.drawable.ic_pets_dark);
         toolbar_title.setText(petRecipe.getPet().getName());
 
         if (petRecipe.getTreatment() != null)

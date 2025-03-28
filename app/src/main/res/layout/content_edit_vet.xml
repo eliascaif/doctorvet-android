@@ -19,16 +19,6 @@
         android:paddingRight="16dp"
         android:paddingBottom="90dp"
         >
-<!--        android:padding="16dp"-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Los datos del establecimiento son públicos y pueden ser vistos por otros usuarios de Doctor Vet."-->
-<!--            style="@style/TextAppearance.AppCompat.Caption"-->
-<!--            android:layout_marginBottom="4dp"-->
-<!--            android:layout_marginStart="4dp"-->
-<!--            />-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_name"
@@ -59,51 +49,24 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_region"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            app:errorTextAppearance="@style/TextLimitError">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_region"
-                android:layout_width="0dp"
+            <AutoCompleteTextView
+                android:id="@+id/actv_region"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                app:errorTextAppearance="@style/TextLimitError"
-                app:layout_constraintEnd_toStartOf="@+id/img_search_region"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:completionThreshold="1"
+                android:hint="@string/name_region"
+                android:imeOptions="actionNext"
+                android:inputType="textAutoComplete"
+                android:maxLength="120"
+                android:nextFocusForward="@id/txt_phone" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/actv_region"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="120"
-                    android:hint="@string/name_region"
-                    android:completionThreshold="1"
-                    android:inputType="textAutoComplete"
-                    android:imeOptions="actionNext"
-                    android:nextFocusForward="@id/txt_phone"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <ImageView
-                android:id="@+id/img_search_region"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="4dp"
-                android:padding="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_search" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_phone"
@@ -178,10 +141,49 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <androidx.appcompat.widget.SwitchCompat-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="dflghgdl" />-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="16dp"
+            android:background="#dadada"
+            />
+
+        <TextView
+            android:id="@+id/label_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A continuación encotrarás configuraciones opcionales que puedes cambiar mas adelante."
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="4dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombramiento de clientes"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            />
+        <Spinner
+            android:id="@+id/spinner_owner_naming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombramiento de pacientes"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            />
+        <Spinner
+            android:id="@+id/spinner_pet_naming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -265,135 +267,141 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Servicios móviles"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="4dp"
-            />
-        <LinearLayout
+        <CheckBox
+            android:id="@+id/chk_mobile_services"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:text="Servicios móviles a domicilio"
             android:layout_marginVertical="8dp"
-            android:layout_marginHorizontal="4dp"
+            />
+
+        <CheckBox
+            android:id="@+id/chk_email_messaging"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mensajería a clientes a través de email"
+            android:layout_marginVertical="8dp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="16dp"
+            android:background="#dadada"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Ventas"
+            style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+            />
+
+        <CheckBox
+            android:id="@+id/chk_sells_planning_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mostrar pantalla de suministro próximo"
+            android:layout_marginVertical="8dp"
+            />
+
+        <CheckBox
+            android:id="@+id/chk_sells_save_p1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sobreescribir precio 1 al registrar"
+            android:layout_marginVertical="8dp"
+            />
+
+        <CheckBox
+            android:id="@+id/chk_sells_accept_suggested"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aceptar sugerencias"
+            android:layout_marginVertical="8dp"
+            />
+
+        <CheckBox
+            android:id="@+id/chk_sells_lock_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bloquear cambio de precio"
+            android:layout_marginVertical="8dp"
+            />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/lyt_default_sell_point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:visibility="gone"
             >
 
-            <RadioGroup
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/txt_default_sell_point"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:text="Punto de venta por defecto: " />
 
-                <RadioButton
-                    android:id="@+id/radio_mobile_services_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Si" />
+            <Spinner
+                android:id="@+id/spinner_default_sell_point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
-                <RadioButton
-                    android:id="@+id/radio_mobile_services_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:checked="true"
-                    android:text="No"
-                    />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-            </RadioGroup>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Activa esta opción si brindas servicios a domicilio"
-            android:layout_marginStart="12dp"
-            style="@style/TextAppearance.AppCompat.Caption"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="16dp"
+            android:background="#dadada"
             />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombramiento de clientes"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="4dp"
-            />
-        <Spinner
-            android:id="@+id/spinner_owner_naming"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
+            android:text="Fiscal"
+            android:layout_marginBottom="8dp"
+            style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombramiento de pacientes"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="4dp"
-            />
-        <Spinner
-            android:id="@+id/spinner_pet_naming"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_fiscal_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-            />
+            app:errorTextAppearance="@style/TextLimitError">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mensajería a través de email"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="4dp"
-            />
-        <LinearLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="CUIT/NIF/CIF (ID fiscal)"
+                android:maxLength="120"
+                android:inputType="text"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_fiscal_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginVertical="8dp"
-            android:layout_marginHorizontal="4dp"
+            app:errorTextAppearance="@style/TextLimitError"
             >
 
-            <RadioGroup
-                android:layout_width="wrap_content"
+            <AutoCompleteTextView
+                android:id="@+id/actv_fiscal_type"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:maxLength="120"
+                android:hint="Tipo fiscal"
+                android:completionThreshold="1"
+                android:inputType="textAutoComplete"
+                />
 
-                <RadioButton
-                    android:id="@+id/radio_email_messaging_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Si" />
-
-                <RadioButton
-                    android:id="@+id/radio_email_messaging_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:text="No"
-                    />
-
-            </RadioGroup>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Desactiva esta opción para no enviar recordatorios a tus clientes"
-            android:layout_marginStart="12dp"
-            style="@style/TextAppearance.AppCompat.Caption"
-            />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
 </ScrollView>
-
-
-
-
-

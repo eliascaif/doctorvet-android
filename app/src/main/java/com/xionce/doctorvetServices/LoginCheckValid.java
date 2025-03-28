@@ -36,9 +36,9 @@ public class LoginCheckValid extends AppCompatActivity {
 
         TextView txt_info = findViewById(R.id.txt_info);
         coordinatorLayout = findViewById(R.id.root_cordinator_layout);
-        final String info_cuenta = getString(R.string.check_login_valid) + " " + DoctorVetApp.get().preferences_getUserEmail() + ". " + getString(R.string.check_login_valid_2);
+        final String info_cuenta = getString(R.string.check_login_valid) + " " + DoctorVetApp.get().preferences_getUserEmail() + " " + getString(R.string.check_login_valid_2);
         txt_info.setText(info_cuenta);
-        final String info_cuenta_snack = "Revisa " + DoctorVetApp.get().preferences_getUserEmail() + " para continuar.";
+//        final String info_cuenta_snack = "Revisa " + DoctorVetApp.get().preferences_getUserEmail() + " para continuar.";
 
         final ProgressBar pb_loading_indicator = findViewById(R.id.pb_loading_indicator);
 
@@ -68,16 +68,17 @@ public class LoginCheckValid extends AppCompatActivity {
                                 startActivity(act);
                                 finish();
                             } else {
-                                Snackbar.make(coordinatorLayout, info_cuenta_snack, Snackbar.LENGTH_LONG).show();
+//                                Snackbar.make(coordinatorLayout, info_cuenta_snack, Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(coordinatorLayout, info_cuenta, Snackbar.LENGTH_LONG).show();
                             }
                         } catch (Exception ex) {
-                            DoctorVetApp.get().handle_onResponse_error(ex, /*LoginCheckValid.this,*/ TAG, true, response);
+                            DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        DoctorVetApp.get().handle_volley_error(error, /*LoginCheckValid.this,*/ TAG, true);
+                        DoctorVetApp.get().handle_volley_error(error, TAG, true);
                         pb_loading_indicator.setVisibility(View.INVISIBLE);
                         mOverlayDialog.dismiss();
                     }
@@ -124,7 +125,7 @@ public class LoginCheckValid extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        DoctorVetApp.get().handle_volley_error(error, /*LoginCheckValid.this,*/ TAG, true);
+                        DoctorVetApp.get().handle_volley_error(error, TAG, true);
                         pb_loading_indicator.setVisibility(View.INVISIBLE);
                         mOverlayDialog.dismiss();
                     }

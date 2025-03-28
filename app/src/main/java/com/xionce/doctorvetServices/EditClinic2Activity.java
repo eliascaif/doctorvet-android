@@ -552,7 +552,7 @@ public class EditClinic2Activity extends EditBaseActivity {
     @Override
     protected void setObjectToUI(Object object) {
         Pet_clinic2 clinic2 = (Pet_clinic2) object;
-        DoctorVetApp.get().setThumb(clinic2.getPet().getThumb_url(), toolbar_image, R.drawable.ic_dog_holo_dark);
+        DoctorVetApp.get().setThumb(clinic2.getPet().getThumb_url(), toolbar_image, R.drawable.ic_pets_dark);
         toolbar_title.setText(clinic2.getPet().getName());
         DoctorVetApp.ObjectToTextInputLayout(findViewById(R.id.lista), clinic2, "txt_");
 

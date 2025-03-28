@@ -24,7 +24,6 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:contentInsetStartWithNavigation="0dp">
 
-<!--            <include layout="@layout/toolbar_title"/>-->
             <include layout="@layout/toolbar"/>
 
         </androidx.appcompat.widget.Toolbar>

@@ -78,14 +78,14 @@ public class EditProviderActivity extends EditBaseActivity {
         setObjectToUI(provider);
         implementTakePhoto(getResourceObject());
 
-        ImageView iconSearch_region = findViewById(R.id.img_search_region);
-        iconSearch_region.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(EditProviderActivity.this, SearchRegionActivity.class);
-                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
-            }
-        });
+//        ImageView iconSearch_region = findViewById(R.id.img_search_region);
+//        iconSearch_region.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(EditProviderActivity.this, SearchRegionActivity.class);
+//                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
+//            }
+//        });
     }
     
     @Override
@@ -111,19 +111,19 @@ public class EditProviderActivity extends EditBaseActivity {
         setRegionsAdapter(regions);
     }
     
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) return;
-
-        //busqueda regiones
-        if (requestCode == HelperClass.REQUEST_SEARCH && data != null) {
-            Region region = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.REGION_OBJ.name()), Region.class);
-            getObject().setRegion(region);
-            txtRegion.getEditText().setText(region.getFriendly_name());
-            DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtPhone);
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode != RESULT_OK) return;
+//
+//        //busqueda regiones
+//        if (requestCode == HelperClass.REQUEST_SEARCH && data != null) {
+//            Region region = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.REGION_OBJ.name()), Region.class);
+//            getObject().setRegion(region);
+//            txtRegion.getEditText().setText(region.getFriendly_name());
+//            DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtPhone);
+//        }
+//    }
 
     @Override
     protected void save() {

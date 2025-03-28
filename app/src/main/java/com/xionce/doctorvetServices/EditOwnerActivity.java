@@ -22,7 +22,8 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.gson.reflect.TypeToken;
+import com.xionce.doctorvetServices.data.FinanceTypesFiscalAdapter;
+import com.xionce.doctorvetServices.data.Finance_types_fiscal;
 import com.xionce.doctorvetServices.data.Owner;
 import com.xionce.doctorvetServices.data.Region;
 import com.xionce.doctorvetServices.data.RegionsAdapter;
@@ -33,7 +34,6 @@ import com.xionce.doctorvetServices.utilities.TokenStringRequest;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class EditOwnerActivity extends EditBaseActivity {
 
@@ -43,6 +43,7 @@ public class EditOwnerActivity extends EditBaseActivity {
     private AutoCompleteTextView actv_region;
     private TextInputLayout txtEmail;
     private TextInputLayout txtPhone;
+    private AutoCompleteTextView actvFiscalType;
 
     private Owner owner = null;
 
@@ -56,16 +57,19 @@ public class EditOwnerActivity extends EditBaseActivity {
         actv_region = findViewById(R.id.actv_region);
         txtEmail = findViewById(R.id.txt_email);
         txtPhone = findViewById(R.id.txt_phone);
+        actvFiscalType = findViewById(R.id.actv_fiscal_type);
         TextInputLayout txtNotes = findViewById(R.id.txt_notes);
         DoctorVetApp.get().markRequired(txtName);
 
         if (savedInstanceState == null) {
             initializeInitRequestNumber(1);
-            DoctorVetApp.get().getRegions(new DoctorVetApp.VolleyCallbackArrayList() {
+            DoctorVetApp.get().getOwnersForInput(new DoctorVetApp.VolleyCallbackObject() {
                 @Override
-                public void onSuccess(ArrayList resultArrayList) {
+                public void onSuccess(Object resultObject) {
                     setRequestCompleted();
-                    setRegionsAdapter(resultArrayList);
+                    Owner.Owners_for_input ownersForInput = (Owner.Owners_for_input)resultObject;
+                    setRegionsAdapter(ownersForInput.getRegions());
+                    setFiscalTypesAdapter(ownersForInput.getFinance_types_fiscal());
                 }
             });
         } else {
@@ -84,14 +88,14 @@ public class EditOwnerActivity extends EditBaseActivity {
         setObjectToUI(owner);
         implementTakePhoto(getResourceObject());
 
-        ImageView iconSearch_region = findViewById(R.id.img_search_region);
-        iconSearch_region.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(EditOwnerActivity.this, SearchRegionActivity.class);
-                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
-            }
-        });
+//        ImageView iconSearch_region = findViewById(R.id.img_search_region);
+//        iconSearch_region.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(EditOwnerActivity.this, SearchRegionActivity.class);
+//                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
+//            }
+//        });
 
         txtAddress.getEditText().setImeOptions(EditorInfo.IME_ACTION_NEXT);
         txtAddress.getEditText().setRawInputType(InputType.TYPE_CLASS_TEXT);
@@ -124,25 +128,25 @@ public class EditOwnerActivity extends EditBaseActivity {
     protected void restoreFromBundle(Bundle savedInstanceState) {
         String objectInString = savedInstanceState.getString("owner");
         owner = MySqlGson.getGson().fromJson(objectInString, Owner.class);
-
-        String regionsInString = DoctorVetApp.get().readFromDisk("regions");
-        ArrayList<Region> regions = MySqlGson.getGson().fromJson(regionsInString, new TypeToken<List<Region>>(){}.getType());
-        setRegionsAdapter(regions);
+        String ownersForInputInString = DoctorVetApp.get().readFromDisk("owners_for_input");
+        Owner.Owners_for_input ownersForInput = MySqlGson.getGson().fromJson(ownersForInputInString, Owner.Owners_for_input.class);
+        setRegionsAdapter(ownersForInput.getRegions());
+        setFiscalTypesAdapter(ownersForInput.getFinance_types_fiscal());
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) return;
-
-        //busqueda regiones
-        if (requestCode == HelperClass.REQUEST_SEARCH && data != null) {
-            Region region = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.REGION_OBJ.name()), Region.class);
-            getObject().setRegion(region);
-            actv_region.setText(region.getFriendly_name());
-            DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtPhone);
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode != RESULT_OK) return;
+//
+//        //busqueda regiones
+//        if (requestCode == HelperClass.REQUEST_SEARCH && data != null) {
+//            Region region = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.REGION_OBJ.name()), Region.class);
+//            getObject().setRegion(region);
+//            actv_region.setText(region.getFriendly_name());
+//            DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtPhone);
+//        }
+//    }
 
     @Override
     protected void save() {
@@ -279,6 +283,35 @@ public class EditOwnerActivity extends EditBaseActivity {
         });
         DoctorVetApp.get().setOnTouchToShowDropDown(actv_region);
         DoctorVetApp.get().setAllWidthToDropDown(actv_region, EditOwnerActivity.this);
+    }
+    private void setFiscalTypesAdapter(ArrayList<Finance_types_fiscal> fiscalTypes) {
+        FinanceTypesFiscalAdapter fiscalTypesAdapter = new FinanceTypesFiscalAdapter(fiscalTypes);
+        actvFiscalType.setAdapter(fiscalTypesAdapter.getArrayAdapter(EditOwnerActivity.this));
+        actvFiscalType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                getObject().setFiscal_type((Finance_types_fiscal) adapterView.getItemAtPosition(i));
+            }
+        });
+        actvFiscalType.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().isEmpty())
+                    getObject().setFiscal_type(null);
+            }
+        });
+        DoctorVetApp.get().setOnTouchToShowDropDown(actvFiscalType);
+        DoctorVetApp.get().setAllWidthToDropDown(actvFiscalType, EditOwnerActivity.this);
     }
 
     private boolean validateName() {

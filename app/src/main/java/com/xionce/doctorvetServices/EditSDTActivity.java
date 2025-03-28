@@ -176,11 +176,6 @@ public class EditSDTActivity extends EditBaseActivity {
 
     private String getIntentValue() {
         return getIntent().getStringExtra(DoctorVetApp.REQUEST_CREATE_OBJECT);
-//        if (typeSDT == DoctorVetApp.Sdt_type.SYMPTOM)
-//            return DoctorVetApp.INTENT_VALUES.SYMPTOM_OBJ.name();
-//
-//        if (typeSDT == DoctorVetApp.Sdt_type.DIAGNOSTIC)
-//            return DoctorVetApp.INTENT_VALUES.SYMPTOM_OBJ.name();
     }
 
     private boolean validateName() {

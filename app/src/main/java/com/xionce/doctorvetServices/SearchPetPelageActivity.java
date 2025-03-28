@@ -39,7 +39,7 @@ public class SearchPetPelageActivity extends SearchActivityBase implements Helpe
             @Override
             public void onSuccess(Get_pagination pagination) {
                 hideProgressBar();
-                //hideStartSearch();
+
                 if (pagination != null) {
                     showBottomBar();
                     setTotal_pages(pagination.getTotal_pages());
@@ -56,7 +56,7 @@ public class SearchPetPelageActivity extends SearchActivityBase implements Helpe
 
                     showSoftKeyboard();
                 } else {
-                    DoctorVetApp.get().handle_null_adapter("Pets_pelages", /*SearchPetPelageActivity.this,*/ TAG, true);
+                    DoctorVetApp.get().handle_null_adapter("Pets_pelages", TAG, true);
                     showErrorMessage();
                 }
             }
@@ -76,7 +76,7 @@ public class SearchPetPelageActivity extends SearchActivityBase implements Helpe
                     petpelagesAdapter.addItems(pelajes);
                     isLoading = false;
                 } else {
-                    DoctorVetApp.get().handle_null_adapter("Pets_pelages", /*SearchPetPelageActivity.this,*/ TAG, true);
+                    DoctorVetApp.get().handle_null_adapter("Pets_pelages", TAG, true);
                     showErrorMessage();
                 }
             }

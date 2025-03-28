@@ -7,3 +7,12 @@
 /build
 /captures
 .externalNativeBuild
+
+.idea/
+app/release/
+
+app/google-services.json
+app/release/baselineProfiles/
+app/release/output-metadata.json
+
+.gitignore

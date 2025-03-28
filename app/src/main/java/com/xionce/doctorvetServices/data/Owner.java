@@ -25,6 +25,8 @@ public class Owner implements DoctorVetApp.IResourceObject {
     @Expose
     private String regional_id;
     @Expose
+    private Finance_types_fiscal fiscal_type;
+    @Expose
     private String notes;
     @Expose
     private Integer photo_deleted;
@@ -38,6 +40,7 @@ public class Owner implements DoctorVetApp.IResourceObject {
     private Integer is_principal;
     private BigDecimal balance;
     private String reason;
+    private String reason_es;
     private User user;
 
     public Owner() {
@@ -76,6 +79,12 @@ public class Owner implements DoctorVetApp.IResourceObject {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public Finance_types_fiscal getFiscal_type() {
+        return fiscal_type;
+    }
+    public void setFiscal_type(Finance_types_fiscal fiscal_type) {
+        this.fiscal_type = fiscal_type;
     }
     public String getNotes() {
         return notes;
@@ -133,6 +142,15 @@ public class Owner implements DoctorVetApp.IResourceObject {
     public void setReason(String reason) {
         this.reason = reason;
     }
+    public String getReason_es() {
+        if (this.reason_es == null)
+            return "";
+        
+        return reason_es;
+    }
+    public void setReason_es(String reason) {
+        this.reason_es = reason;
+    }
     public Owner getPolish() {
         return new Owner(this.getId(), this.getName(), this.getThumb_url());
     }
@@ -178,6 +196,25 @@ public class Owner implements DoctorVetApp.IResourceObject {
         }
         public void setContent(ArrayList<Owner> content) {
             this.content = content;
+        }
+    }
+
+    public class Owners_for_input {
+
+        private ArrayList<Region> regions;
+        private ArrayList<Finance_types_fiscal> finance_types_fiscal;
+
+        public ArrayList<Region> getRegions() {
+            return regions;
+        }
+        public void setRegions(ArrayList<Region> regions) {
+            this.regions = regions;
+        }
+        public ArrayList<Finance_types_fiscal> getFinance_types_fiscal() {
+            return finance_types_fiscal;
+        }
+        public void setFinance_types_fiscal(ArrayList<Finance_types_fiscal> finance_types_fiscal) {
+            this.finance_types_fiscal = finance_types_fiscal;
         }
     }
 

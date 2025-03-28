@@ -63,7 +63,6 @@ public class MainTabOwnersFragment extends FragmentBase
         swipeRefreshLayout = root_view.findViewById(R.id.swipe_container);
         setSwipeRefreshLayout(root_view);
 
-        //CardView cardviewLastMovements = root_view.findViewById(R.id.cardview_last_movements);
         recyclerLastMovements = root_view.findViewById(R.id.recycler_last_movements);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerLastMovements.setLayoutManager(layoutManager);
@@ -228,7 +227,7 @@ public class MainTabOwnersFragment extends FragmentBase
                         incomingData = new JSONObject(args[0].toString());
 
                         String table_name = incomingData.getString("table_name");
-                        String operation = incomingData.getString("operation");
+                        //String operation = incomingData.getString("operation");
 
                         if (table_name.equalsIgnoreCase("owners_recent")) {
                             refreshLastMovementsFromSocket();

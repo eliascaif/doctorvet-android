@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -65,6 +66,7 @@ import com.xionce.doctorvetServices.data.Spending;
 import com.xionce.doctorvetServices.data.SpendingsAdapter;
 import com.xionce.doctorvetServices.data.User;
 import com.xionce.doctorvetServices.data.UsersAdapter;
+import com.xionce.doctorvetServices.data.Users_permissions;
 import com.xionce.doctorvetServices.data.Vet_deposit;
 import com.xionce.doctorvetServices.data.VetsDepositsAdapter;
 import com.xionce.doctorvetServices.data.WaitingRoomsAdapter;
@@ -76,8 +78,11 @@ import com.xionce.doctorvetServices.utilities.MySqlGson;
 import com.xionce.doctorvetServices.utilities.NetworkUtils;
 import com.xionce.doctorvetServices.utilities.TokenStringRequest;
 
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainTabReportsFragment extends FragmentBase
@@ -91,17 +96,27 @@ public class MainTabReportsFragment extends FragmentBase
     private ConstraintLayout extensions_container;
     private ConstraintLayout from_to;
     private ConstraintLayout traceability;
+    private ConstraintLayout products;
+    private ConstraintLayout sells_by_product;
+    private ConstraintLayout sells_by_owner;
+    private TextInputLayout txt_product_filter;
     private TextInputLayout txt_from;
     private TextInputLayout txt_to;
     private LinearLayout linear_totals;
     private TextView txt_total;
     private TextView txt_balance;
-    private AutoCompleteTextView actvProducto;
+    private AutoCompleteTextView actvSelectedProductTraceability;
+    private AutoCompleteTextView actvSelectedOwner;
+    private AutoCompleteTextView actvSelectedProductSells;
     private Spinner spinner_deposits;
 
     private ImageView img_go;
+    private ImageView img_download;
     private ArrayAdapter<DoctorVetApp.reports> spinnerAdapter;
     private DoctorVetApp.reports selectedReport;
+
+    private Product selectedProduct;
+    private Owner selectedOwner;
 
     private PetsAdapter petsBirthdaysAdapter;
     private AgendaAdapter agendaAdapter;
@@ -116,7 +131,7 @@ public class MainTabReportsFragment extends FragmentBase
 
     private MovementsAdapter inTransitMovementsAdapter;
 
-    private ProductsAdapter productsBelowMinimunAdapter;
+    private ProductsAdapter productsAdapter;
 
     private PetsAdapter petsLifeExpectancyAdapter;
 
@@ -161,8 +176,8 @@ public class MainTabReportsFragment extends FragmentBase
         recyclerView.setHasFixedSize(true);
 
         spinner = rootView.findViewById(R.id.spinner_reportes);
-        spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, DoctorVetApp.reports.values());
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1); // .simple_expandable_list_item_1);
+        spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, getUserReports());
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(this);
 
@@ -176,14 +191,76 @@ public class MainTabReportsFragment extends FragmentBase
             }
         });
 
+        img_download = rootView.findViewById(R.id.img_download);
+        img_download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                downloadReport();
+            }
+        });
+
         //extensions
         extensions_container = rootView.findViewById(R.id.container_constraint);
         from_to = rootView.findViewById(R.id.constraint_from_to);
         setFromTo(rootView);
         traceability = rootView.findViewById(R.id.constraint_traceability);
         setTraceability(rootView);
+        products = rootView.findViewById(R.id.constraint_products);
+        setProducts(rootView);
+        sells_by_owner = rootView.findViewById(R.id.constraint_sells_by_owner);
+        setSellsByOwner(rootView);
+        sells_by_product = rootView.findViewById(R.id.constraint_sells_by_product);
+        setSellsByProduct(rootView);
 
         return rootView;
+    }
+
+    private DoctorVetApp.reports[] getUserReports() {
+        Users_permissions.ReportsPermissions reports_permissions = DoctorVetApp.get().getUser().getPermissions().reports_permissions;
+        Field[] reportPermissionsFields = Users_permissions.ReportsPermissions.class.getDeclaredFields();
+
+        ArrayList<DoctorVetApp.reports> userReports = new ArrayList<>();
+
+        //always include select in report selection
+        userReports.add(DoctorVetApp.reports.SELECT);
+
+        //check any other report with user permissions
+        for (DoctorVetApp.reports report:DoctorVetApp.reports.values()) {
+            String report_name = report.name().toLowerCase();
+
+            if (report_name.equalsIgnoreCase(DoctorVetApp.reports.SELECT.name()))
+                continue;
+
+            //get field in permissions object
+            for (Field reportPermissionsField : reportPermissionsFields) {
+                try {
+                    String field_name = reportPermissionsField.getName();
+                    if (field_name.equalsIgnoreCase(report_name)) {
+                        Integer field_value = (Integer)reportPermissionsField.get(reports_permissions);
+                        if (field_value == 1) {
+                            userReports.add(report);
+                            if (field_name.equalsIgnoreCase("products")) {
+                                userReports.add(DoctorVetApp.reports.PRODUCTS_BELOW_MINIMUN);
+                                userReports.add(DoctorVetApp.reports.PRODUCTS_TRACEABILITY);
+                            } else if (field_name.equalsIgnoreCase("sells")) {
+                                userReports.add(DoctorVetApp.reports.SELLS_BY_OWNER);
+                                userReports.add(DoctorVetApp.reports.SELLS_BY_PRODUCT);
+                            }
+                        }
+
+                    }
+
+                } catch (IllegalAccessException e) {
+                    //throw new RuntimeException(e);
+                }
+            }
+        }
+
+        DoctorVetApp.reports[] finalReports = new DoctorVetApp.reports[userReports.size()];
+        for (int i = 0; i < userReports.size(); i++) {
+            finalReports[i] = userReports.get(i);
+        }
+        return finalReports;
     }
 
     @Override
@@ -219,15 +296,6 @@ public class MainTabReportsFragment extends FragmentBase
     @Override
     public void refreshView() {
         if (created) {
-
-            String selectedReportStr = DoctorVetApp.get().getPreference("selectedReport");
-            DoctorVetApp.reports auxSelectedReport = DoctorVetApp.reports.getEnumVal(selectedReportStr);
-            if (
-                auxSelectedReport == DoctorVetApp.reports.SERVICES_BARCODES
-                || auxSelectedReport == DoctorVetApp.reports.PRODUCTS_EXCEL
-                )
-                    return;
-
             hideRecyclerView();
             showReport();
         }
@@ -243,6 +311,10 @@ public class MainTabReportsFragment extends FragmentBase
         txtInfo.setVisibility(View.GONE);
         txtInfo.setText("");
         extensions_container.setVisibility(View.GONE);
+        img_download.setVisibility(View.GONE);
+
+        selectedProduct = null;
+        selectedOwner = null;
 
         showReport();
     }
@@ -338,6 +410,12 @@ public class MainTabReportsFragment extends FragmentBase
             case SELLS:
                 showSellsReport();
                 break;
+            case SELLS_BY_OWNER:
+                showSellsByOwnerReport();
+                break;
+            case SELLS_BY_PRODUCT:
+                showSellsByProductReport();
+                break;
 
             case PURCHASES:
                 showPurchasesReport();
@@ -363,12 +441,8 @@ public class MainTabReportsFragment extends FragmentBase
                 showAgendaReport2();
                 break;
 
-            case PRODUCTS_EXCEL:
-                showProductsExcel();
-                break;
-
-            case SERVICES_BARCODES:
-                showServicesBarcodes();
+            case PRODUCTS:
+                showProductsReport();
                 break;
 
             case LOGS:
@@ -384,25 +458,25 @@ public class MainTabReportsFragment extends FragmentBase
         txtInfo.setVisibility(View.VISIBLE);
         switch (selectedReport) {
             case PENDING_AGENDA_VET:
-                txtInfo.setText("Citas y/o tareas de agenda de hoy. De todos los usuarios.");
+                txtInfo.setText("Agenda de hoy. De todos los usuarios.");
                 break;
             case PENDING_AGENDA_USER:
-                txtInfo.setText("Citas y/o tareas de agenda de hoy. Personales");
+                txtInfo.setText("Agenda de hoy. Personales");
                 break;
             case EXPIRED_AGENDA_VET:
-                txtInfo.setText("Citas y/o tareas de agenda de ayer que no fueron marcadas como 'realizadas'. De todos los usuarios.");
+                txtInfo.setText("Agenda de ayer que no fue marcada como 'realizada'. De todos los usuarios.");
                 break;
             case EXPIRED_AGENDA_USER:
-                txtInfo.setText("Citas y/o tareas de agenda de ayer que no fueron marcadas como 'realizadas'. Personales");
+                txtInfo.setText("Agenda de ayer que no fue marcada como 'realizada'. Personales");
                 break;
             case EXPIRED_AGENDA_ALL_VET:
-                txtInfo.setText("Citas y/o tareas de agenda que no fueron marcadas como 'realizadas'. De todos los usuarios. Revísalas intentando reagendar/eliminar. (No se incluyen los vencimientos de ayer que tienen su propio reporte)");
+                txtInfo.setText("Agenda que no fue marcada como 'realizada'. De todos los usuarios. Revísalas intentando reagendar/eliminar. (No se incluyen los vencimientos de ayer que tienen su propio reporte)");
                 break;
             case TOMORROW_AGENDA_VET:
-                txtInfo.setText("Citas y/o tareas agendadas para mañana. De todos los usuarios.");
+                txtInfo.setText("Agenda de mañana. De todos los usuarios.");
                 break;
             case TOMORROW_AGENDA_USER:
-                txtInfo.setText("Citas y/o tareas agendadas para mañana. Personales.");
+                txtInfo.setText("Agenda de mañana. Personales.");
                 break;
 
             case PENDING_SUPPLY_VET:
@@ -452,23 +526,22 @@ public class MainTabReportsFragment extends FragmentBase
                 txtInfo.setText(DoctorVetApp.get().getPetNamingPlural() + " que ingresaron a sala de espera ayer y que no fueron marcados como atendidos.");
                 break;
 
-            case PRODUCTS_EXCEL:
-                txtInfo.setText("Exportación de productos a formato Excel");
-                break;
-
-            case SERVICES_BARCODES:
-                txtInfo.setText("PDF para imprimir códigos de barras para servicios");
-                break;
-
             case OWNERS_NOTIFICATIONS:
                 txtInfo.setText("Notificaciones a " + DoctorVetApp.get().getOwnerNamingPlural() + ". Se envían cada día a las 9 hs.");
                 break;
 
             case LOW_FOOD:
-                txtInfo.setText(DoctorVetApp.get().getPetNamingPlural() + " con niveles bajos de alimento / pienso. Se computan ventas de los últimos 60 días para " + DoctorVetApp.get().getPetNamingPlural() + " que tienen registrado peso y productos de categorias de alimentos / pienso que utilizan unidades complejas (u/kg por ejemplo)." );
+                txtInfo.setText(DoctorVetApp.get().getPetNamingPlural() + " con niveles bajos de alimento / pienso. Se computan ventas de los últimos 60 días para " + DoctorVetApp.get().getPetNamingPlural() + " que tienen registrado peso, raza y productos de categorias de alimentos / pienso que utilizan unidades complejas (u/kg por ejemplo)." );
                 break;
-
         }
+    }
+    private void hideAllExtensions() {
+        from_to.setVisibility(View.GONE);
+        products.setVisibility(View.GONE);
+        linear_totals.setVisibility(View.GONE);
+        traceability.setVisibility(View.GONE);
+        sells_by_product.setVisibility(View.GONE);
+        sells_by_owner.setVisibility(View.GONE);
     }
 
     @Override
@@ -503,7 +576,7 @@ public class MainTabReportsFragment extends FragmentBase
             public void onSuccess(Get_pagination pagination) {
                 try {
                     ArrayList<Agenda> agenda = ((Agenda.Get_pagination_agendas)pagination).getContent();
-                    agendaAdapter = new AgendaAdapter(agenda, AgendaAdapter.AgendaAdapterTypes.NORMAL);
+                    agendaAdapter = new AgendaAdapter(agenda, AgendaAdapter.AgendaAdapterTypes.RESCHEDULE);
 
                     if (agendaAdapter.getItemCount() != 0) {
                         recyclerView.setAdapter(agendaAdapter);
@@ -512,7 +585,7 @@ public class MainTabReportsFragment extends FragmentBase
 
                         agendaAdapter.setOnClickHandler(MainTabReportsFragment.this::onAgendaClick);
                         agendaAdapter.setOnCheckClickHandler(MainTabReportsFragment.this::onAgendaCheckClick);
-//                        agendaAdapter.setOnRemoveClickHandler(MainTabReportsFragment.this::onAgendaRemoveClick);
+                        agendaAdapter.setOnRescheduleClickHandler(MainTabReportsFragment.this::onAgendaRescheduleClick);
 
                         showRecyclerView();
                     }
@@ -563,7 +636,7 @@ public class MainTabReportsFragment extends FragmentBase
     }
     private void checkAgenda(Agenda agenda_event) {
         if (agenda_event.getExecuted() == 1) {
-            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "La cita/tarea ya está realizada", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Agenda ya realizada", Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -585,6 +658,59 @@ public class MainTabReportsFragment extends FragmentBase
                 });
             }
         });
+    }
+    public void onAgendaRescheduleClick(Object data, View view, int pos) {
+        Agenda agendaObj = (Agenda) data;
+        rescheduleAgenda(agendaObj);
+    }
+    private void rescheduleAgenda(Agenda agenda_event) {
+        if (agenda_event.getExecuted() == 1) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Agenda ya realizada", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Crear el diálogo
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // Inflar el diseño personalizado
+        final LinearLayout linear = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_date_picker, null);
+        final DatePicker datePicker = linear.findViewById(R.id.date_picker);
+
+        builder
+            .setView(linear)
+            .setTitle("Reagendar para")
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    showWaitDialog();
+
+                    Calendar selectedDate = Calendar.getInstance();
+                    selectedDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), agenda_event.getBegin_time().getHours(), agenda_event.getBegin_time().getMinutes(), 0);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String formattedDate = dateFormat.format(selectedDate.getTime());
+
+                    DoctorVetApp.get().rescheduleAgenda(agenda_event.getId(), formattedDate, new DoctorVetApp.VolleyCallback() {
+                        @Override
+                        public void onSuccess(Boolean result) {
+                            hideWaitDialog();
+                            if (result) {
+                                refreshView();
+                            } else {
+                                Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), getString(R.string.err_action), Snackbar.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            })
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+        // Mostrar el diálogo
+        builder.create().show();
     }
 
     private void showBirthdaysReport() {
@@ -725,8 +851,8 @@ public class MainTabReportsFragment extends FragmentBase
         });
     }
     private void getPendingExpiredSupplyPagination(Integer page, final DoctorVetApp.VolleyCallbackPagination callbackPagination) {
-        URL supplyUrl = NetworkUtils.buildGetReportsUrl(selectedReport, page);
-        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, supplyUrl.toString(),
+        URL url = NetworkUtils.buildGetReportsUrl(selectedReport, page);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -802,9 +928,10 @@ public class MainTabReportsFragment extends FragmentBase
     }
     private void showSupplyReport() {
         showProgressBar();
-        showInfo(selectedReport);
+//        showInfo(selectedReport);
 
-        showFromTo(false);
+        //showFromTo(false);
+        showSupply();
 
         getSupplyPagination(1, getFrom(), getTo(), new DoctorVetApp.VolleyCallbackPagination() {
             @Override
@@ -857,6 +984,41 @@ public class MainTabReportsFragment extends FragmentBase
                     }
                 }
         );
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+    private void showSupply(){
+
+
+        showFromTo(false);
+        img_download.setVisibility(View.VISIBLE);
+    }
+    private void downloadSupplyXlsx() {
+        showProgressBar();
+        //showInfo(selectedReport);
+
+        URL url = NetworkUtils.buildGetReportsFromToUrl("SUPPLY_XLSX", 1, getFrom(), getTo());
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    String data = MySqlGson.getDataFromResponse(response).toString();
+                    String path = HelperClass.writeToFile(data, getContext(), "supply.xlsx");
+                    txtInfo.setVisibility(View.VISIBLE);
+                    txtInfo.setText(txtInfo.getText() + " Guardado en: " + path);
+                    HelperClass.viewFile(path, getContext());
+                } catch (Exception ex) {
+                    DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
+                } finally {
+                    hideProgressBar();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DoctorVetApp.get().handle_volley_error(error, TAG, true);
+                hideProgressBar();
+            }
+        });
         DoctorVetApp.get().addToRequestQueque(stringRequest);
     }
 
@@ -1280,12 +1442,12 @@ public class MainTabReportsFragment extends FragmentBase
             public void onSuccess(Get_pagination pagination) {
                 try {
                     ArrayList<Product> productsBelowMinimun = ((Product.Get_pagination_products)pagination).getContent();
-                    productsBelowMinimunAdapter = new ProductsAdapter(productsBelowMinimun, ProductsAdapter.Products_types.NORMAL);
+                    productsAdapter = new ProductsAdapter(productsBelowMinimun, ProductsAdapter.Products_types.NORMAL);
 
-                    if (productsBelowMinimunAdapter.getItemCount() != 0) {
-                        productsBelowMinimunAdapter.setOnClickHandler(MainTabReportsFragment.this::onProductsBelowMinimunClick);
+                    if (productsAdapter.getItemCount() != 0) {
+                        productsAdapter.setOnClickHandler(MainTabReportsFragment.this::onProductsBelowMinimunClick);
 
-                        recyclerView.setAdapter(productsBelowMinimunAdapter);
+                        recyclerView.setAdapter(productsAdapter);
                         recyclerView.resetPage();
                         recyclerView.setOnPaginationHandler(MainTabReportsFragment.this);
 
@@ -1328,7 +1490,7 @@ public class MainTabReportsFragment extends FragmentBase
     }
     public void onProductsBelowMinimunClick(Object data, View view, int pos) {
         Product product = (Product) data;
-        Intent activity = new Intent(getActivity(), ViewProductVetActivity.class);
+        Intent activity = new Intent(getActivity(), ViewProductActivity.class);
         activity.putExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_ID.name(), product.getId());
         startActivity(activity);
     }
@@ -1762,9 +1924,10 @@ public class MainTabReportsFragment extends FragmentBase
 
     private void showSellsReport() {
         showProgressBar();
-        showInfo(selectedReport);
+//        showInfo(selectedReport);
 
-        showFromTo(true);
+        //showFromTo(true);
+        showSells();
 
         getSellsPagination(1, getFrom(), getTo(), new DoctorVetApp.VolleyCallbackPagination() {
             @Override
@@ -1830,6 +1993,291 @@ public class MainTabReportsFragment extends FragmentBase
     }
     private String getTo() {
         return HelperClass.getDateForMySQL(HelperClass.getShortDate(txt_to.getEditText().getText().toString(), getContext()));
+    }
+    private void showSells() {
+        showFromTo(true);
+        img_download.setVisibility(View.VISIBLE);
+    }
+    private void downloadSellsXlsx() {
+        showProgressBar();
+//        showInfo(selectedReport);
+
+        URL url = NetworkUtils.buildGetReportsFromToUrl("SELLS_XLSX", 1, getFrom(), getTo());
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    String data = MySqlGson.getDataFromResponse(response).toString();
+                    String path = HelperClass.writeToFile(data, getContext(), "sells.xlsx");
+                    txtInfo.setVisibility(View.VISIBLE);
+                    txtInfo.setText(txtInfo.getText() + " Guardado en: " + path);
+                    HelperClass.viewFile(path, getContext());
+                } catch (Exception ex) {
+                    DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
+                } finally {
+                    hideProgressBar();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DoctorVetApp.get().handle_volley_error(error, TAG, true);
+                hideProgressBar();
+            }
+        });
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+    private void downloadSellsDetailsXlsx() {
+        showProgressBar();
+
+        URL url = NetworkUtils.buildGetReportsFromToUrl("SELLS_DETAILS_XLSX", 1, getFrom(), getTo());
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    String data = MySqlGson.getDataFromResponse(response).toString();
+                    String path = HelperClass.writeToFile(data, getContext(), "sells-details.xlsx");
+                    txtInfo.setVisibility(View.VISIBLE);
+                    txtInfo.setText(txtInfo.getText() + " Guardado en: " + path);
+                    HelperClass.viewFile(path, getContext());
+                } catch (Exception ex) {
+                    DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
+                } finally {
+                    hideProgressBar();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DoctorVetApp.get().handle_volley_error(error, TAG, true);
+                hideProgressBar();
+            }
+        });
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+
+    private void showSellsByOwnerReport() {
+
+        if (actvSelectedOwner.getAdapter() == null) {
+            showSellsByOwner();
+            return;
+        }
+
+        if (selectedOwner == null) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Selecciona " + DoctorVetApp.get().getOwnerNaming(), Snackbar.LENGTH_SHORT).show();
+            hideProgressBar();
+            hideSwipeRefreshLayoutProgressBar();
+            return;
+        }
+
+        showProgressBar();
+
+        getSellsByOwnerPagination(1, new DoctorVetApp.VolleyCallbackPagination() {
+            @Override
+            public void onSuccess(Get_pagination pagination) {
+                try {
+                    ArrayList<Sell> sells = ((Sell.Get_pagination_sells)pagination).getContent();
+                    sellsAdapter = new SellsAdapter(sells, MainTabReportsFragment.this::onSellClickHandler);
+
+                    if (sellsAdapter.getItemCount() != 0) {
+                        recyclerView.setAdapter(sellsAdapter);
+                        recyclerView.resetPage();
+                        recyclerView.setOnPaginationHandler(MainTabReportsFragment.this);
+
+                        showRecyclerView();
+                    }
+                } catch (Exception ex) {
+                    DoctorVetApp.get().handle_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                } finally {
+                    hideProgressBar();
+                    hideSwipeRefreshLayoutProgressBar();
+                }
+            }
+        });
+    }
+    private void getSellsByOwnerPagination(Integer page, final DoctorVetApp.VolleyCallbackPagination callbackPagination) {
+        URL url = NetworkUtils.buildGetSellsByOwnerReportUrl(page, selectedOwner.getId());
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String data = MySqlGson.getDataFromResponse(response).toString();
+                            Sell.Get_pagination_sells response_obj = MySqlGson.getGson().fromJson(data, new TypeToken<Sell.Get_pagination_sells>(){}.getType());
+                            callbackPagination.onSuccess(response_obj);
+                        } catch (Exception ex) {
+                            DoctorVetApp.get().handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                            callbackPagination.onSuccess(null);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DoctorVetApp.get().handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                        callbackPagination.onSuccess(null);
+                    }
+                }
+        );
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+    private void showSellsByOwner() {
+        hideAllExtensions();
+
+        extensions_container.setVisibility(View.VISIBLE);
+        sells_by_owner.setVisibility(View.VISIBLE);
+
+        showWaitDialog();
+
+        DoctorVetApp.get().getOwners(new DoctorVetApp.VolleyCallbackArrayList() {
+            @Override
+            public void onSuccess(ArrayList resultList) {
+                setOwnersAdapter(resultList);
+                hideWaitDialog();
+            }
+        });
+    }
+    private void setSellsByOwner(View rootView) {
+        actvSelectedOwner = rootView.findViewById(R.id.actv_owner);
+        actvSelectedOwner.setCompletionHint(DoctorVetApp.get().getOwnerNaming());
+
+        ImageView ownerSearch = rootView.findViewById(R.id.img_search_owner);
+        ownerSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SearchOwnerActivity.class);
+                intent.putExtra(DoctorVetApp.REQUEST_SEARCH_FOR, DoctorVetApp.INTENT_VALUES.OWNER_OBJ.name());
+                intent.putExtra(DoctorVetApp.INTENT_SEARCH_RETURN, true);
+                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
+            }
+        });
+    }
+    private void setOwnersAdapter(ArrayList resultList) {
+        OwnersAdapter ownersAdapter = new OwnersAdapter(resultList, DoctorVetApp.Adapter_types.NORMAL);
+        actvSelectedOwner.setAdapter(ownersAdapter.getAutocompleteAdapter(getContext()));
+        actvSelectedOwner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Owner owner = (Owner)adapterView.getItemAtPosition(i);
+                selectedOwner = owner;
+            }
+        });
+        actvSelectedOwner.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().isEmpty())
+                    selectedOwner = null;
+            }
+        });
+        DoctorVetApp.get().setOnTouchToShowDropDown(actvSelectedOwner);
+        DoctorVetApp.get().setAllWidthToDropDown(actvSelectedOwner, getActivity());
+    }
+
+    private void showSellsByProductReport() {
+
+        if (actvSelectedProductSells.getAdapter() == null) {
+            showSellsByProduct();
+            return;
+        }
+
+        if (selectedProduct == null) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Selecciona producto", Snackbar.LENGTH_SHORT).show();
+            hideProgressBar();
+            hideSwipeRefreshLayoutProgressBar();
+            return;
+        }
+
+        showProgressBar();
+
+        getSellsByProductPagination(1, new DoctorVetApp.VolleyCallbackPagination() {
+            @Override
+            public void onSuccess(Get_pagination pagination) {
+                try {
+                    ArrayList<Sell> sells = ((Sell.Get_pagination_sells)pagination).getContent();
+                    sellsAdapter = new SellsAdapter(sells, MainTabReportsFragment.this::onSellClickHandler);
+
+                    if (sellsAdapter.getItemCount() != 0) {
+                        recyclerView.setAdapter(sellsAdapter);
+                        recyclerView.resetPage();
+                        recyclerView.setOnPaginationHandler(MainTabReportsFragment.this);
+
+                        showRecyclerView();
+                    }
+                } catch (Exception ex) {
+                    DoctorVetApp.get().handle_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                } finally {
+                    hideProgressBar();
+                    hideSwipeRefreshLayoutProgressBar();
+                }
+            }
+        });
+    }
+    private void getSellsByProductPagination(Integer page, final DoctorVetApp.VolleyCallbackPagination callbackPagination) {
+        URL url = NetworkUtils.buildGetSellsByProductReportUrl(page, selectedProduct.getId());
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String data = MySqlGson.getDataFromResponse(response).toString();
+                            Sell.Get_pagination_sells response_obj = MySqlGson.getGson().fromJson(data, new TypeToken<Sell.Get_pagination_sells>(){}.getType());
+                            callbackPagination.onSuccess(response_obj);
+                        } catch (Exception ex) {
+                            DoctorVetApp.get().handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                            callbackPagination.onSuccess(null);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DoctorVetApp.get().handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                        callbackPagination.onSuccess(null);
+                    }
+                }
+        );
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+    private void showSellsByProduct() {
+        hideAllExtensions();
+
+        extensions_container.setVisibility(View.VISIBLE);
+        sells_by_product.setVisibility(View.VISIBLE);
+
+        showWaitDialog();
+
+        DoctorVetApp.get().getProductsVet(new DoctorVetApp.VolleyCallbackArrayList() {
+            @Override
+            public void onSuccess(ArrayList resultList) {
+                setProductsAdapter(resultList, actvSelectedProductSells);
+                hideWaitDialog();
+            }
+        });
+    }
+    private void setSellsByProduct(View rootView) {
+        actvSelectedProductSells = rootView.findViewById(R.id.actv_product_2);
+        actvSelectedProductSells.setCompletionHint("Producto");
+
+        ImageView productSearch = rootView.findViewById(R.id.img_search_product_2);
+        productSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SearchProductActivity.class);
+                intent.putExtra(DoctorVetApp.REQUEST_SEARCH_FOR, DoctorVetApp.INTENT_VALUES.PRODUCT_OBJ.name());
+                intent.putExtra(DoctorVetApp.INTENT_SEARCH_RETURN, true);
+                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
+            }
+        });
     }
 
     private void showPurchasesReport() {
@@ -2097,7 +2545,7 @@ public class MainTabReportsFragment extends FragmentBase
             public void onSuccess(Get_pagination pagination) {
                 try {
                     ArrayList<Agenda> agenda = ((Agenda.Get_pagination_agendas)pagination).getContent();
-                    agendaAdapter = new AgendaAdapter(agenda, AgendaAdapter.AgendaAdapterTypes.NORMAL);
+                    agendaAdapter = new AgendaAdapter(agenda, AgendaAdapter.AgendaAdapterTypes.RESCHEDULE);
 
                     if (agendaAdapter.getItemCount() != 0) {
                         recyclerView.setAdapter(agendaAdapter);
@@ -2106,7 +2554,7 @@ public class MainTabReportsFragment extends FragmentBase
 
                         agendaAdapter.setOnClickHandler(MainTabReportsFragment.this::onAgendaClick);
                         agendaAdapter.setOnCheckClickHandler(MainTabReportsFragment.this::onAgendaCheckClick);
-//                        agendaAdapter.setOnRemoveClickHandler(MainTabReportsFragment.this::onAgendaRemoveClick);
+                        agendaAdapter.setOnRescheduleClickHandler(MainTabReportsFragment.this::onAgendaRescheduleClick);
 
                         showRecyclerView();
                     }
@@ -2128,130 +2576,6 @@ public class MainTabReportsFragment extends FragmentBase
                         try {
                             String data = MySqlGson.getDataFromResponse(response).toString();
                             Agenda.Get_pagination_agendas response_obj = MySqlGson.getGson().fromJson(data, new TypeToken<Agenda.Get_pagination_agendas>(){}.getType());
-                            callbackPagination.onSuccess(response_obj);
-                        } catch (Exception ex) {
-                            DoctorVetApp.get().handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
-                            callbackPagination.onSuccess(null);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        DoctorVetApp.get().handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
-                        callbackPagination.onSuccess(null);
-                    }
-                }
-        );
-        DoctorVetApp.get().addToRequestQueque(stringRequest);
-    }
-
-    private void showProductsExcel() {
-        showProgressBar();
-        showInfo(selectedReport);
-
-        URL url = NetworkUtils.buildGetReportsUrl(DoctorVetApp.reports.PRODUCTS_EXCEL, 1);
-        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    String data = MySqlGson.getDataFromResponse(response).toString();
-                    String path = HelperClass.writeToFile(data, getContext(), "products_excel.xlsx");
-                    txtInfo.setText(txtInfo.getText() + ". Guardado en: " + path);
-                    //HelperClass.viewFile("products_excel.xlsx", getContext());
-                } catch (Exception ex) {
-                    DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
-                } finally {
-                    hideProgressBar();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DoctorVetApp.get().handle_volley_error(error, TAG, true);
-                hideProgressBar();
-            }
-        });
-        DoctorVetApp.get().addToRequestQueque(stringRequest);
-    }
-
-    private void showServicesBarcodes() {
-        showProgressBar();
-        showInfo(selectedReport);
-
-        URL url = NetworkUtils.buildGetReportsUrl(DoctorVetApp.reports.SERVICES_BARCODES, 1);
-        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    String data = MySqlGson.getDataFromResponse(response).toString();
-                    String path = HelperClass.writeToFile(data, getContext(), "services_barcodes.pdf");
-                    txtInfo.setText(txtInfo.getText() + ". Guardado en: " + path);
-                    HelperClass.viewPdf("services_barcodes.pdf", getContext());
-                } catch (Exception ex) {
-                    DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
-                } finally {
-                    hideProgressBar();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DoctorVetApp.get().handle_volley_error(error, TAG, true);
-                hideProgressBar();
-            }
-        });
-        DoctorVetApp.get().addToRequestQueque(stringRequest);
-    }
-
-    private void showProductsTraceabilityReport() {
-
-        if (spinner_deposits.getAdapter() == null) {
-            showTraceability();
-            return;
-        }
-
-        if (traceabilityProduct == null || deposit == null) {
-            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Establece producto y almacen", Snackbar.LENGTH_SHORT).show();
-            hideProgressBar();
-            hideSwipeRefreshLayoutProgressBar();
-            return;
-        }
-
-        showProgressBar();
-
-        getProductsTraceabilityPagination(1, new DoctorVetApp.VolleyCallbackPagination() {
-            @Override
-            public void onSuccess(Get_pagination pagination) {
-                try {
-                    ArrayList<Product_traceability> productTraceabilities = ((Product_traceability.Get_pagination_products)pagination).getContent();
-                    traceabilityAdapter = new ProductsTraceabilityAdapter(productTraceabilities);
-
-                    if (traceabilityAdapter.getItemCount() != 0) {
-                        recyclerView.setAdapter(traceabilityAdapter);
-                        recyclerView.resetPage();
-                        recyclerView.setOnPaginationHandler(MainTabReportsFragment.this);
-
-                        showRecyclerView();
-                    }
-                } catch (Exception ex) {
-                    DoctorVetApp.get().handle_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
-                } finally {
-                    hideProgressBar();
-                    hideSwipeRefreshLayoutProgressBar();
-                }
-            }
-        });
-    }
-    private void getProductsTraceabilityPagination(Integer page, final DoctorVetApp.VolleyCallbackPagination callbackPagination) {
-        URL url = NetworkUtils.buildGetTraceabilityReportUrl(page, traceabilityProduct.getId(), deposit.getId());
-        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            String data = MySqlGson.getDataFromResponse(response).toString();
-                            Product_traceability.Get_pagination_products response_obj = MySqlGson.getGson().fromJson(data, new TypeToken<Product_traceability.Get_pagination_products>(){}.getType());
                             callbackPagination.onSuccess(response_obj);
                         } catch (Exception ex) {
                             DoctorVetApp.get().handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
@@ -2411,6 +2735,7 @@ public class MainTabReportsFragment extends FragmentBase
             case EXPIRED_AGENDA_VET:
             case PENDING_AGENDA_USER:
             case EXPIRED_AGENDA_USER:
+            case EXPIRED_AGENDA_ALL_VET:
                 getAgendaPagination(recyclerView.getPage(), new DoctorVetApp.VolleyCallbackPagination() {
                     @Override
                     public void onSuccess(Get_pagination pagination) {
@@ -2448,6 +2773,7 @@ public class MainTabReportsFragment extends FragmentBase
             case PENDING_SUPPLY_USER:
             case EXPIRED_SUPPLY_VET:
             case EXPIRED_SUPPLY_USER:
+            case EXPIRED_SUPPLY_ALL_VET:
                 getPendingExpiredSupplyPagination(recyclerView.getPage(), new DoctorVetApp.VolleyCallbackPagination() {
                     @Override
                     public void onSuccess(Get_pagination pagination) {
@@ -2571,7 +2897,7 @@ public class MainTabReportsFragment extends FragmentBase
                         hideProgressBar();
                         if (pagination != null) {
                             ArrayList<Product> productsBelowMinimun = ((Product.Get_pagination_products)pagination).getContent();
-                            productsBelowMinimunAdapter.addItems(productsBelowMinimun);
+                            productsAdapter.addItems(productsBelowMinimun);
                             recyclerView.finishLoading();
                         } else {
                             DoctorVetApp.get().handle_null_adapter("reports", TAG, true);
@@ -2581,8 +2907,8 @@ public class MainTabReportsFragment extends FragmentBase
                 });
                 break;
             case PRODUCTS_TRACEABILITY:
-                if (traceabilityProduct == null || deposit == null) {
-                    Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Establece producto y almacen", Snackbar.LENGTH_SHORT).show();
+                if (selectedProduct == null || deposit == null) {
+                    Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Selecciona producto y almacen", Snackbar.LENGTH_SHORT).show();
                     hideProgressBar();
                     recyclerView.finishLoading();
                     return;
@@ -2691,6 +3017,54 @@ public class MainTabReportsFragment extends FragmentBase
 
             case SELLS:
                 getSellsPagination(recyclerView.getPage(), getFrom(), getTo(), new DoctorVetApp.VolleyCallbackPagination() {
+                    @Override
+                    public void onSuccess(Get_pagination pagination) {
+                        hideProgressBar();
+                        if (pagination != null) {
+                            ArrayList<Sell> sells = ((Sell.Get_pagination_sells)pagination).getContent();
+                            sellsAdapter.addItems(sells);
+                            recyclerView.finishLoading();
+                        } else {
+                            DoctorVetApp.get().handle_null_adapter("reports", TAG, true);
+                            showErrorMessage();
+                        }
+                    }
+                });
+                break;
+
+            case SELLS_BY_OWNER:
+                if (selectedOwner == null) {
+                    Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Selecciona " + DoctorVetApp.get().getOwnerNaming(), Snackbar.LENGTH_SHORT).show();
+                    hideProgressBar();
+                    recyclerView.finishLoading();
+                    return;
+                }
+
+                getSellsByOwnerPagination(recyclerView.getPage(), new DoctorVetApp.VolleyCallbackPagination() {
+                    @Override
+                    public void onSuccess(Get_pagination pagination) {
+                        hideProgressBar();
+                        if (pagination != null) {
+                            ArrayList<Sell> sells = ((Sell.Get_pagination_sells)pagination).getContent();
+                            sellsAdapter.addItems(sells);
+                            recyclerView.finishLoading();
+                        } else {
+                            DoctorVetApp.get().handle_null_adapter("reports", TAG, true);
+                            showErrorMessage();
+                        }
+                    }
+                });
+                break;
+
+            case SELLS_BY_PRODUCT:
+                if (selectedProduct == null) {
+                    Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Selecciona producto", Snackbar.LENGTH_SHORT).show();
+                    hideProgressBar();
+                    recyclerView.finishLoading();
+                    return;
+                }
+
+                getSellsByProductPagination(recyclerView.getPage(), new DoctorVetApp.VolleyCallbackPagination() {
                     @Override
                     public void onSuccess(Get_pagination pagination) {
                         hideProgressBar();
@@ -2841,11 +3215,28 @@ public class MainTabReportsFragment extends FragmentBase
                     }
                 });
                 break;
+
+            case PRODUCTS:
+                getProductsPagination(recyclerView.getPage(), getProductFilter(), new DoctorVetApp.VolleyCallbackPagination() {
+                    @Override
+                    public void onSuccess(Get_pagination pagination) {
+                        hideProgressBar();
+                        if (pagination != null) {
+                            ArrayList<Product> products = ((Product.Get_pagination_products)pagination).getContent();
+                            productsAdapter.addItems(products);
+                            recyclerView.finishLoading();
+                        } else {
+                            DoctorVetApp.get().handle_null_adapter("reports", TAG, true);
+                            showErrorMessage();
+                        }
+                    }
+                });
+                break;
+
         }
     }
 
     private void setFromTo(View rootView) {
-        //linear_from_to = rootView.findViewById(R.id.linear_from_to);
         txt_from = rootView.findViewById(R.id.txt_from);
         ImageView img_search_from = rootView.findViewById(R.id.img_search_from);
         txt_from.getEditText().setOnClickListener(this::onFromSearchClick);
@@ -2864,20 +3255,23 @@ public class MainTabReportsFragment extends FragmentBase
         txt_balance = rootView.findViewById(R.id.txt_balance);
     }
     private void showFromTo(boolean includeTotals) {
-        traceability.setVisibility(View.GONE);
+        hideAllExtensions();
         extensions_container.setVisibility(View.VISIBLE);
         from_to.setVisibility(View.VISIBLE);
-        linear_totals.setVisibility(View.GONE);
 
-        if (includeTotals)
+        if (includeTotals) {
             linear_totals.setVisibility(View.VISIBLE);
+            txt_total.setText("");
+            txt_balance.setText("");
+        }
     }
 
     //traceability
-    private Product traceabilityProduct;
     private Vet_deposit deposit;
     private void setTraceability(View rootView) {
-        actvProducto = rootView.findViewById(R.id.actv_product);
+        actvSelectedProductTraceability = rootView.findViewById(R.id.actv_product_traceability);
+        actvSelectedProductTraceability.setCompletionHint("Producto");
+
         spinner_deposits = rootView.findViewById(R.id.spinner_deposit);
 
         ImageView productSearch = rootView.findViewById(R.id.img_search_product);
@@ -2900,17 +3294,16 @@ public class MainTabReportsFragment extends FragmentBase
         });
     }
     private void showTraceability() {
-        traceability.setVisibility(View.VISIBLE);
+        hideAllExtensions();
         extensions_container.setVisibility(View.VISIBLE);
-        from_to.setVisibility(View.GONE);
-        linear_totals.setVisibility(View.GONE);
+        traceability.setVisibility(View.VISIBLE);
 
         showWaitDialog();
 
         DoctorVetApp.get().getProductsVet(new DoctorVetApp.VolleyCallbackArrayList() {
             @Override
             public void onSuccess(ArrayList resultList) {
-                setProductsAdapter(resultList);
+                setProductsAdapter(resultList, actvSelectedProductTraceability);
 
                 DoctorVetApp.get().getSellsForInput(new DoctorVetApp.VolleyCallbackObject() {
                     @Override
@@ -2925,17 +3318,17 @@ public class MainTabReportsFragment extends FragmentBase
             }
         });
     }
-    private void setProductsAdapter(ArrayList resultList) {
+    private void setProductsAdapter(ArrayList resultList, AutoCompleteTextView actv) {
         ProductsAdapter productsAdapter = new ProductsAdapter(resultList, ProductsAdapter.Products_types.NORMAL);
-        actvProducto.setAdapter(productsAdapter.getAutocompleteAdapter(getContext()));
-        actvProducto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        actv.setAdapter(productsAdapter.getAutocompleteAdapter(getContext()));
+        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Product product = (Product)adapterView.getItemAtPosition(i);
-                traceabilityProduct = product;
+                selectedProduct = product;
             }
         });
-        actvProducto.addTextChangedListener(new TextWatcher() {
+        actv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -2949,11 +3342,11 @@ public class MainTabReportsFragment extends FragmentBase
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().isEmpty())
-                    traceabilityProduct = null;
+                    selectedProduct = null;
             }
         });
-        DoctorVetApp.get().setOnTouchToShowDropDown(actvProducto);
-        DoctorVetApp.get().setAllWidthToDropDown(actvProducto, getActivity());
+        DoctorVetApp.get().setOnTouchToShowDropDown(actv);
+        DoctorVetApp.get().setAllWidthToDropDown(actv, getActivity());
     }
     private void setDepositAdapter(Sell.SellsForInput sellsForInput) {
         VetsDepositsAdapter vetsDepositsAdapter = new VetsDepositsAdapter(sellsForInput.getDeposits());
@@ -2971,6 +3364,7 @@ public class MainTabReportsFragment extends FragmentBase
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -2985,9 +3379,11 @@ public class MainTabReportsFragment extends FragmentBase
                 @Override
                 public void onSuccess(Object resultObject) {
                     if (resultObject != null) {
-                        traceabilityProduct = (Product)resultObject;
-                        actvProducto.setText(traceabilityProduct.getName());
-
+                        selectedProduct = (Product)resultObject;
+                        if (selectedReport == DoctorVetApp.reports.PRODUCTS_TRACEABILITY)
+                            actvSelectedProductTraceability.setText(selectedProduct.getName());
+                        else if (selectedReport == DoctorVetApp.reports.SELLS_BY_PRODUCT)
+                            actvSelectedProductSells.setText(selectedProduct.getName());
                     } else {
                         Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Producto no encontrado", Snackbar.LENGTH_SHORT).show();
                     }
@@ -3000,11 +3396,249 @@ public class MainTabReportsFragment extends FragmentBase
         //busquedas
         if (requestCode == HelperClass.REQUEST_SEARCH && data != null) {
             if (data.hasExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_OBJ.name())) {
-                traceabilityProduct = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_OBJ.name()), Product.class);
-                actvProducto.setText(traceabilityProduct.getName());
+                selectedProduct = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_OBJ.name()), Product.class);
+                if (selectedReport == DoctorVetApp.reports.PRODUCTS_TRACEABILITY)
+                    actvSelectedProductTraceability.setText(selectedProduct.getName());
+                else if (selectedReport == DoctorVetApp.reports.SELLS_BY_PRODUCT)
+                    actvSelectedProductSells.setText(selectedProduct.getName());
+            } else if (data.hasExtra(DoctorVetApp.INTENT_VALUES.OWNER_OBJ.name())) {
+                selectedOwner = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.OWNER_OBJ.name()), Owner.class);
+                actvSelectedOwner.setText(selectedOwner.getName());
             }
         }
 
+    }
+
+    //products
+    private void setProducts(View rootView) {
+        txt_product_filter = rootView.findViewById(R.id.txt_filter_products);
+    }
+    private void showProducts() {
+        hideAllExtensions();
+        extensions_container.setVisibility(View.VISIBLE);
+        products.setVisibility(View.VISIBLE);
+        img_download.setVisibility(View.VISIBLE);
+    }
+    private void showProductsReport() {
+        showProgressBar();
+
+        showProducts();
+
+        getProductsPagination(1, getProductFilter(), new DoctorVetApp.VolleyCallbackPagination() {
+            @Override
+            public void onSuccess(Get_pagination pagination) {
+                try {
+                    ArrayList<Product> products = ((Product.Get_pagination_products)pagination).getContent();
+                    productsAdapter = new ProductsAdapter(products, ProductsAdapter.Products_types.NORMAL);
+
+                    if (productsAdapter.getItemCount() != 0) {
+                        recyclerView.setAdapter(productsAdapter);
+                        recyclerView.resetPage();
+                        recyclerView.setOnPaginationHandler(MainTabReportsFragment.this);
+
+                        showRecyclerView();
+                    }
+                } catch (Exception ex) {
+                    DoctorVetApp.get().handle_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                } finally {
+                    hideProgressBar();
+                    hideSwipeRefreshLayoutProgressBar();
+                }
+            }
+        });
+    }
+    private void getProductsPagination(Integer page, String product_filter, final DoctorVetApp.VolleyCallbackPagination callbackPagination) {
+        URL url = NetworkUtils.buildGetReportsProductsUrl(page, product_filter);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String data = MySqlGson.getDataFromResponse(response).toString();
+                            Product.Get_pagination_products response_obj = MySqlGson.getGson().fromJson(data, new TypeToken<Product.Get_pagination_products>(){}.getType());
+                            callbackPagination.onSuccess(response_obj);
+                        } catch (Exception ex) {
+                            DoctorVetApp.get().handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                            callbackPagination.onSuccess(null);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DoctorVetApp.get().handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                        callbackPagination.onSuccess(null);
+                    }
+                }
+        );
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+    private String getProductFilter() {
+        return txt_product_filter.getEditText().getText().toString();
+    }
+    private void downloadProductsExcel() {
+        showProgressBar();
+        txtInfo.setVisibility(View.VISIBLE);
+
+        URL url = NetworkUtils.buildGetReportsUrl("PRODUCTS_EXCEL", 1);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    String data = MySqlGson.getDataFromResponse(response).toString();
+                    String path = HelperClass.writeToFile(data, getContext(), "products_excel.xlsx");
+                    txtInfo.setText("Archivo guardado en: " + path);
+                    HelperClass.viewFile(path, getContext());
+                } catch (Exception ex) {
+                    DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
+                } finally {
+                    hideProgressBar();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DoctorVetApp.get().handle_volley_error(error, TAG, true);
+                hideProgressBar();
+            }
+        });
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+    private void downloadServicesBarcodes() {
+        showProgressBar();
+        txtInfo.setVisibility(View.VISIBLE);
+
+        URL url = NetworkUtils.buildGetReportsUrl("SERVICES_BARCODES", 1);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    String data = MySqlGson.getDataFromResponse(response).toString();
+                    String path = HelperClass.writeToFile(data, getContext(), "services_barcodes.pdf");
+                    txtInfo.setText("Archivo guardado en: " + path);
+                    HelperClass.viewPdf("services_barcodes.pdf", getContext());
+                } catch (Exception ex) {
+                    DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
+                } finally {
+                    hideProgressBar();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DoctorVetApp.get().handle_volley_error(error, TAG, true);
+                hideProgressBar();
+            }
+        });
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+    private void showProductsTraceabilityReport() {
+
+        if (spinner_deposits.getAdapter() == null) {
+            showTraceability();
+            return;
+        }
+
+        if (selectedProduct == null || deposit == null) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(getActivity()), "Selecciona producto y almacen", Snackbar.LENGTH_SHORT).show();
+            hideProgressBar();
+            hideSwipeRefreshLayoutProgressBar();
+            return;
+        }
+
+        showProgressBar();
+
+        getProductsTraceabilityPagination(1, new DoctorVetApp.VolleyCallbackPagination() {
+            @Override
+            public void onSuccess(Get_pagination pagination) {
+                try {
+                    ArrayList<Product_traceability> productTraceabilities = ((Product_traceability.Get_pagination_products)pagination).getContent();
+                    traceabilityAdapter = new ProductsTraceabilityAdapter(productTraceabilities);
+
+                    if (traceabilityAdapter.getItemCount() != 0) {
+                        recyclerView.setAdapter(traceabilityAdapter);
+                        recyclerView.resetPage();
+                        recyclerView.setOnPaginationHandler(MainTabReportsFragment.this);
+
+                        showRecyclerView();
+                    }
+                } catch (Exception ex) {
+                    DoctorVetApp.get().handle_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                } finally {
+                    hideProgressBar();
+                    hideSwipeRefreshLayoutProgressBar();
+                }
+            }
+        });
+    }
+    private void getProductsTraceabilityPagination(Integer page, final DoctorVetApp.VolleyCallbackPagination callbackPagination) {
+        URL url = NetworkUtils.buildGetTraceabilityReportUrl(page, selectedProduct.getId(), deposit.getId());
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String data = MySqlGson.getDataFromResponse(response).toString();
+                            Product_traceability.Get_pagination_products response_obj = MySqlGson.getGson().fromJson(data, new TypeToken<Product_traceability.Get_pagination_products>(){}.getType());
+                            callbackPagination.onSuccess(response_obj);
+                        } catch (Exception ex) {
+                            DoctorVetApp.get().handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                            callbackPagination.onSuccess(null);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DoctorVetApp.get().handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                        callbackPagination.onSuccess(null);
+                    }
+                }
+        );
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+
+    private void downloadReport() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Selecciona una opción");
+
+        switch (selectedReport) {
+            case PRODUCTS:
+                final String[] options = {"Productos", "Códigos de barras para servicios"};
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String selectedOption = options[which];
+                            if (selectedOption.equalsIgnoreCase("Productos"))
+                                downloadProductsExcel();
+
+                            if (selectedOption.equalsIgnoreCase("Códigos de barras para servicios"))
+                                downloadServicesBarcodes();
+                        }
+                    });
+                builder.create().show();
+                break;
+
+            case SELLS:
+                final String[] options_sells = {"Ventas", "Ventas detalle"};
+                builder.setItems(options_sells, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String selectedOption = options_sells[which];
+                            if (selectedOption.equalsIgnoreCase("Ventas"))
+                                downloadSellsXlsx();
+
+                            if (selectedOption.equalsIgnoreCase("Ventas detalle"))
+                                downloadSellsDetailsXlsx();
+                        }
+                    });
+                builder.create().show();
+                break;
+
+            case SUPPLY:
+                downloadSupplyXlsx();
+                break;
+        }
     }
 
 }

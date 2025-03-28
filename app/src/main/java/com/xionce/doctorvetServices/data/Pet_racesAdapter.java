@@ -45,9 +45,9 @@ public class Pet_racesAdapter extends RecyclerView.Adapter<Pet_racesAdapter.Raza
 
         String thumb_url = petrace.getThumb_url();
         if (thumb_url != null) {
-            Glide.with(RazasAdapterViewHolder.img_thumb.getContext()).load(thumb_url).apply(RequestOptions.circleCropTransform()).apply(RequestOptions.placeholderOf(R.drawable.ic_dog)).into(RazasAdapterViewHolder.img_thumb);
+            Glide.with(RazasAdapterViewHolder.img_thumb.getContext()).load(thumb_url).apply(RequestOptions.circleCropTransform()).apply(RequestOptions.placeholderOf(R.drawable.ic_pets_light)).into(RazasAdapterViewHolder.img_thumb);
         } else {
-            Glide.with(RazasAdapterViewHolder.img_thumb.getContext()).load(R.drawable.ic_dog).apply(RequestOptions.circleCropTransform()).into(RazasAdapterViewHolder.img_thumb);
+            Glide.with(RazasAdapterViewHolder.img_thumb.getContext()).load(R.drawable.ic_pets_light).apply(RequestOptions.circleCropTransform()).into(RazasAdapterViewHolder.img_thumb);
         }
     }
 

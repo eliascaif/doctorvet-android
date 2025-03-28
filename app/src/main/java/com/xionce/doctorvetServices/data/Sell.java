@@ -1,9 +1,8 @@
 package com.xionce.doctorvetServices.data;
 
-import android.view.View;
-
 import com.google.gson.annotations.Expose;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +32,8 @@ public class Sell {
     private ArrayList<Finance_payment_method> payments;
     @Expose
     private Vet_info vet_info;
+    @Expose
+    private ArrayList<Pet_supply> upcoming_supplies;
 
     private Integer receipt_number;
     private Integer invoiced;
@@ -45,6 +46,7 @@ public class Sell {
     private Finance_types_receipts finance_types_receipt;
     private Integer sell_point_number;
     private User user;
+    private Integer suggested_values_established;
 
     public Finance_types_receipts getFinance_types_receipt() {
         return finance_types_receipt;
@@ -245,6 +247,31 @@ public class Sell {
     public User getUser() {
         return user;
     }
+    public Integer getSuggested_values_established() {
+        return suggested_values_established;
+    }
+    public void setSuggested_values_established(Integer suggested_values_established) {
+        this.suggested_values_established = suggested_values_established;
+    }
+    public ArrayList<Pet_supply> getUpcoming_supplies() {
+        return upcoming_supplies;
+    }
+    public void setUpcoming_supplies(ArrayList<Pet_supply> upcoming_supplies) {
+        this.upcoming_supplies = upcoming_supplies;
+    }
+    public ArrayList<Pet_supply> getUpcoming_supplies_new_and_updated() {
+        ArrayList<Pet_supply> pet_supplies = new ArrayList<>();
+        for (Pet_supply pet_supply:upcoming_supplies) {
+            Boolean add = (pet_supply.getPlanning_activity_new() != null
+                            && pet_supply.getPlanning_activity_new() == 1)
+                            || pet_supply.getDate_supply() != null;
+
+            if (add)
+                pet_supplies.add(pet_supply);
+        }
+
+        return pet_supplies;
+    }
 
     public class Get_pagination_sells extends Get_pagination {
         @Expose
@@ -275,19 +302,10 @@ public class Sell {
     }
 
     public class SellsForInput {
-//        private ArrayList<Product> products;
         private Vet_info vet_info;
         private ArrayList<Finance_payment_method> finance_types_payments;
         private ArrayList<Vet_deposit> deposits;
         private ArrayList<Vet_point> sell_points;
-
-//        public ArrayList<Product> getProducts() {
-//            return products;
-//        }
-//
-//        public void setProducts(ArrayList<Product> products) {
-//            this.products = products;
-//        }
 
         public Vet_info getVet_info() {
             return vet_info;
@@ -313,7 +331,6 @@ public class Sell {
         public void setSell_points(ArrayList<Vet_point> vet_points) {
             this.sell_points = vet_points;
         }
-
     }
 
 }

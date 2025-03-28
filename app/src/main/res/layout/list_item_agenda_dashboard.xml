@@ -24,7 +24,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
         app:layout_constraintStart_toEndOf="@+id/img_thumb"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/img_check"
+        app:layout_constraintEnd_toStartOf="@id/img_reschedule"
         android:layout_marginHorizontal="8dp"
         />
 
@@ -40,7 +40,7 @@
         android:maxLines="1"
         app:layout_constraintStart_toEndOf="@id/img_thumb"
         app:layout_constraintTop_toBottomOf="@id/txt_pet_name"
-        app:layout_constraintEnd_toStartOf="@id/img_check"
+        app:layout_constraintEnd_toStartOf="@id/img_reschedule"
         />
 
     <TextView
@@ -54,9 +54,20 @@
         android:maxLines="1"
         app:layout_constraintStart_toEndOf="@id/img_thumb"
         app:layout_constraintTop_toBottomOf="@id/txt_pet_owners"
-        app:layout_constraintEnd_toStartOf="@id/img_check"
+        app:layout_constraintEnd_toStartOf="@id/img_reschedule"
         />
 
+    <ImageView
+        android:id="@+id/img_reschedule"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ic_arrow_right_alt_48px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_check"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="center"
+        />
 
     <ImageView
         android:id="@+id/img_check"

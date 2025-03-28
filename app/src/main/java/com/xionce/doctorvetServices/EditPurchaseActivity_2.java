@@ -217,7 +217,7 @@ public class EditPurchaseActivity_2 extends EditBaseActivity {
         Purchase purchase = getPurchase();
 
         if (!validateNullProviderAndTotalPay(purchase)) {
-            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Selecciona distribuidor para registrar el saldo de deuda.", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Selecciona distribuidor para registrar saldo acreedor.", Snackbar.LENGTH_LONG).show();
             return;
         }
 

@@ -85,7 +85,7 @@ public class SearchProductStudyActivity extends SearchActivityBase implements He
         Intent intent = getIntent();
 
         if (intent.getBooleanExtra(DoctorVetApp.INTENT_SEARCH_VIEW, false)) {
-            Intent activity = new Intent(SearchProductStudyActivity.this, ViewProductVetActivity.class);
+            Intent activity = new Intent(SearchProductStudyActivity.this, ViewProductActivity.class);
             activity.putExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_ID.name(), product.getId());
             startActivity(activity);
         } else if (intent.getBooleanExtra(DoctorVetApp.INTENT_SEARCH_RETURN, false)) {

@@ -20,7 +20,7 @@
         android:id="@+id/txt_product"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="product/servicio"
+        android:text="producto/servicio"
         app:layout_constraintStart_toEndOf="@+id/img_thumb"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,17 +48,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/TextAppearance.AppCompat.Caption"
         />
-
-<!--    <TextView-->
-<!--        android:id="@+id/txt_subtotal"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="subtotal"-->
-<!--        android:layout_margin="8dp"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/img_remove"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        style="@style/TextAppearance.AppCompat.Caption"-->
-<!--        />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

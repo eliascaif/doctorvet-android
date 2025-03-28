@@ -1,8 +1,14 @@
 package com.xionce.doctorvetServices;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -10,6 +16,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -25,13 +34,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xionce.doctorvetServices.data.User;
+import com.xionce.doctorvetServices.data.Users_permissions;
 import com.xionce.doctorvetServices.data.Vet;
 import com.xionce.doctorvetServices.utilities.HelperClass;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BottomSheetDialog.BottomSheetListener  {
+        implements NavigationView.OnNavigationItemSelectedListener, BottomSheetDialog.BottomSheetListener2 {
 
     private static final String TAG = "MainActivity";
     private Toolbar toolbar;
@@ -41,7 +52,8 @@ public class MainActivity extends AppCompatActivity
     MenuItem searchMenuItem;
     NavigationView navigationView;
 
-    public enum TAB_NAV_PANELS { HOME, PETS, OWNERS, AGENDA, DAILY_CASH, REPORTS  }
+    public enum TAB_NAV_PANELS {HOME, PETS, OWNERS, AGENDA, DAILY_CASH, REPORTS}
+
     private TAB_NAV_PANELS tabInUse;
 
     //to prevent fast taps
@@ -132,14 +144,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 long now = System.currentTimeMillis();
-                if (now - mLastClickTime < CLICK_TIME_INTERVAL) return;
-                mLastClickTime = now;
+                if (now - mLastClickTime < CLICK_TIME_INTERVAL)
+                    return;
 
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                b.putString("general", "true");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                mLastClickTime = now;
+                //showBottomSheetDialog();
+                showBottomSheetDialog();
             }
         });
 
@@ -163,30 +173,24 @@ public class MainActivity extends AppCompatActivity
 
                 switch (tabInUse) {
                     case HOME:
-                        //navigationView.setCheckedItem(R.id.nav_home);
                         toolbar.setTitle(R.string.inicio);
                         break;
                     case OWNERS:
-                        //navigationView.setCheckedItem(R.id.nav_owners);
                         toolbar.setTitle(DoctorVetApp.get().getOwnerNamingPlural());
                         showMoreItem(true);
                         showSearchItem(true);
                         break;
                     case PETS:
-                        //navigationView.setCheckedItem(R.id.nav_pets);
                         toolbar.setTitle(DoctorVetApp.get().getPetNamingPlural());
                         showSearchItem(true);
                         break;
                     case AGENDA:
-                        //navigationView.setCheckedItem(R.id.nav_agenda);
-                        toolbar.setTitle(getString(R.string.agenda));
+                        toolbar.setTitle(DoctorVetApp.get().getAgendaTitle());
                         break;
                     case DAILY_CASH:
-                        //navigationView.setCheckedItem(R.id.nav_daily_cash);
-                        toolbar.setTitle(getString(R.string.daily_cash));
+                        toolbar.setTitle(DoctorVetApp.get().getDailyCashTitle());
                         break;
                     case REPORTS:
-                        //navigationView.setCheckedItem(R.id.nav_reportes);
                         toolbar.setTitle(getString(R.string.reportes));
                         break;
                 }
@@ -197,6 +201,44 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+        //users custom main - ver 16
+        Users_permissions usersPermissions = DoctorVetApp.get().getUser().getPermissions();
+        if (usersPermissions == null) {
+            DoctorVetApp.get().setUsersPermissionsDueToVer16(new DoctorVetApp.VolleyCallback() {
+                @Override
+                public void onSuccess(Boolean result) {
+                    if (result)
+                        setMainUIBasedOnPermissions(DoctorVetApp.get().getUser().getPermissions());
+                }
+            });
+        } else {
+            setMainUIBasedOnPermissions(usersPermissions);
+        }
+
+        //FCM messaging
+        if (!DoctorVetApp.get().existsLocalUserNotificationToken()) {
+            DoctorVetApp.get().firebaseGetNotificationToken();
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            String channelId  = getString(R.string.default_notification_channel_id);
+            String channelName = getString(R.string.default_notification_channel_name);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW));
+        }
+
+        //push messages permission
+        askNotificationPermission();
+
+        // Handle possible data accompanying notification message.
+        if (existsFCMMessageWithPetID()) {
+            Intent intent = new Intent(this, ViewPetActivity.class);
+            intent.putExtra(DoctorVetApp.INTENT_VALUES.PET_ID.name(), getFCMMessagePetID());
+            getIntent().removeExtra(DoctorVetApp.INTENT_VALUES.PET_ID.name());
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -351,9 +393,42 @@ public class MainActivity extends AppCompatActivity
             navigationView.setCheckedItem(R.id.nav_reportes);
         }
     }
+    private void setMainUIBasedOnPermissions(Users_permissions permissions) {
+        //navigationView.getMenu().getItem(TAB_NAV_PANELS.AGENDA.ordinal()).setTitle(DoctorVetApp.get().getAgendaTitle());
+        navigationView.getMenu().getItem(TAB_NAV_PANELS.DAILY_CASH.ordinal()).setTitle(DoctorVetApp.get().getDailyCashTitle());
+    }
+    private void showBottomSheetDialog() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, getClass().getSimpleName());
+        bottomSheetDialog.show(getSupportFragmentManager(), null);
+    }
+    private void askNotificationPermission() {
+        // This is only necessary for API Level > 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            boolean notificationPermissionGranted = ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
+
+            if (!notificationPermissionGranted) {
+                // ask for the permission
+                //requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS);
+                ActivityCompat.requestPermissions(this, new String[]{ android.Manifest.permission.POST_NOTIFICATIONS }, 100);
+            }
+        }
+    }
+    private boolean existsFCMMessageWithPetID() {
+        //FCM message
+        if (getIntent().getExtras() != null) {
+            Object id_pet = getIntent().getExtras().get(DoctorVetApp.INTENT_VALUES.PET_ID.name());
+            if (id_pet != null)
+                return true;
+        }
+
+        return false;
+    }
+    private Integer getFCMMessagePetID() {
+        return getIntent().getIntExtra(DoctorVetApp.INTENT_VALUES.PET_ID.name(), 0);
+    }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         DoctorVetApp.get().handleGeneralBottomSheetClick(buttonClicked, MainActivity.this);
     }
 

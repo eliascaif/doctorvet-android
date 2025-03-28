@@ -49,51 +49,24 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_region"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            app:errorTextAppearance="@style/TextLimitError">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_region"
-                android:layout_width="0dp"
+            <AutoCompleteTextView
+                android:id="@+id/actv_region"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                app:errorTextAppearance="@style/TextLimitError"
-                app:layout_constraintEnd_toStartOf="@+id/img_search_region"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:completionThreshold="1"
+                android:hint="@string/name_region"
+                android:imeOptions="actionNext"
+                android:inputType="textAutoComplete"
+                android:maxLength="120"
+                android:nextFocusForward="@id/txt_phone" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/actv_region"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="120"
-                    android:hint="@string/name_region"
-                    android:completionThreshold="1"
-                    android:inputType="textAutoComplete"
-                    android:imeOptions="actionNext"
-                    android:nextFocusForward="@id/txt_phone"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <ImageView
-                android:id="@+id/img_search_region"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="4dp"
-                android:padding="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_search" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_phone"
@@ -135,6 +108,25 @@
                 android:hint="@string/identificacion_regional"
                 android:maxLength="50"
                 android:inputType="text"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_fiscal_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorTextAppearance="@style/TextLimitError"
+            >
+
+            <AutoCompleteTextView
+                android:id="@+id/actv_fiscal_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="120"
+                android:hint="Tipo fiscal"
+                android:completionThreshold="1"
+                android:inputType="textAutoComplete"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>

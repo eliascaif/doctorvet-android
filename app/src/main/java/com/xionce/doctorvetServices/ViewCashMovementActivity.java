@@ -20,7 +20,7 @@ import com.xionce.doctorvetServices.utilities.TokenStringRequest;
 import java.net.URL;
 
 public class ViewCashMovementActivity extends ViewBaseActivity
-        implements BottomSheetDialog.BottomSheetListener, DoctorVetApp.IProgressBarActivity {
+        implements BottomSheetDialog.BottomSheetListener2, DoctorVetApp.IProgressBarActivity {
 
     private static final String TAG = "ViewCashMovementActivit";
     private TextView txt_date;
@@ -45,11 +45,8 @@ public class ViewCashMovementActivity extends ViewBaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                b.putString("cash_movement_specific", "true");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewCashMovementActivity.this, "ViewCashMovementActivity");
+                bottomSheetDialog.show(getSupportFragmentManager(), null);
             }
         });
 
@@ -132,8 +129,8 @@ public class ViewCashMovementActivity extends ViewBaseActivity
             public void onClick(DialogInterface dialog, int which) {
                 showWaitDialog();
                 final Integer idCashMovement = getIdCashMovement();
-                URL deleteUrl = NetworkUtils.buildDeleteCashMovementUrl(idCashMovement);
-                TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.DELETE, deleteUrl.toString(),
+                URL url = NetworkUtils.buildDeleteCashMovementUrl(idCashMovement);
+                TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.DELETE, url.toString(),
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -145,7 +142,7 @@ public class ViewCashMovementActivity extends ViewBaseActivity
                                     showErrorToast(getString(R.string.error_borrando_registro), TAG);
                                 }
                             } catch (Exception ex) {
-                                DoctorVetApp.get().handle_onResponse_error(ex, /*ViewCashMovementActivity.this,*/ TAG, true, response);
+                                DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
                             } finally {
                                 hideWaitDialog();
                             }
@@ -154,7 +151,7 @@ public class ViewCashMovementActivity extends ViewBaseActivity
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            DoctorVetApp.get().handle_volley_error(error, /*ViewCashMovementActivity.this,*/ TAG, true);
+                            DoctorVetApp.get().handle_volley_error(error, TAG, true);
                             hideWaitDialog();
                         }
                     }
@@ -177,7 +174,7 @@ public class ViewCashMovementActivity extends ViewBaseActivity
     }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         if (!loadedFinished) {
             Snackbar.make(DoctorVetApp.getRootForSnack(this), R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
             return;

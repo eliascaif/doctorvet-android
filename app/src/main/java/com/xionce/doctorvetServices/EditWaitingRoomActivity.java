@@ -54,7 +54,7 @@ public class EditWaitingRoomActivity extends EditBaseActivity {
         list_item_selected_user = findViewById(R.id.list_item_selected_user);
         spinnerVetStructure = findViewById(R.id.spinner_site);
         ImageView img_thumb_pet = list_item_selected_pet.findViewById(R.id.img_thumb);
-        Glide.with(this).load(R.drawable.ic_dog).apply(RequestOptions.fitCenterTransform()).into(img_thumb_pet);
+        Glide.with(this).load(R.drawable.ic_pets_light).apply(RequestOptions.fitCenterTransform()).into(img_thumb_pet);
         hideToolbarImage();
 
         //Data
@@ -338,15 +338,7 @@ public class EditWaitingRoomActivity extends EditBaseActivity {
     private void setPetInView(Pet pet) {
         ImageView img_thumb = list_item_selected_pet.findViewById(R.id.img_thumb);
         TextView txt_name = list_item_selected_pet.findViewById(R.id.txt_item_name);
-
-//        Context ctx = img_thumb.getContext();
-//        String thumb_url = pet.getThumb_url();
-//        if (thumb_url != null) {
-//            Glide.with(ctx).load(thumb_url).apply(RequestOptions.fitCenterTransform()).apply(RequestOptions.circleCropTransform()).into(img_thumb);
-//        } else {
-//            Glide.with(ctx).load(R.drawable.ic_dog).apply(RequestOptions.fitCenterTransform()).into(img_thumb);
-//        }
-        DoctorVetApp.get().setThumb(pet.getThumb_url(), img_thumb, R.drawable.ic_dog);
+        DoctorVetApp.get().setThumb(pet.getThumb_url(), img_thumb, R.drawable.ic_pets_light);
 
         txt_name.setText(pet.getName());
     }
@@ -355,7 +347,7 @@ public class EditWaitingRoomActivity extends EditBaseActivity {
         ImageView img_thumb = list_item_selected_pet.findViewById(R.id.img_thumb);
         TextView txt_name = list_item_selected_pet.findViewById(R.id.txt_item_name);
         Context ctx = img_thumb.getContext();
-        Glide.with(ctx).load(R.drawable.ic_dog).apply(RequestOptions.fitCenterTransform()).into(img_thumb);
+        Glide.with(ctx).load(R.drawable.ic_pets_light).apply(RequestOptions.fitCenterTransform()).into(img_thumb);
         txt_name.setText("SELECCIONAR");
     }
     private void setUserInView(User user) {

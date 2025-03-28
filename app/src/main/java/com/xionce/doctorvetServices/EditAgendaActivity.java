@@ -76,7 +76,7 @@ public class EditAgendaActivity extends EditBaseActivity {
         ImageView img_thumb_owner = list_item_sell_owner.findViewById(R.id.img_thumb);
         ImageView img_thumb_pet = list_item_sell_pet.findViewById(R.id.img_thumb);
         Glide.with(this).load(R.drawable.ic_account_circle_light).apply(RequestOptions.fitCenterTransform()).into(img_thumb_owner);
-        Glide.with(this).load(R.drawable.ic_dog).apply(RequestOptions.fitCenterTransform()).into(img_thumb_pet);
+        Glide.with(this).load(R.drawable.ic_pets_light).apply(RequestOptions.fitCenterTransform()).into(img_thumb_pet);
         list_item_selected_user = findViewById(R.id.list_item_selected_user);
         ImageView remove_user = list_item_selected_user.findViewById(R.id.img_remove);
         remove_user.setVisibility(View.INVISIBLE);
@@ -393,15 +393,24 @@ public class EditAgendaActivity extends EditBaseActivity {
     protected Agenda getObjectFromUI() {
         Agenda agenda = getObject();
         agenda.setEvent_name(txtEventName.getEditText().getText().toString());
-
-        if (!txtDescription.getEditText().getText().toString().isEmpty())
-            agenda.setDescription(txtDescription.getEditText().getText().toString());
+        agenda.setDescription(txtDescription.getEditText().getText().toString());
 
         //fecha
         String fecha_hora = txtBeginTime.getEditText().getText().toString() + " " + txtBeginTimeHora.getEditText().getText().toString();
         agenda.setBegin_time(HelperClass.getShortDateTime(fecha_hora, getBaseContext()));
-        String fecha_hora_fin = txtEndTime.getEditText().getText().toString() + " " + txtEndTimeHora.getEditText().getText().toString();
-        agenda.setEnd_time(HelperClass.getShortDateTime(fecha_hora_fin, getBaseContext()));
+
+        //
+        agenda.setEnd_time(null);
+        boolean end_time_exists = !txtEndTime.getEditText().getText().toString().isEmpty()
+                                    && !txtEndTimeHora.getEditText().getText().toString().isEmpty();
+
+        if (end_time_exists) {
+            String fecha_hora_fin = txtEndTime.getEditText().getText().toString() + " " + txtEndTimeHora.getEditText().getText().toString();
+            agenda.setEnd_time(HelperClass.getShortDateTime(fecha_hora_fin, getBaseContext()));
+        }
+
+//        String fecha_hora_fin = txtEndTime.getEditText().getText().toString() + " " + txtEndTimeHora.getEditText().getText().toString();
+//        agenda.setEnd_time(HelperClass.getShortDateTime(fecha_hora_fin, getBaseContext()));
 
         if (chk_private_task.isChecked())
             agenda.setPrivate_task(1);
@@ -538,7 +547,7 @@ public class EditAgendaActivity extends EditBaseActivity {
     private void setPetInView(Pet pet) {
         ImageView img_thumb = list_item_sell_pet.findViewById(R.id.img_thumb);
         TextView txt_name = list_item_sell_pet.findViewById(R.id.txt_item_name);
-        DoctorVetApp.get().setThumb(pet.getThumb_url(), img_thumb, R.drawable.ic_dog);
+        DoctorVetApp.get().setThumb(pet.getThumb_url(), img_thumb, R.drawable.ic_pets_light);
         txt_name.setText(pet.getName());
     }
     private void removePetInView() {
@@ -546,7 +555,7 @@ public class EditAgendaActivity extends EditBaseActivity {
         ImageView img_thumb = list_item_sell_pet.findViewById(R.id.img_thumb);
         TextView txt_name = list_item_sell_pet.findViewById(R.id.txt_item_name);
         Context ctx = img_thumb.getContext();
-        Glide.with(ctx).load(R.drawable.ic_dog).apply(RequestOptions.fitCenterTransform()).into(img_thumb);
+        Glide.with(ctx).load(R.drawable.ic_pets_light).apply(RequestOptions.fitCenterTransform()).into(img_thumb);
         txt_name.setText("SELECCIONAR");
     }
     private void setOwnerInView(Owner owner) {
@@ -602,7 +611,7 @@ public class EditAgendaActivity extends EditBaseActivity {
     }
     private boolean validateEndHour() {
         if (!txtEndTime.getEditText().getText().toString().isEmpty())
-            return HelperClass.validateHour(txtBeginTimeHora, false);
+            return HelperClass.validateHour(txtEndTimeHora, false);
 
         return true;
     }

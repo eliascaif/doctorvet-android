@@ -59,9 +59,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.safetynet.SafetyNet;
 import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -71,8 +74,10 @@ import com.xionce.doctorvetServices.data.Daily_cash;
 import com.xionce.doctorvetServices.data.Dashboard;
 import com.xionce.doctorvetServices.data.Diagnostic;
 import com.xionce.doctorvetServices.data.DiagnosticsAdapter;
+import com.xionce.doctorvetServices.data.FinanceTypesFiscalAdapter;
 import com.xionce.doctorvetServices.data.FinanceTypesReceiptsAdapter;
 import com.xionce.doctorvetServices.data.Finance_payment_method;
+import com.xionce.doctorvetServices.data.Finance_types_fiscal;
 import com.xionce.doctorvetServices.data.Finance_types_receipts;
 import com.xionce.doctorvetServices.data.Get_pagination;
 import com.xionce.doctorvetServices.data.Cash_movement;
@@ -101,6 +106,7 @@ import com.xionce.doctorvetServices.data.Region;
 import com.xionce.doctorvetServices.data.Pet_gendersAdapter;
 import com.xionce.doctorvetServices.data.Resource;
 import com.xionce.doctorvetServices.data.Sell;
+import com.xionce.doctorvetServices.data.Sell_item;
 import com.xionce.doctorvetServices.data.SellsAdapter;
 import com.xionce.doctorvetServices.data.Service_schedule;
 import com.xionce.doctorvetServices.data.ServicesSchedulesAdapter;
@@ -109,6 +115,7 @@ import com.xionce.doctorvetServices.data.Symptom;
 import com.xionce.doctorvetServices.data.Treatment;
 import com.xionce.doctorvetServices.data.Update_table;
 import com.xionce.doctorvetServices.data.User;
+import com.xionce.doctorvetServices.data.Users_permissions;
 import com.xionce.doctorvetServices.data.Vet_point;
 import com.xionce.doctorvetServices.data.Vet;
 import com.xionce.doctorvetServices.data.Vet_deposit;
@@ -216,7 +223,8 @@ public class DoctorVetApp extends Application {
 
         NEW_VET_USERS("Nuevos usuarios"),
 
-        PRODUCTS_EXCEL("Productos Excel"),
+        PRODUCTS("Productos"),
+//        PRODUCTS_EXCEL("Productos Excel"),
         PRODUCTS_BELOW_MINIMUN("Productos por debajo del mínimo"),
         PRODUCTS_TRACEABILITY("Productos trazabilidad"),
 
@@ -226,7 +234,7 @@ public class DoctorVetApp extends Application {
         WAITING_ROOM(DoctorVetApp.get().getApplicationContext().getString(R.string.waiting_room)),
         WAITING_ROOM_AUTO_DELETED(DoctorVetApp.get().getApplicationContext().getString(R.string.waiting_room_auto_deleted)),
 
-        SERVICES_BARCODES("Servicios códigos de barras"),
+//        SERVICES_BARCODES("Servicios códigos de barras"),
 
         USER_JOIN_REQUEST("Solicitudes de unión"),
 
@@ -242,7 +250,9 @@ public class DoctorVetApp extends Application {
         EXPIRED_SUPPLY_USER(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_supply_user)),
         EXPIRED_SUPPLY_ALL_VET(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_supply_all_vet)),
 
-        SELLS("Ventas");
+        SELLS("Ventas"),
+        SELLS_BY_OWNER("Ventas por " + DoctorVetApp.get().getOwnerNaming().toLowerCase()),
+        SELLS_BY_PRODUCT("Ventas por producto");
 
         private final String friendlyName;
 
@@ -256,70 +266,45 @@ public class DoctorVetApp extends Application {
         }
 
         public static reports getEnumVal(String friendlyName) {
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_pending_appointments_tasks_vet)))
-                return PENDING_AGENDA_VET;
-            if (friendlyName.equals("Agenda de mañana"))
-                return TOMORROW_AGENDA_VET;
-            if (friendlyName.equals("Agenda de mañana (usr)"))
-                return TOMORROW_AGENDA_USER;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_pending_appointments_tasks_user)))
-                return PENDING_AGENDA_USER;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_appointments_tasks_vet)))
-                return EXPIRED_AGENDA_VET;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_appointments_tasks_user)))
-                return EXPIRED_AGENDA_USER;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_appointments_tasks_all_vet)))
-                return EXPIRED_AGENDA_ALL_VET;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_birthdays)))
-                return BIRTHDAY_PETS;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_pending_supply_vet)))
-                return PENDING_SUPPLY_VET;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_pending_supply_user)))
-                return PENDING_SUPPLY_USER;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_supply_vet)))
-                return EXPIRED_SUPPLY_VET;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_supply_user)))
-                return EXPIRED_SUPPLY_USER;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_domiciliary_pending_supply_vet)))
-                return DOMICILIARY_PENDING_SUPPLY_VET;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_supply_all_vet)))
-                return EXPIRED_SUPPLY_ALL_VET;
-
-            if (friendlyName.equals("Suministro de mañana"))
-                return TOMORROW_SUPPLY_VET;
-            if (friendlyName.equals("Suministro de mañana (usr)"))
-                return TOMORROW_SUPPLY_USER;
-
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_owners_notifications)))
-                return OWNERS_NOTIFICATIONS;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_owners_debtors)))
-                return DEBTORS;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_owners_debtors_tolerance)))
-                return DEBTORS_TOLERANCE;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_providers_creditors)))
-                return CREDITORS;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_providers_creditors_tolerance)))
-                return CREDITORS_TOLERANCE;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_pending_appointments_tasks_vet))) return PENDING_AGENDA_VET;
+            if (friendlyName.equals("Agenda de mañana")) return TOMORROW_AGENDA_VET;
+            if (friendlyName.equals("Agenda de mañana (usr)")) return TOMORROW_AGENDA_USER;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_pending_appointments_tasks_user))) return PENDING_AGENDA_USER;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_appointments_tasks_vet))) return EXPIRED_AGENDA_VET;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_appointments_tasks_user))) return EXPIRED_AGENDA_USER;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_appointments_tasks_all_vet))) return EXPIRED_AGENDA_ALL_VET;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_birthdays))) return BIRTHDAY_PETS;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_pending_supply_vet))) return PENDING_SUPPLY_VET;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_pending_supply_user))) return PENDING_SUPPLY_USER;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_supply_vet))) return EXPIRED_SUPPLY_VET;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_supply_user))) return EXPIRED_SUPPLY_USER;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_domiciliary_pending_supply_vet))) return DOMICILIARY_PENDING_SUPPLY_VET;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_expired_supply_all_vet))) return EXPIRED_SUPPLY_ALL_VET;
+            if (friendlyName.equals("Suministro de mañana")) return TOMORROW_SUPPLY_VET;
+            if (friendlyName.equals("Suministro de mañana (usr)")) return TOMORROW_SUPPLY_USER;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_owners_notifications))) return OWNERS_NOTIFICATIONS;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_owners_debtors))) return DEBTORS;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_owners_debtors_tolerance))) return DEBTORS_TOLERANCE;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_providers_creditors))) return CREDITORS;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.reports_providers_creditors_tolerance))) return CREDITORS_TOLERANCE;
             if (friendlyName.equals("Remitos en tránsito")) return IN_TRANSIT_MOVEMENTS;
-            if (friendlyName.equals("Productos por debajo del mínimo"))
-                return PRODUCTS_BELOW_MINIMUN;
+            if (friendlyName.equals("Productos por debajo del mínimo")) return PRODUCTS_BELOW_MINIMUN;
             if (friendlyName.equals("Espectativa de vida superada")) return LIFE_EXPECTANCY;
             if (friendlyName.equals("Nuevos usuarios")) return NEW_VET_USERS;
             if (friendlyName.equals("Solicitudes de unión")) return USER_JOIN_REQUEST;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.waiting_room)))
-                return WAITING_ROOM;
-            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.waiting_room_auto_deleted)))
-                return WAITING_ROOM_AUTO_DELETED;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.waiting_room))) return WAITING_ROOM;
+            if (friendlyName.equals(DoctorVetApp.get().getApplicationContext().getString(R.string.waiting_room_auto_deleted))) return WAITING_ROOM_AUTO_DELETED;
             if (friendlyName.equals("Ventas")) return SELLS;
+            if (friendlyName.equals("Ventas por producto")) return SELLS_BY_PRODUCT;
+            if (friendlyName.equals("Ventas por " + DoctorVetApp.get().getOwnerNaming().toLowerCase())) return SELLS_BY_OWNER;
             if (friendlyName.equals("Compras")) return PURCHASES;
             if (friendlyName.equals("Gastos")) return SPENDINGS;
             if (friendlyName.equals("Movimientos manuales")) return CASH_MOVEMENTS;
             if (friendlyName.equals("Remitos")) return MOVEMENTS;
             if (friendlyName.equals("Suministro")) return SUPPLY;
             if (friendlyName.equals("Agenda")) return AGENDA;
-            if (friendlyName.equals("Productos Excel")) return PRODUCTS_EXCEL;
-            if (friendlyName.equals("Servicios códigos de barras")) return SERVICES_BARCODES;
             if (friendlyName.equals("Productos trazabilidad")) return PRODUCTS_TRACEABILITY;
+            if (friendlyName.equals("Productos")) return PRODUCTS;
             if (friendlyName.equals("Logs")) return LOGS;
             if (friendlyName.equals("Alimento / Pienso bajo")) return LOW_FOOD;
 
@@ -565,6 +550,14 @@ public class DoctorVetApp extends Application {
 
             editor.apply();
         }
+
+        //version db 30
+        if (!sharedPreferences.contains("owners_for_input_last_update")) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("owners_for_input_last_update", "2022-06-10 12:00:00");
+            editor.apply();
+        }
+
     }
 
     public String getOwnerNaming() {
@@ -633,20 +626,20 @@ public class DoctorVetApp extends Application {
     public void markRequired(TextInputLayout textInputLayout) {
         textInputLayout.setHint(textInputLayout.getHint() + " *");
     }
-    public String reasonToString(String reason) {
-        if (reason == null) return "";
-        if (reason.equalsIgnoreCase("created")) return "Creación";
-        if (reason.equalsIgnoreCase("updated")) return "Edición";
-        if (reason.equalsIgnoreCase("requested")) return "Búsqueda";
-        if (reason.equalsIgnoreCase("sell")) return "Venta";
-        if (reason.equalsIgnoreCase("debt")) return "Deuda";
-        if (reason.equalsIgnoreCase("clinic")) return "Clínica";
-        if (reason.equalsIgnoreCase("clinic2")) return "Clínica";
-        if (reason.equalsIgnoreCase("supply")) return "Suministro";
-        if (reason.equalsIgnoreCase("study")) return "Estudio";
-        if (reason.equalsIgnoreCase("recipe")) return "Receta";
-        return "";
-    }
+//    public String reasonToString(String reason) {
+//        if (reason == null) return "";
+//        if (reason.equalsIgnoreCase("created")) return "Creación";
+//        if (reason.equalsIgnoreCase("updated")) return "Edición";
+//        if (reason.equalsIgnoreCase("requested")) return "Búsqueda";
+//        if (reason.equalsIgnoreCase("sell")) return "Venta";
+//        if (reason.equalsIgnoreCase("debt")) return "Deuda";
+//        if (reason.equalsIgnoreCase("clinic")) return "Clínica";
+//        if (reason.equalsIgnoreCase("clinic2")) return "Clínica";
+//        if (reason.equalsIgnoreCase("supply")) return "Suministro";
+//        if (reason.equalsIgnoreCase("study")) return "Estudio";
+//        if (reason.equalsIgnoreCase("recipe")) return "Receta";
+//        return "";
+//    }
 
     public void doFinalAuthPost(Integer id_vet, Activity from, Class to) {
         if (DoctorVetApp.get().preferences_getUserLoginType() == DoctorVetApp.login_types.EMAIL) {
@@ -935,6 +928,54 @@ public class DoctorVetApp extends Application {
             }
         });
     }
+    public void getOwnersForInput(final VolleyCallbackObject volleyCallbackObject) {
+        getLastUpdateObj("owners_for_input", new VolleyCallbackObject() {
+            @Override
+            public void onSuccess(Object resultObject) {
+                if (resultObject != null) {
+                    Update_table update_table = (Update_table) resultObject;
+                    Date lastTableDateServer = update_table.getUpdate_time();
+                    Date lastTableDateLocal = HelperClass.getDatetime(getPreference("owners_for_input_last_update"));
+                    Boolean existsRegionsCacheFile = existsCacheFile("owners_for_input");
+                    Boolean mustDoRequest = !existsRegionsCacheFile || (lastTableDateServer.after(lastTableDateLocal));
+
+                    if (mustDoRequest) {
+                        URL url = NetworkUtils.buildGetOwnersForInputUrl();
+                        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            String data = MySqlGson.getDataFromResponse(response).getAsString();
+                                            String json = HelperClass.compressedBase64ToString(data);
+                                            DoctorVetApp.get().writeToDisk("owners_for_input", json);
+                                            setPreference("owners_for_input_last_update", HelperClass.getDateTimeForMySQL(update_table.getUpdate_time()));
+                                            Owner.Owners_for_input owners_for_input = MySqlGson.getGson().fromJson(json, Owner.Owners_for_input.class);
+                                            volleyCallbackObject.onSuccess(owners_for_input);
+                                        } catch (Exception ex) {
+                                            handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                                            volleyCallbackObject.onSuccess(null);
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                                        volleyCallbackObject.onSuccess(null);
+                                    }
+                                }
+                        );
+                        addToRequestQueque(stringRequest);
+                    } else {
+                        String ownersForInputData = DoctorVetApp.get().readFromDisk("owners_for_input");
+                        Owner.Owners_for_input owners_for_input = MySqlGson.getGson().fromJson(ownersForInputData, Owner.Owners_for_input.class);
+                        volleyCallbackObject.onSuccess(owners_for_input);
+                    }
+                }
+            }
+        });
+    }
 
     public void getProductsVet(final VolleyCallbackArrayList volleyCallbackArrayList) {
         getLastUpdate("products", new VolleyCallbackObject() {
@@ -983,6 +1024,11 @@ public class DoctorVetApp extends Application {
                 }
             }
         });
+    }
+    public ArrayList<Product> getProductsVetFromDisk() {
+        String productsData = DoctorVetApp.get().readFromDisk("products");
+        ArrayList<Product> products = MySqlGson.getGson().fromJson(productsData, new TypeToken<List<Product>>(){}.getType());
+        return products;
     }
     public void getProductsVetPagination(String search, Integer page, final VolleyCallbackPagination callbackPagination) {
         URL productosUrl = NetworkUtils.buidGetProductsVetUrl(search, page);
@@ -1210,7 +1256,7 @@ public class DoctorVetApp extends Application {
         addToRequestQueque(stringRequest);
     }
     public void getOwner(Integer id_owner, Integer update_last_view, final VolleyCallbackOwner callbackPropietario) {
-        URL propietarioUrl = NetworkUtils.buildGetOwnerUrl(id_owner, /*DoctorVetApp.getInstance().getVet().getId(),*/ update_last_view);
+        URL propietarioUrl = NetworkUtils.buildGetOwnerUrl(id_owner, update_last_view);
         TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, propietarioUrl.toString(),
                 new Response.Listener<String>() {
                     @Override
@@ -1354,7 +1400,7 @@ public class DoctorVetApp extends Application {
                     Boolean mustDoRequest = !existsRegionsCacheFile || (lastTableDateServer.after(lastTableDateLocal));
 
                     if (mustDoRequest) {
-                        URL url = NetworkUtils.buildSellsUrl(NetworkUtils.SellsUrlEnum.FOR_INPUT);
+                        URL url = NetworkUtils.buildSellsUrl(NetworkUtils.SellsUrlEnum.FOR_INPUT, null);
                         TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
                                 new Response.Listener<String>() {
                                     @Override
@@ -1437,6 +1483,99 @@ public class DoctorVetApp extends Application {
                 }
             }
         });
+    }
+    public void getSellSuggestedProducts(Integer id_owner, final VolleyCallbackArrayList volleyCallbackArrayList) {
+        URL url = NetworkUtils.buildSellsUrl(NetworkUtils.SellsUrlEnum.SUGGESTED_PRODUCTS, id_owner);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String data = MySqlGson.getDataFromResponse(response).toString();
+                            ArrayList<Sell_item> sellItems = MySqlGson.getGson().fromJson(data, new TypeToken<List<Sell_item>>(){}.getType());
+                            volleyCallbackArrayList.onSuccess(sellItems);
+                        } catch (Exception ex) {
+                            handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                            volleyCallbackArrayList.onSuccess(null);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                        volleyCallbackArrayList.onSuccess(null);
+                    }
+                }
+        );
+        addToRequestQueque(stringRequest);
+    }
+    public void getSellPlanning(Sell sell, final VolleyCallbackArrayList volleyCallbackArrayList) {
+        URL url = NetworkUtils.buildSellsUrl(NetworkUtils.SellsUrlEnum.PLANNING_ACTIVITY, null);
+        final String sell_json_object = MySqlGson.postGson().toJson(sell);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.POST, url.toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    String data = MySqlGson.getDataFromResponse(response).toString();
+                    ArrayList<Pet_supply> petSupplies = MySqlGson.getGson().fromJson(data, new TypeToken<List<Pet_supply>>(){}.getType());
+                    volleyCallbackArrayList.onSuccess(petSupplies);
+                } catch (Exception ex) {
+                    handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                    volleyCallbackArrayList.onSuccess(null);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                volleyCallbackArrayList.onSuccess(null);
+            }
+        })
+        {
+            @Override
+            public byte[] getBody() {
+                return sell_json_object.getBytes();
+            }
+        };
+        addToRequestQueque(stringRequest);
+
+
+
+
+
+
+
+
+//        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            String data = MySqlGson.getDataFromResponse(response).toString();
+//                            ArrayList<Pet_supply> petSupplies = MySqlGson.getGson().fromJson(data, new TypeToken<List<Pet_supply>>(){}.getType());
+//                            volleyCallbackArrayList.onSuccess(petSupplies);
+//                        } catch (Exception ex) {
+//                            handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+//                            volleyCallbackArrayList.onSuccess(null);
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+//                        volleyCallbackArrayList.onSuccess(null);
+//                    }
+//                })
+//                {
+//                    @Override
+//                    public byte[] getBody() throws AuthFailureError {
+//                        return MySqlGson.postGson().toJson(sell).getBytes();
+//                    }
+//                };
+//
+//        addToRequestQueque(stringRequest);
     }
 
     public void getMovementsForInput(final VolleyCallbackObject callbackObject) {
@@ -1551,6 +1690,7 @@ public class DoctorVetApp extends Application {
                     public void onResponse(String response) {
                         try {
                             String data = MySqlGson.getDataFromResponse(response).toString();
+                            android.util.Log.d("Tag", data);
                             ArrayList<Service_schedule> serviceSchedules = MySqlGson.getGson().fromJson(data, new TypeToken<List<Service_schedule>>(){}.getType());
                             ServicesSchedulesAdapter servicesSchedulesAdapter = new ServicesSchedulesAdapter(serviceSchedules);
                             callbackAdapter.onSuccess(servicesSchedulesAdapter);
@@ -1582,6 +1722,33 @@ public class DoctorVetApp extends Application {
                             ArrayList<Finance_types_receipts> finance_types_receipts = MySqlGson.getGson().fromJson(data, new TypeToken<List<Finance_types_receipts>>(){}.getType());
                             FinanceTypesReceiptsAdapter financeTypesReceiptsAdapter = new FinanceTypesReceiptsAdapter(finance_types_receipts);
                             callbackAdapter.onSuccess(financeTypesReceiptsAdapter);
+                        } catch (Exception ex) {
+                            handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                            callbackAdapter.onSuccess(null);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                        callbackAdapter.onSuccess(null);
+                    }
+                }
+        );
+        addToRequestQueque(stringRequest);
+    }
+    public void getFinanceTypesFiscal(String country, final VolleyCallbackAdapter callbackAdapter) {
+        URL url = NetworkUtils.buildFiscalTypesUrl(country);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String data = MySqlGson.getDataFromResponse(response).toString();
+                            ArrayList<Finance_types_fiscal> finance_types_fiscal = MySqlGson.getGson().fromJson(data, new TypeToken<List<Finance_types_fiscal>>(){}.getType());
+                            FinanceTypesFiscalAdapter financeTypesFiscalAdapter = new FinanceTypesFiscalAdapter(finance_types_fiscal);
+                            callbackAdapter.onSuccess(financeTypesFiscalAdapter);
                         } catch (Exception ex) {
                             handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
                             callbackAdapter.onSuccess(null);
@@ -2361,6 +2528,32 @@ public class DoctorVetApp extends Application {
             }
         });
     }
+    public void getUserPermissions(Integer id_user, final VolleyCallbackObject callbackObject) {
+        URL url = NetworkUtils.buildUsersUrl(NetworkUtils.UsersUrlEnum.PERMISSIONS, id_user, null, null);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String data = MySqlGson.getDataFromResponse(response).toString();
+                            Users_permissions usersPermissions = MySqlGson.getGson().fromJson(data, Users_permissions.class);
+                            callbackObject.onSuccess(usersPermissions);
+                        } catch (Exception ex) {
+                            handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                            callbackObject.onSuccess(null);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                        callbackObject.onSuccess(null);
+                    }
+                }
+        );
+        addToRequestQueque(stringRequest);
+    }
 
     public void showAddTelefonoModal(Owner owner, IProgressBarActivity activity, VolleyCallbackOwner callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity.getContext());
@@ -2671,6 +2864,32 @@ public class DoctorVetApp extends Application {
         );
         DoctorVetApp.get().addToRequestQueque(stringRequest);
     }
+    public void rescheduleAgenda(Integer id_agenda, String begin_time, VolleyCallback callback) {
+        String url = NetworkUtils.buildAgendaRescheduleUrl(id_agenda, begin_time).toString();
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    String success = MySqlGson.getStatusFromResponse(response);
+                    if (success.equalsIgnoreCase("success")) {
+                        callback.onSuccess(true);
+                    } else {
+                        callback.onSuccess(false);
+                    }
+                } catch (Exception ex) {
+                    DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
+                    callback.onSuccess(false);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DoctorVetApp.get().handle_volley_error(error, TAG, true);
+                callback.onSuccess(false);
+            }
+        });
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
     public void requestFocusAndShowKeyboard_noModal(TextInputLayout input) {
         input.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -2970,6 +3189,70 @@ public class DoctorVetApp extends Application {
         addToRequestQueque(tokenStringRequest);
     }
 
+    public void postUserNotificationToken(String token, VolleyCallback callback) {
+        String json_object = "{ \"token\": \"" + token + "\" }";
+        URL url = NetworkUtils.buildUsersUrl(NetworkUtils.UsersUrlEnum.SET_NOTIFICATION_TOKEN, null, null, null);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.POST, url.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String success = MySqlGson.getStatusFromResponse(response);
+                            if (success.equalsIgnoreCase("success")) {
+                                callback.onSuccess(true);
+                            } else {
+                                callback.onSuccess(false);
+                            }
+                        } catch (Exception ex) {
+                            handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                            callback.onSuccess(false);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                callback.onSuccess(false);
+            }
+        }) {
+            @Override
+            public byte[] getBody() {
+                return json_object.getBytes();
+            }
+        };
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+    public void deleteUserNotificationToken(String token, VolleyCallback callback) {
+        URL url = NetworkUtils.buildUsersDeleteNotificationUrl(token);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.DELETE, url.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String data = MySqlGson.getStatusFromResponse(response);
+                            if (data.equalsIgnoreCase("success")) {
+                                callback.onSuccess(true);
+                            } else {
+                                callback.onSuccess(false);
+                            }
+                        } catch (Exception ex) {
+                            handle_onResponse_error(ex, TAG, true, response);
+                            callback.onSuccess(false);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handle_volley_error(error, TAG, true);
+                        callback.onSuccess(false);
+                    }
+                }
+        );
+        addToRequestQueque(stringRequest);
+    }
+
+
     public String preferences_getUserEmail() {
         return sharedPreferences.getString(getString(R.string.preference_user_email), "");
     }
@@ -3040,6 +3323,11 @@ public class DoctorVetApp extends Application {
         editor.putString(getApplicationContext().getString(R.string.preference_user_password), "");
         editor.putString(getApplicationContext().getString(R.string.preference_user_login_type), "");
         editor.putString(getApplicationContext().getString(R.string.preference_user_token), "");
+
+        //fcm token
+        editor.putString("user_notification_token", "");
+        FirebaseMessaging.getInstance().deleteToken();
+
         editor.apply();
     }
     public void preferences_set_owners_view_mode(DoctorVetApp.Adapter_types type) {
@@ -3071,6 +3359,35 @@ public class DoctorVetApp extends Application {
         editor.putString(name, value);
         editor.apply();
     }
+    public boolean existsLocalUserNotificationToken() {
+        return !sharedPreferences.getString("user_notification_token", "").isEmpty();
+    }
+    public String getLocalUserNotificationToken() {
+        return getPreference("user_notification_token");
+    }
+    public void setLocalUserNotificationToken(String token) {
+        setPreference("user_notification_token", token);
+    }
+    public void firebaseGetNotificationToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            if (task.getException() != null)
+                                handle_error(task.getException(), "firebaseGetNotificationToken", SHOW_ERROR_MESSAGE);
+                        } else {
+                            String token = task.getResult();
+                            DoctorVetApp.get().postUserNotificationToken(token, new DoctorVetApp.VolleyCallback() {
+                                @Override
+                                public void onSuccess(Boolean result) {
+                                    DoctorVetApp.get().setLocalUserNotificationToken(token);
+                                }
+                            });
+                        }
+                    }
+                });
+    }
 
     //Volley
     public RequestQueue getRequestQueque() {
@@ -3091,6 +3408,8 @@ public class DoctorVetApp extends Application {
         final Integer[] upload_count_real = {0};
 
         for (Resource resource : resources) {
+            android.util.Log.d(TAG, MySqlGson.postGson().toJson(resource));
+
             TokenStringRequest tokenStringRequest = new TokenStringRequest(Request.Method.POST, NetworkUtils.buildS3UploadPrepareUrl().toString(), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -3152,7 +3471,7 @@ public class DoctorVetApp extends Application {
         }
     }
 
-    public void handleGeneralBottomSheetClick(BottomSheetDialog.BottomSheetButtonClicked buttonClicked, Context ctx) {
+    public void handleGeneralBottomSheetClick(BottomSheetDialog.Buttons buttonClicked, Context ctx) {
         Intent intent;
         switch (buttonClicked) {
             case PETS_SEARCH:
@@ -3266,7 +3585,7 @@ public class DoctorVetApp extends Application {
             responseError += ". Response: " + response;
         Log.e(tag, responseError, error);
         if (showToast)
-            Toast.makeText(getApplicationContext()/*ctx*/, responseError, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), responseError, Toast.LENGTH_LONG).show();
     }
     public void handle_error(Exception error, String tag, boolean showToast) {
         String responseError = error.toString();
@@ -3546,7 +3865,77 @@ public class DoctorVetApp extends Application {
         ObjectToTextView(view, o, textViewPrefixName, false);
     }
 
-    public static void invisibilizeEmptyTextView(LinearLayout linearLayoutCompat) {
+//    public static void invisibilizeEmptyTextView(LinearLayout linearLayoutCompat) {
+//        int count = linearLayoutCompat.getChildCount();
+//        int count2 = linearLayoutCompat.getChildCount();
+//        for (int i = 0; i < count; i++) {
+//            View possibleTextview = linearLayoutCompat.getChildAt(i);
+//            if (possibleTextview instanceof TextView) {
+//                if (possibleTextview.getId() == -1) continue;
+//                String possibleTextviewName = possibleTextview.getResources().getResourceName(possibleTextview.getId());
+//                int index = possibleTextviewName.indexOf(":id/") + 4;
+//                possibleTextviewName = possibleTextviewName.substring(index);
+//
+//                if (possibleTextviewName.startsWith("txt_") && ((TextView)possibleTextview).getText().toString().isEmpty()) {
+//                    String textViewName = possibleTextviewName.substring(4);
+//                    for (int j = 0; j < count; j++) {
+//                        View possibleTextviewLabel = linearLayoutCompat.getChildAt(j);
+//                        if (possibleTextviewLabel instanceof TextView) {
+//                            if (possibleTextviewLabel.getId() == -1) continue;
+//                            String possibleTextviewLabelName = possibleTextviewLabel.getResources().getResourceName(possibleTextviewLabel.getId());
+//                            int index2 = possibleTextviewLabelName.indexOf(":id/") + 4;
+//                            possibleTextviewLabelName = possibleTextviewLabelName.substring(index2);
+//
+//                            if (possibleTextviewLabelName.startsWith("label_")) {
+//                                String labelName = possibleTextviewLabelName.substring(6);
+//                                if (textViewName.equalsIgnoreCase(labelName)) {
+//                                    possibleTextview.setVisibility(View.GONE);
+//                                    possibleTextviewLabel.setVisibility(View.GONE);
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    public static void visibilizeNonEmptyTextView(LinearLayout linearLayoutCompat) {
+//        int count = linearLayoutCompat.getChildCount();
+//        int count2 = linearLayoutCompat.getChildCount();
+//        for (int i = 0; i < count; i++) {
+//            View possibleTextview = linearLayoutCompat.getChildAt(i);
+//            if (possibleTextview instanceof TextView) {
+//                if (possibleTextview.getId() == -1) continue;
+//                String possibleTextviewName = possibleTextview.getResources().getResourceName(possibleTextview.getId());
+//                int index = possibleTextviewName.indexOf(":id/") + 4;
+//                possibleTextviewName = possibleTextviewName.substring(index);
+//
+//                if (possibleTextviewName.startsWith("txt_") && !(((TextView)possibleTextview).getText().toString().isEmpty())) {
+//                    String textViewName = possibleTextviewName.substring(4);
+//                    for (int j = 0; j < count; j++) {
+//                        View possibleTextviewLabel = linearLayoutCompat.getChildAt(j);
+//                        if (possibleTextviewLabel instanceof TextView) {
+//                            if (possibleTextviewLabel.getId() == -1) continue;
+//                            String possibleTextviewLabelName = possibleTextviewLabel.getResources().getResourceName(possibleTextviewLabel.getId());
+//                            int index2 = possibleTextviewLabelName.indexOf(":id/") + 4;
+//                            possibleTextviewLabelName = possibleTextviewLabelName.substring(index2);
+//
+//                            if (possibleTextviewLabelName.startsWith("label_")) {
+//                                String labelName = possibleTextviewLabelName.substring(6);
+//                                if (textViewName.equalsIgnoreCase(labelName)) {
+//                                    possibleTextview.setVisibility(View.VISIBLE);
+//                                    possibleTextviewLabel.setVisibility(View.VISIBLE);
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+    public static void setTextViewVisibility(LinearLayout linearLayoutCompat/*, int visibleType, boolean forEmptyTextviews*/) {
         int count = linearLayoutCompat.getChildCount();
         int count2 = linearLayoutCompat.getChildCount();
         for (int i = 0; i < count; i++) {
@@ -3557,43 +3946,15 @@ public class DoctorVetApp extends Application {
                 int index = possibleTextviewName.indexOf(":id/") + 4;
                 possibleTextviewName = possibleTextviewName.substring(index);
 
-                if (possibleTextviewName.startsWith("txt_") && ((TextView)possibleTextview).getText().toString().isEmpty()) {
+                if (possibleTextviewName.startsWith("txt_") /*&& ((TextView)possibleTextview).getText().toString().isEmpty() == forEmptyTextviews*/) {
                     String textViewName = possibleTextviewName.substring(4);
-                    for (int j = 0; j < count; j++) {
-                        View possibleTextviewLabel = linearLayoutCompat.getChildAt(j);
-                        if (possibleTextviewLabel instanceof TextView) {
-                            if (possibleTextviewLabel.getId() == -1) continue;
-                            String possibleTextviewLabelName = possibleTextviewLabel.getResources().getResourceName(possibleTextviewLabel.getId());
-                            int index2 = possibleTextviewLabelName.indexOf(":id/") + 4;
-                            possibleTextviewLabelName = possibleTextviewLabelName.substring(index2);
 
-                            if (possibleTextviewLabelName.startsWith("label_")) {
-                                String labelName = possibleTextviewLabelName.substring(6);
-                                if (textViewName.equalsIgnoreCase(labelName)) {
-                                    possibleTextview.setVisibility(View.GONE);
-                                    possibleTextviewLabel.setVisibility(View.GONE);
-                                    break;
-                                }
-                            }
-                        }
+                    if (((TextView)possibleTextview).getText().toString().isEmpty()) {
+                        possibleTextview.setVisibility(View.GONE);
+                    } else {
+                        possibleTextview.setVisibility(View.VISIBLE);
                     }
-                }
-            }
-        }
-    }
-    public static void visibilizeNonEmptyTextView(LinearLayout linearLayoutCompat) {
-        int count = linearLayoutCompat.getChildCount();
-        int count2 = linearLayoutCompat.getChildCount();
-        for (int i = 0; i < count; i++) {
-            View possibleTextview = linearLayoutCompat.getChildAt(i);
-            if (possibleTextview instanceof TextView) {
-                if (possibleTextview.getId() == -1) continue;
-                String possibleTextviewName = possibleTextview.getResources().getResourceName(possibleTextview.getId());
-                int index = possibleTextviewName.indexOf(":id/") + 4;
-                possibleTextviewName = possibleTextviewName.substring(index);
 
-                if (possibleTextviewName.startsWith("txt_") && !(((TextView)possibleTextview).getText().toString().isEmpty())) {
-                    String textViewName = possibleTextviewName.substring(4);
                     for (int j = 0; j < count; j++) {
                         View possibleTextviewLabel = linearLayoutCompat.getChildAt(j);
                         if (possibleTextviewLabel instanceof TextView) {
@@ -3605,8 +3966,11 @@ public class DoctorVetApp extends Application {
                             if (possibleTextviewLabelName.startsWith("label_")) {
                                 String labelName = possibleTextviewLabelName.substring(6);
                                 if (textViewName.equalsIgnoreCase(labelName)) {
-                                    possibleTextview.setVisibility(View.VISIBLE);
-                                    possibleTextviewLabel.setVisibility(View.VISIBLE);
+                                    if (((TextView)possibleTextview).getText().toString().isEmpty()) {
+                                        possibleTextviewLabel.setVisibility(View.GONE);
+                                    } else {
+                                        possibleTextviewLabel.setVisibility(View.VISIBLE);
+                                    }
                                     break;
                                 }
                             }
@@ -3679,8 +4043,8 @@ public class DoctorVetApp extends Application {
     }
 
     public void getLastUpdate(final String tableName, final VolleyCallbackObject callback) {
-        URL updateTablesUrl = NetworkUtils.buildGetSysLastUpdateUrl(tableName, null);
-        TokenStringRequest tokenStringRequest = new TokenStringRequest(Request.Method.GET, updateTablesUrl.toString(), new Response.Listener<String>() {
+        URL url = NetworkUtils.buildGetSysLastUpdateUrl(tableName, null);
+        TokenStringRequest tokenStringRequest = new TokenStringRequest(Request.Method.GET, url.toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 String data = MySqlGson.getDataFromResponse(response).toString();
@@ -3697,8 +4061,8 @@ public class DoctorVetApp extends Application {
         addToRequestQueque(tokenStringRequest);
     }
     public void getLastUpdateObj(final String objectName, final VolleyCallbackObject callback) {
-        URL updateTablesUrl = NetworkUtils.buildGetSysLastUpdateUrl(null, objectName);
-        TokenStringRequest tokenStringRequest = new TokenStringRequest(Request.Method.GET, updateTablesUrl.toString(), new Response.Listener<String>() {
+        URL url = NetworkUtils.buildGetSysLastUpdateUrl(null, objectName);
+        TokenStringRequest tokenStringRequest = new TokenStringRequest(Request.Method.GET, url.toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 String data = MySqlGson.getDataFromResponse(response).toString();
@@ -4004,6 +4368,16 @@ public class DoctorVetApp extends Application {
         file = new File(getApplicationContext().getFilesDir() + "/pets_clinic_2_for_input");
         file.delete();
     }
+    public void deleteDepositRelatedForInputCacheFiles() {
+        File file = new File(getApplicationContext().getFilesDir() + "/sells_for_input");
+        file.delete();
+
+        file = new File(getApplicationContext().getFilesDir() + "/purchases_for_input");
+        file.delete();
+
+        file = new File(getApplicationContext().getFilesDir() + "/movements_for_input");
+        file.delete();
+    }
 
     public void linkTempAndFinalFiles(ArrayList<Resource> pre_sync_resources, ArrayList<Resource> post_sync_resources) {
         //link temp files and final files
@@ -4141,4 +4515,71 @@ public class DoctorVetApp extends Application {
                     }
                 });
     }
+
+    //users permissions
+    public void setUsersPermissionsDueToVer16(final VolleyCallback callback) {
+        URL url = NetworkUtils.buildUsersUrl(NetworkUtils.UsersUrlEnum.USER_AND_VET_BY_TOKEN, null, null, null);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    String data = MySqlGson.getDataFromResponse(response).toString();
+                    DoctorVetApp.get().preferences_set_user(data);
+                    callback.onSuccess(true);
+                } catch (Exception ex) {
+                    handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                    callback.onSuccess(false);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                callback.onSuccess(false);
+            }
+        });
+        DoctorVetApp.get().addToRequestQueque(stringRequest);
+    }
+    public String getAgendaTitle() {
+        if (getUser().getRol().equalsIgnoreCase("user"))
+            return "Agenda personal";
+
+        return "Agenda";
+    }
+    public String getDailyCashTitle() {
+        if (getUser().getRol().equalsIgnoreCase("user"))
+            return "Caja diaria personal";
+
+        return "Caja diaria";
+    }
+
+    public View findViewByName(ViewGroup parent, String name) {
+        int childCount = parent.getChildCount();
+        View foundView = null;
+
+        for (int i = 0; i < childCount; i++) {
+            View childView = parent.getChildAt(i);
+            Integer viewId = childView.getId();
+            if (viewId != -1)
+            {
+                String viewName = getResources().getResourceEntryName(viewId);
+
+                if (viewName.equals(name)) {
+                    foundView = childView;
+                    break;
+                }
+            }
+
+            // Si es un contenedor, busca también dentro de él recursivamente
+            if (childView instanceof ViewGroup) {
+                foundView = findViewByName((ViewGroup) childView, name);
+                if (foundView != null) {
+                    break;
+                }
+            }
+        }
+
+        return foundView;
+    }
+
 }

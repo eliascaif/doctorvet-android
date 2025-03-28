@@ -39,11 +39,11 @@ public class LowFoodAdapter extends RecyclerView.Adapter<LowFoodAdapter.LowFoodH
     @Override
     public void onBindViewHolder(final LowFoodHolder holder, int position) {
         LowFood lowFood = this.lowFoods.get(position);
-        DoctorVetApp.get().setThumb(lowFood.getPet().getThumb_url(), holder.img_thumb, R.drawable.ic_dog);
+        DoctorVetApp.get().setThumb(lowFood.getPet().getThumb_url(), holder.img_thumb, R.drawable.ic_pets_light);
         holder.txt_pet.setText(lowFood.getPet().getName());
         holder.txt_owners.setText("De: " + lowFood.getPet().getOwnersNames());
         holder.txt_products.setText("Producto: " + lowFood.getProduct().getName());
-        holder.txt_level.setText("Porcentaje restante: " + lowFood.getRest_percentage().toString());
+        holder.txt_level.setText("Porcentaje restante: " + lowFood.getRest_percentage().setScale(0, BigDecimal.ROUND_DOWN).toString());
     }
 
     public void addItems(ArrayList<LowFood> items) {

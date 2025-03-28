@@ -42,15 +42,19 @@ public class Pet implements DoctorVetApp.IResourceObject {
     private Pet_states states_pet;
     private User user;
     private String reason;
+    private String reason_es;
     private String photo_url;
     private String thumb_url;
+    private String age;
 
     public Pet() {
     }
+
     public Pet(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
+
     public Pet(Integer id, String name, String thumb_url) {
         this.id = id;
         this.name = name;
@@ -60,80 +64,113 @@ public class Pet implements DoctorVetApp.IResourceObject {
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public BigDecimal getWeight() {
         return weight;
     }
+
     public void setWeight(BigDecimal weight) {
         this.weight = weight;
     }
+
     public String getChip() {
         return chip;
     }
+
     public Integer getDeath() {
         return death;
     }
+
     public void setDeath(Integer death) {
         this.death = death;
     }
+
     public String getNotes() {
         return notes;
     }
+
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
     public String getThumb_url() {
         return thumb_url;
     }
+
     public Date getLast_visit() {
         return last_visit;
     }
+
     public ArrayList<Owner> getOwners() {
         if (this.owners == null)
             this.owners = new ArrayList<>();
 
         return owners;
     }
+
     public void setOwners(ArrayList<Owner> owners) {
         this.owners = owners;
     }
+
     public Pet_states getStates_pet() {
         return states_pet;
     }
+
     public Pet_race getRace() {
         return race;
     }
+
     public Pet_pelage getPelage() {
         return pelage;
     }
+
     public Pet_gender getGender() {
         return gender;
     }
+
     public Pet_character getCharacter() {
         return character;
     }
+
     public void setRace(Pet_race race) {
         this.race = race;
     }
+
     public User getUser() {
         return user;
     }
+
     public void setUser(User user) {
         this.user = user;
     }
+
     public String getReason() {
         return reason;
     }
+
     public void setReason(String reason) {
         this.reason = reason;
+    }
+    public String getReason_es() {
+        if (this.reason_es == null)
+            return "";
+
+        return reason_es;
+    }
+    public void setReason_es(String reason) {
+        this.reason_es = reason;
     }
     public String getOwnersNames() {
         String owners_names = "";
@@ -148,13 +185,13 @@ public class Pet implements DoctorVetApp.IResourceObject {
 
         return owners_names;
     }
-    public String getAge() {
-        String edad = "";
-        if (birthday != null) {
-            edad = HelperClass.calculateAge(birthday);
-        }
-        return edad;
-    }
+//    public String getAge() {
+//        String edad = "";
+//        if (birthday != null) {
+//            edad = HelperClass.calculateAge(birthday);
+//        }
+//        return edad;
+//    }
     public Owner getFirstPrincipalOwner() {
         for (Owner owner : owners) {
             //para listas min, el propietario que viene puesto es el principal
@@ -176,6 +213,13 @@ public class Pet implements DoctorVetApp.IResourceObject {
     public void setCharacter(Pet_character character) {
         this.character = character;
     }
+    public String getAge() {
+        return age;
+    }
+    public void setAge(String age) {
+        this.age = age;
+    }
+
     public Pet getPolish() {
         Pet pet_polish = new Pet(getId(), getName(), getThumb_url());
         return pet_polish;
@@ -191,6 +235,7 @@ public class Pet implements DoctorVetApp.IResourceObject {
         private Waiting_room waiting_room;
         private BigDecimal food_level;
         private Pet_last_food last_food;
+        private Boolean life_expectancy;
 
         public Pet_states() {
         }
@@ -217,6 +262,15 @@ public class Pet implements DoctorVetApp.IResourceObject {
         public void setIs_birthday(boolean is_birthday) {
             this.is_birthday = is_birthday;
         }
+
+        public Boolean getLife_expectancy() {
+            return life_expectancy;
+        }
+
+        public void setLife_expectancy(Boolean life_expectancy) {
+            this.life_expectancy = life_expectancy;
+        }
+
         public Supply getSuministro_planificado() {
             return supply;
         }

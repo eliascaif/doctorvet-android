@@ -260,6 +260,13 @@ public abstract class EditBaseActivity extends AppCompatActivity {
         initRequests = number;
         showWaitDialog();
     }
+    protected void incrementRequestNumberInOne() {
+        if (initRequests == 0)
+            showWaitDialog();
+
+        initRequests++;
+    }
+
     protected void setRequestCompleted() {
         initRequests--;
         if (initRequests == 0) {
@@ -586,7 +593,7 @@ public abstract class EditBaseActivity extends AppCompatActivity {
         @Override protected void onPreExecute()
         {
             super.onPreExecute();
-            dialog = ProgressDialog.show(EditBaseActivity.this, "", "Procesando video...");
+            dialog = ProgressDialog.show(EditBaseActivity.this, "", "Procesando video, espera for favor...");
         }
 
         @Override

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_general"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/img_thumb"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/cardview_dark_background" />
+<!--    android:scaleType="center"-->
+
+    <TextView
+        android:id="@+id/txt_event_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Event info"
+        android:textSize="14sp"
+        android:scrollHorizontally="true"
+        app:layout_constraintEnd_toStartOf="@id/img_reschedule"
+        app:layout_constraintStart_toEndOf="@+id/img_thumb"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_pet_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:scrollHorizontally="true"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/img_reschedule"
+        app:layout_constraintStart_toEndOf="@+id/img_thumb"
+        app:layout_constraintTop_toBottomOf="@+id/txt_event_info" />
+
+    <TextView
+        android:id="@+id/txt_owner_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/img_reschedule"
+        app:layout_constraintStart_toEndOf="@+id/img_thumb"
+        app:layout_constraintTop_toBottomOf="@+id/txt_pet_info" />
+
+    <ImageView
+        android:id="@+id/img_reschedule"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ic_arrow_right_alt_48px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_check"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="center"
+        />
+
+    <ImageView
+        android:id="@+id/img_check"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ic_check_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_remove"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="center"
+        />
+
+    <ImageView
+        android:id="@+id/img_remove"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_cancel_item_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="center"
+        android:visibility="gone"
+        />
+
+    <!--This View serves as a visual divider between list items-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#dadada"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_owner_info"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

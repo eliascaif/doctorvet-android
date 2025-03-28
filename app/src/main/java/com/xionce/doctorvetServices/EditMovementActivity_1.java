@@ -321,7 +321,7 @@ public class EditMovementActivity_1 extends EditBaseActivity {
         });
     }
     private void setMovementsPoints(Movement.MovementsForInput movementsForInput) {
-        if (movementsForInput.getVet_info().getIs_multi_movement_point_vet() == 1) {
+        if (movementsForInput.getVet_info().getIs_multi_point_vet() == 1) {
             findViewById(R.id.lyt_movement_point).setVisibility(View.VISIBLE);
             VetPointsAdapter vetPointsAdapter = new VetPointsAdapter(movementsForInput.getMovement_points());
             spinnerMovementPoint.setAdapter(vetPointsAdapter.getArrayAdapter(EditMovementActivity_1.this));

@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 
 public class ViewProviderActivity extends ViewBaseActivity
-        implements BottomSheetDialog.BottomSheetListener {
+        implements BottomSheetDialog.BottomSheetListener2 {
 
     private static final String TAG = "ViewProviderActivity";
     private Product_provider productProvider = null;
@@ -36,11 +36,8 @@ public class ViewProviderActivity extends ViewBaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                b.putString("provider_specific", "true");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewProviderActivity.this, "ViewProviderActivity");
+                bottomSheetDialog.show(getSupportFragmentManager(), null);
             }
         });
 
@@ -202,7 +199,8 @@ public class ViewProviderActivity extends ViewBaseActivity
     @Override
     protected void invisibilizeEmptyViews() {
         LinearLayout linearProviders = findViewById(R.id.lista_datos_provider);
-        DoctorVetApp.visibilizeNonEmptyTextView(linearProviders);
+        DoctorVetApp.setTextViewVisibility(linearProviders);
+
     }
 
     private Integer getIdProvider() {
@@ -210,7 +208,7 @@ public class ViewProviderActivity extends ViewBaseActivity
     }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         if (!loadedFinished) {
             Snackbar.make(DoctorVetApp.getRootForSnack(this), R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
             return;
@@ -243,7 +241,7 @@ public class ViewProviderActivity extends ViewBaseActivity
                 try {
                     HelperClass.sendSMS(ViewProviderActivity.this, productProvider.getPhone());
                 } catch (HelperClass.EnterPhoneException ex) {
-                    Snackbar.make(DoctorVetApp.getRootForSnack(this), getString(R.string.error_falta_telefono, DoctorVetApp.get().getOwnerNaming()), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(DoctorVetApp.getRootForSnack(this),getString(R.string.error_falta_telefono), Snackbar.LENGTH_SHORT).show();
                 }
                 break;
             default:

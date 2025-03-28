@@ -374,7 +374,7 @@ public class EditStudyActivity_1 extends EditBaseActivity {
     protected void setObjectToUI(Object object) {
         Pet_study pet_study = (Pet_study) object;
 
-        DoctorVetApp.get().setThumb(pet_study.getPet().getThumb_url(), toolbar_image, R.drawable.ic_dog_holo_dark);
+        DoctorVetApp.get().setThumb(pet_study.getPet().getThumb_url(), toolbar_image, R.drawable.ic_pets_dark);
         toolbar_title.setText(pet_study.getPet().getName());
 
         DoctorVetApp.ObjectToTextInputLayout(findViewById(R.id.lista), pet_study, "txt_");

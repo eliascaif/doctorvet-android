@@ -44,12 +44,14 @@ public class EditProductActivity extends EditBaseActivity {
     private AutoCompleteTextView actvCategory;
     private TextInputLayout txtMeasureUnit;
     private AutoCompleteTextView actvMeasureUnit;
+    private TextInputLayout txtQuantity;
     private TextInputLayout txtComplexUnitQuantity;
     private TextInputLayout txtBarCode;
     private TextInputLayout txtQRCode;
     private Spinner spinner_p1;
     private Spinner spinner_p2;
     private Spinner spinner_p3;
+    private CheckBox chkExpires;
 
     private Product product = null;
     private Products_categoriesAdapter selectedCategoriesAdapter;
@@ -65,11 +67,14 @@ public class EditProductActivity extends EditBaseActivity {
         txtMeasureUnit = findViewById(R.id.txt_unit);
         actvMeasureUnit = findViewById(R.id.actv_unit);
         txtComplexUnitQuantity = findViewById(R.id.txt_complex_unit_quantity);
+        txtQuantity = findViewById(R.id.txt_quantity);
         txtBarCode = findViewById(R.id.txt_bar_code);
         txtQRCode = findViewById(R.id.txt_qr_code);
         spinner_p1 = findViewById(R.id.spinner_format_p1);
         spinner_p2 = findViewById(R.id.spinner_format_p2);
         spinner_p3 = findViewById(R.id.spinner_format_p3);
+        chkExpires = findViewById(R.id.chk_expires);
+
         DoctorVetApp.get().markRequired(txtName);
         DoctorVetApp.get().markRequired(txtCategories);
         DoctorVetApp.get().markRequired(txtMeasureUnit);
@@ -129,15 +134,15 @@ public class EditProductActivity extends EditBaseActivity {
             }
         });
 
-        ImageView iconSearch_measure_unit = findViewById(R.id.img_search_unit);
-        iconSearch_measure_unit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(EditProductActivity.this, SearchProductMeasureUnitActivity.class);
-                intent.putExtra(DoctorVetApp.REQUEST_SEARCH_FOR, DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name());
-                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
-            }
-        });
+//        ImageView iconSearch_measure_unit = findViewById(R.id.img_search_unit);
+//        iconSearch_measure_unit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(EditProductActivity.this, SearchProductMeasureUnitActivity.class);
+//                intent.putExtra(DoctorVetApp.REQUEST_SEARCH_FOR, DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name());
+//                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
+//            }
+//        });
 
         ImageView barcodeSearch = findViewById(R.id.img_search_bar_code);
         barcodeSearch.setOnClickListener(new View.OnClickListener() {
@@ -169,6 +174,9 @@ public class EditProductActivity extends EditBaseActivity {
             }
         });
 
+        //remove quantity value in edit for first time load
+        if (isUpdate() && savedInstanceState == null)
+            txtQuantity.getEditText().setText("");
     }
 
     @Override
@@ -220,18 +228,18 @@ public class EditProductActivity extends EditBaseActivity {
                 Product_category productcategory = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_CATEGORY_OBJ.name()), Product_category.class);
                 selectedCategoriesAdapter.addCategory(productcategory);
                 DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtMeasureUnit);
-            } else if (searchFor.equals(DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name())) {
+            }/*else if (searchFor.equals(DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name())) {
                 Product_unit productunit = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name()), Product_unit.class);
                 getObject().setUnit(productunit);
                 txtMeasureUnit.getEditText().setText(productunit.getName());
                 DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtComplexUnitQuantity);
-            }
+            }*/
         }
     }
 
     @Override
     protected void save() {
-        if (!validateName() || !validateCategory() || !validateMeasureUnit())
+        if (!validateName() || !validateCategory() || !validateMeasureUnit() || !validateComplexUnitAndQuantity() || !validateQuantity())
             return;
 
         showWaitDialog();
@@ -247,7 +255,7 @@ public class EditProductActivity extends EditBaseActivity {
                     DoctorVetApp.get().linkTempAndFinalFiles(product.getResources(), response_product.getResources());
 
                     if (!isUpdate()) {
-                        Intent activity = new Intent(EditProductActivity.this, ViewProductVetActivity.class);
+                        Intent activity = new Intent(EditProductActivity.this, ViewProductActivity.class);
                         activity.putExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_ID.name(), response_product.getId());
                         startActivity(activity);
                     }
@@ -297,9 +305,10 @@ public class EditProductActivity extends EditBaseActivity {
         if (spinner_p2.getSelectedItem() != null) product.setFormat_p2(DoctorVetApp.products_prices.getEnumVal(spinner_p2.getSelectedItem().toString()));
         if (spinner_p3.getSelectedItem() != null) product.setFormat_p3(DoctorVetApp.products_prices.getEnumVal(spinner_p3.getSelectedItem().toString()));
 
-        CheckBox chkExpires = findViewById(R.id.chk_expires);
         if (chkExpires.isChecked())
-            product.setExpires(true);
+            product.setExpires(1);
+        else
+            product.setExpires(0);
 
         return product;
     }
@@ -340,6 +349,11 @@ public class EditProductActivity extends EditBaseActivity {
         txtComplexUnitQuantity.setVisibility(View.GONE);
         if (p.getUnit() != null && p.getUnit().getIs_complex() == 1)
             txtComplexUnitQuantity.setVisibility(View.VISIBLE);
+
+        chkExpires.setChecked(false);
+        if (product.getExpires() != null && product.getExpires() == 1)
+            chkExpires.setChecked(true);
+
     }
 
     @Override
@@ -424,6 +438,15 @@ public class EditProductActivity extends EditBaseActivity {
     }
     private boolean validateMeasureUnit() {
         return DoctorVetApp.get().validateExistence(txtMeasureUnit, getObject().getUnit(), "name", false);
+    }
+    private boolean validateComplexUnitAndQuantity() {
+        if (getObject().getUnit().getIs_complex() == 1)
+            return HelperClass.validateNumberNotZero(txtComplexUnitQuantity, false);
+
+        return true;
+    }
+    private boolean validateQuantity() {
+        return HelperClass.validateNumber(txtQuantity, true);
     }
 
 }

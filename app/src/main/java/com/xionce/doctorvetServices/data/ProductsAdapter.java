@@ -103,7 +103,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.txt_quantity.setText("");
             //holder.txt_quantity.setVisibility(View.GONE);
         } else {
-            holder.txt_quantity.setText("Cant.: " + product.getPrettyQuantity());
+            holder.txt_quantity.setText("Cantidad: " + product.getPrettyQuantity());
             //holder.txt_quantity.setVisibility(View.VISIBLE);
         }
 
@@ -137,7 +137,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (product.getIsAssociate_with_vet() != null && product.getIsAssociate_with_vet() == 1) {
             if (!product.getIs_service()) {
                 //holder.txt_quantity.setText("Cant.: " + product.getPrettyQuantity());
-                holder.txt_quantity.setText("Cant.: " + product.getQuantity_string());
+                holder.txt_quantity.setText("Cantidad: " + product.getQuantity_string());
                 holder.txt_quantity.setVisibility(View.VISIBLE);
 
                 //quantity detail

@@ -8,6 +8,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.InputType;
@@ -18,15 +19,21 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
+import com.xionce.doctorvetServices.data.FinanceTypesFiscalAdapter;
+import com.xionce.doctorvetServices.data.Finance_types_fiscal;
 import com.xionce.doctorvetServices.data.Region;
 import com.xionce.doctorvetServices.data.RegionsAdapter;
+import com.xionce.doctorvetServices.data.Sell;
 import com.xionce.doctorvetServices.data.Vet;
+import com.xionce.doctorvetServices.data.VetPointsAdapter;
+import com.xionce.doctorvetServices.data.Vet_point;
 import com.xionce.doctorvetServices.utilities.HelperClass;
 import com.xionce.doctorvetServices.utilities.MySqlGson;
 import com.xionce.doctorvetServices.utilities.NetworkUtils;
@@ -48,12 +55,17 @@ public class EditVetActivity extends EditBaseActivity {
     private RadioButton radioEnglishSystem;
     private RadioButton radioHourFormat24;
     private RadioButton radioHourFormatAmPm;
-    private RadioButton radioMobileServicesYes;
-    private RadioButton radioMobileServicesNo;
+    private CheckBox chkMobileServices;
     private Spinner spinner_owner_naming;
     private Spinner spinner_pet_naming;
-    private RadioButton radioEmailMessagingYes;
-    private RadioButton radioEmailMessagingNo;
+    private CheckBox chkEmailMessaging;
+    private CheckBox chkSellsPlanningActivity;
+    private CheckBox chkSellsSaveP1;
+    private CheckBox chkSellsAcceptSuggested;
+    private CheckBox chkSellsLockPrice;
+    private Spinner spinnerDefaultSellPoint;
+    private TextInputLayout txtFiscalType;
+    private AutoCompleteTextView actvFiscalType;
 
     private Vet vet = null;
 
@@ -72,12 +84,18 @@ public class EditVetActivity extends EditBaseActivity {
         radioEnglishSystem = findViewById(R.id.radio_english_system);
         radioHourFormat24 = findViewById(R.id.radio_24_hs);
         radioHourFormatAmPm = findViewById(R.id.radio_am_pm);
-        radioMobileServicesYes = findViewById(R.id.radio_mobile_services_yes);
-        radioMobileServicesNo = findViewById(R.id.radio_mobile_services_no);
+        chkMobileServices = findViewById(R.id.chk_mobile_services);
         spinner_owner_naming = findViewById(R.id.spinner_owner_naming);
         spinner_pet_naming = findViewById(R.id.spinner_pet_naming);
-        radioEmailMessagingYes = findViewById(R.id.radio_email_messaging_yes);
-        radioEmailMessagingNo = findViewById(R.id.radio_email_messaging_no);
+        chkEmailMessaging = findViewById(R.id.chk_email_messaging);
+        chkSellsPlanningActivity = findViewById(R.id.chk_sells_planning_activity);
+        chkSellsSaveP1 = findViewById(R.id.chk_sells_save_p1);
+        chkSellsAcceptSuggested = findViewById(R.id.chk_sells_accept_suggested);
+        chkSellsLockPrice = findViewById(R.id.chk_sells_lock_price);
+        spinnerDefaultSellPoint = findViewById(R.id.spinner_default_sell_point);
+        txtFiscalType = findViewById(R.id.txt_fiscal_type);
+        actvFiscalType = findViewById(R.id.actv_fiscal_type);
+
         DoctorVetApp.get().markRequired(txtName);
         DoctorVetApp.get().markRequired(txtRegion);
         DoctorVetApp.get().markRequired(txtEmail);
@@ -102,8 +120,11 @@ public class EditVetActivity extends EditBaseActivity {
         if (isUpdate()) {
             toolbar_title.setText(R.string.edit_vet);
             toolbar_subtitle.setText(R.string.edit_subtitle);
-            //no puede modificarse el email
+            //email cant change
             txtEmail.setVisibility(View.GONE);
+
+            //only for updates, default sell point (in first create, sell point doesnt exist)
+            setDefaultSellPoint();
         } else {
             toolbar_title.setText(R.string.new_vet);
             toolbar_subtitle.setText(R.string.new_subtitle);
@@ -125,14 +146,14 @@ public class EditVetActivity extends EditBaseActivity {
         int petNamingSelectedIndex = petsNamingArrayAdapter.getPosition(getObject().getPet_naming());
         spinner_pet_naming.setSelection(petNamingSelectedIndex);
 
-        ImageView iconSearch_region = findViewById(R.id.img_search_region);
-        iconSearch_region.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(EditVetActivity.this, SearchRegionActivity.class);
-                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
-            }
-        });
+//        ImageView iconSearch_region = findViewById(R.id.img_search_region);
+//        iconSearch_region.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(EditVetActivity.this, SearchRegionActivity.class);
+//                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
+//            }
+//        });
 
         //
         txtAddress.getEditText().setImeOptions(EditorInfo.IME_ACTION_NEXT);
@@ -179,23 +200,24 @@ public class EditVetActivity extends EditBaseActivity {
         setRegionsAdapter(regions);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) return;
-
-        //busqueda regiones
-        if (requestCode == HelperClass.REQUEST_SEARCH && data != null) {
-            Region region = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.REGION_OBJ.name()), Region.class);
-            getObject().setRegion(region);
-            txtRegion.getEditText().setText(region.getFriendly_name());
-            DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtPhone);
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode != RESULT_OK) return;
+//
+//        //busqueda regiones
+//        if (requestCode == HelperClass.REQUEST_SEARCH && data != null) {
+//            Region region = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.REGION_OBJ.name()), Region.class);
+//            getObject().setRegion(region);
+//            txtRegion.getEditText().setText(region.getFriendly_name());
+//            setFiscalTypes(region.getCountry());
+//            DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtPhone);
+//        }
+//    }
 
     @Override
     protected void save() {
-        if (!validateName() || !validateRegion() || !validateEmail())
+        if (!validateName() || !validateRegion() || !validateEmail() || !validateFiscalType())
             return;
 
         if (is_branch_create()) {
@@ -267,7 +289,7 @@ public class EditVetActivity extends EditBaseActivity {
 
     @Override
     protected void update() {
-        if (!validateName() || !validateRegion() || !validateEmail())
+        if (!validateName() || !validateRegion() || !validateEmail() || !validateFiscalType())
             return;
 
         showWaitDialog();
@@ -317,11 +339,15 @@ public class EditVetActivity extends EditBaseActivity {
         DoctorVetApp.TextInputLayoutToObject(findViewById(R.id.lista), vet, true, "txt_", true, getApplicationContext());
         vet.setUnit_system(radioMetricSystem.isChecked() ? DoctorVetApp.unit_system.METRIC.name() : DoctorVetApp.unit_system.ENGLISH.name());
         vet.setUser_email(DoctorVetApp.get().preferences_getUserEmail());
-        vet.setHour_format(radioHourFormat24.isChecked() ? "24_HS" : DoctorVetApp.hour_format.AM_PM.name()); //enumeration members cant start with a number
-        vet.setMobile_services(radioMobileServicesYes.isChecked() ? 1 : 0);
         vet.setOwner_naming(DoctorVetApp.Owners_naming.getEnumVal(spinner_owner_naming.getSelectedItem().toString()));
         vet.setPet_naming(DoctorVetApp.Pets_naming.getEnumVal(spinner_pet_naming.getSelectedItem().toString()));
-        vet.setEmail_messaging(radioEmailMessagingYes.isChecked() ? 1 : 0);
+        vet.setHour_format(radioHourFormat24.isChecked() ? "24_HS" : DoctorVetApp.hour_format.AM_PM.name()); //enumeration members cant start with a number
+        vet.setMobile_services(chkMobileServices.isChecked() ? 1 : 0);
+        vet.setEmail_messaging(chkEmailMessaging.isChecked() ? 1 : 0);
+        vet.setSells_planning_activity(chkSellsPlanningActivity.isChecked() ? 1 : 0);
+        vet.setSells_save_p1(chkSellsSaveP1.isChecked() ? 1 : 0);
+        vet.setSells_accept_suggested(chkSellsAcceptSuggested.isChecked() ? 1 : 0);
+        vet.setSells_lock_price(chkSellsLockPrice.isChecked() ? 1 : 0);
         return vet;
     }
 
@@ -343,8 +369,10 @@ public class EditVetActivity extends EditBaseActivity {
         loadThumb(vet.getThumb_url());
         DoctorVetApp.ObjectToTextInputLayout(findViewById(R.id.lista), vet, "txt_");
 
-        if (vet.getRegion() != null)
+        if (vet.getRegion() != null) {
             txtRegion.getEditText().setText(vet.getRegion().getFriendly_name());
+            setFiscalTypes(vet.getRegion().getCountry());
+        }
 
         if (vet.getUnit_system() != null) {
             if (vet.getUnit_system().equals(DoctorVetApp.unit_system.METRIC.name()))
@@ -360,20 +388,35 @@ public class EditVetActivity extends EditBaseActivity {
                 radioHourFormat24.setChecked(true);
         }
 
-        if (vet.getMobile_services() != null) {
-            if (vet.getMobile_services().equals(1))
-                radioMobileServicesYes.setChecked(true);
-            else
-                radioMobileServicesNo.setChecked(true);
-        }
+        chkMobileServices.setChecked(false);
+        if (vet.getMobile_services() != null && vet.getMobile_services().equals(1))
+            chkMobileServices.setChecked(true);
 
-        if (vet.getEmail_messaging() != null) {
-            if (vet.getEmail_messaging().equals(1))
-                radioEmailMessagingYes.setChecked(true);
-            else
-                radioEmailMessagingNo.setChecked(true);
-        }
+        chkEmailMessaging.setChecked(false);
+        if (vet.getEmail_messaging() != null && vet.getEmail_messaging().equals(1))
+            chkEmailMessaging.setChecked(true);
 
+        chkSellsSaveP1.setChecked(false);
+        if (vet.getSells_save_p1() != null && vet.getSells_save_p1().equals(1))
+            chkSellsSaveP1.setChecked(true);
+
+        chkSellsAcceptSuggested.setChecked(false);
+        if (vet.getSells_accept_suggested() != null && vet.getSells_accept_suggested().equals(1))
+            chkSellsAcceptSuggested.setChecked(true);
+
+        chkSellsLockPrice.setChecked(false);
+        if (vet.getSells_lock_price() != null && vet.getSells_lock_price().equals(1))
+            chkSellsLockPrice.setChecked(true);
+
+        chkSellsPlanningActivity.setChecked(false);
+        if (vet.getSells_planning_activity() != null && vet.getSells_planning_activity().equals(1))
+            chkSellsPlanningActivity.setChecked(true);
+
+        if (vet.getFiscal_type() != null)
+            txtFiscalType.getEditText().setText(vet.getFiscal_type().getName());
+
+        if (!isInitCreate())
+            findViewById(R.id.label_info).setVisibility(View.GONE);
     }
 
     @Override
@@ -398,7 +441,12 @@ public class EditVetActivity extends EditBaseActivity {
         actv_region.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                getObject().setRegion((Region)adapterView.getItemAtPosition(i));
+                Region region = (Region)adapterView.getItemAtPosition(i);
+                getObject().setRegion(region);
+
+                //fiscal type for region
+                setFiscalTypes(region.getCountry());
+
                 txtPhone.requestFocus();
             }
         });
@@ -421,6 +469,78 @@ public class EditVetActivity extends EditBaseActivity {
         });
         DoctorVetApp.get().setOnTouchToShowDropDown(actv_region);
         DoctorVetApp.get().setAllWidthToDropDown(actv_region, EditVetActivity.this);
+    }
+    private void setDefaultSellPoint() {
+        incrementRequestNumberInOne();
+        DoctorVetApp.get().getSellsForInput(new DoctorVetApp.VolleyCallbackObject() {
+            @Override
+            public void onSuccess(Object resultObject) {
+                setRequestCompleted();
+                Sell.SellsForInput sellsForInput = (Sell.SellsForInput) resultObject;
+
+                findViewById(R.id.lyt_default_sell_point).setVisibility(View.VISIBLE);
+
+                VetPointsAdapter vetPointsAdapter = new VetPointsAdapter(sellsForInput.getSell_points());
+                spinnerDefaultSellPoint.setAdapter(vetPointsAdapter.getArrayAdapter(EditVetActivity.this));
+
+                if (vet.getDefault_sell_point() != null)
+                    spinnerDefaultSellPoint.setSelection(vetPointsAdapter.getPositionByName(vet.getDefault_sell_point().getName()));
+
+                spinnerDefaultSellPoint.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        Vet_point vetPoint = (Vet_point) adapterView.getItemAtPosition(i);
+                        getObject().setDefault_sell_point(vetPoint);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        getObject().setDefault_sell_point(null);
+                    }
+                });
+            }
+        });
+    }
+    private void setFiscalTypes(String country) {
+        incrementRequestNumberInOne();
+        DoctorVetApp.get().getFinanceTypesFiscal(country, new DoctorVetApp.VolleyCallbackAdapter() {
+            @Override
+            public void onSuccess(RecyclerView.Adapter resultAdapter) {
+                setRequestCompleted();
+                FinanceTypesFiscalAdapter financeTypesFiscalAdapter = (FinanceTypesFiscalAdapter) resultAdapter;
+                actvFiscalType.setAdapter(financeTypesFiscalAdapter.getArrayAdapter(EditVetActivity.this));
+
+                if (vet.getFiscal_type() != null)
+                    txtFiscalType.getEditText().setText(vet.getFiscal_type().getName());
+
+                actvFiscalType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Finance_types_fiscal typesFiscal = (Finance_types_fiscal) adapterView.getItemAtPosition(i);
+                        getObject().setFiscal_type(typesFiscal);
+                    }
+                });
+                actvFiscalType.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        if (editable.toString().isEmpty())
+                            getObject().setFiscal_type(null);
+                    }
+                });
+                DoctorVetApp.get().setOnTouchToShowDropDown(actvFiscalType);
+                DoctorVetApp.get().setAllWidthToDropDown(actvFiscalType, EditVetActivity.this);
+            }
+        });
     }
 
     private boolean isInitCreate() {
@@ -445,6 +565,9 @@ public class EditVetActivity extends EditBaseActivity {
     }
     private boolean validateRegion() {
         return DoctorVetApp.get().validateExistence(txtRegion, getObject().getRegion(), "friendly_name",false);
+    }
+    private boolean validateFiscalType() {
+        return DoctorVetApp.get().validateExistence(txtFiscalType, getObject().getFiscal_type(), "name",true);
     }
 
 }

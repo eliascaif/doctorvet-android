@@ -48,7 +48,7 @@ public class WaitingRoomsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void bind(Waiting_room waitingRoom, RemoveViewHolder holder, int position) {
-        DoctorVetApp.get().setThumb(waitingRoom.getPet().getThumb_url(), holder.imgThumb, R.drawable.ic_dog);
+        DoctorVetApp.get().setThumb(waitingRoom.getPet().getThumb_url(), holder.imgThumb, R.drawable.ic_pets_light);
 
         holder.txtPetName.setText(waitingRoom.getPet().getName());
 

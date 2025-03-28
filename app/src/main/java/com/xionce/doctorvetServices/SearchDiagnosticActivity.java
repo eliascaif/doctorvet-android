@@ -60,7 +60,7 @@ public class SearchDiagnosticActivity extends SearchActivityBase implements Help
             @Override
             public void onSuccess(Get_pagination pagination) {
                 hideProgressBar();
-                //hideStartSearch();
+
                 if (pagination != null) {
                     showBottomBar();
                     setTotal_pages(pagination.getTotal_pages());
@@ -69,9 +69,6 @@ public class SearchDiagnosticActivity extends SearchActivityBase implements Help
                     diagnosticsAdapter = new DiagnosticsAdapter(diagnostics);
                     diagnosticsAdapter.setOnClickHandler(SearchDiagnosticActivity.this);
                     recyclerView.setAdapter(diagnosticsAdapter);
-
-//                    if (diagnostics.size() == 0)
-//                        setSugiereUnoListener(EditSDT_suggestedActivity.class);
 
                     manageShowRecyclerView(diagnosticsAdapter, on_first_fill);
 

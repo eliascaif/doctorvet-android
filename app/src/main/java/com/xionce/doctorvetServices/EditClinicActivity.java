@@ -224,6 +224,9 @@ public class EditClinicActivity extends EditBaseActivity {
         final Pet_clinic clinica = (Pet_clinic) getObjectFromUI().clone();
         clinica.setResources(resourcesAdapter.getResources());
         final String clinica_json_object = MySqlGson.postGson().toJson(clinica);
+
+        android.util.Log.d(TAG, clinica_json_object);
+
         TokenStringRequest stringRequest = new TokenStringRequest(getMethod(), getUrl().toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -311,7 +314,7 @@ public class EditClinicActivity extends EditBaseActivity {
     protected void setObjectToUI(Object object) {
         Pet_clinic clinic = (Pet_clinic) object;
         toolbar_title.setText(clinic.getPet().getName());
-        DoctorVetApp.get().setThumb(clinic.getPet().getThumb_url(), toolbar_image, R.drawable.ic_dog_holo_dark);
+        DoctorVetApp.get().setThumb(clinic.getPet().getThumb_url(), toolbar_image, R.drawable.ic_pets_dark);
         DoctorVetApp.ObjectToTextInputLayout(findViewById(R.id.lista), clinic, "txt_");
 
         //la hora no es un campo de la base de datos

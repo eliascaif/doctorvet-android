@@ -136,7 +136,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/notes" />
-
                 <TextView
                     android:id="@+id/txt_notes"
                     style="@style/Base.TextAppearance.AppCompat"
@@ -145,66 +144,79 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textSize="16sp" />
 
+<!--                <TextView-->
+<!--                    android:id="@+id/label_subscription_until"-->
+<!--                    style="@style/Base.TextAppearance.AppCompat.Caption"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Suscripción hasta" />-->
+<!--                <TextView-->
+<!--                    android:id="@+id/txt_subscription_until"-->
+<!--                    style="@style/Base.TextAppearance.AppCompat"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textAppearance="@style/TextAppearance.AppCompat.Title"-->
+<!--                    android:textSize="16sp" />-->
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/prueba"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_border"
-                    android:layout_marginVertical="16dp"
-                    android:paddingHorizontal="8dp"
-                    android:paddingBottom="8dp">
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/prueba"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/shadow_border"-->
+<!--                    android:layout_marginVertical="16dp"-->
+<!--                    android:paddingHorizontal="8dp"-->
+<!--                    android:paddingBottom="8dp">-->
 
-                    <TextView
-                        android:id="@+id/txt_about_subscription"
-                        style="@style/TextAppearance.AppCompat.Caption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
-                        android:text="Acerca de la suscripción:"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/txt_about_subscription"-->
+<!--                        style="@style/TextAppearance.AppCompat.Caption"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="8dp"-->
+<!--                        android:text="Acerca de la suscripción:"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent" />-->
 
-                    <TextView
-                        android:id="@+id/txt_about_subscription_exp"
-                        style="@style/TextAppearance.AppCompat.Caption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
-                        android:text="Si tu suscripción está vencida, no te preocupes, Doctor Vet funcionará normalmente y podrás acceder a todos los datos almacenados. La app no se bloquea. Con suscripción vencida no puedes ingresar información nueva, como nuevos pacientes, nuevos propietarios o nuevas ventas."
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txt_about_subscription" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/txt_about_subscription_exp"-->
+<!--                        style="@style/TextAppearance.AppCompat.Caption"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="8dp"-->
+<!--                        android:text="Si tu suscripción está vencida, no te preocupes, Doctor Vet funcionará normalmente y podrás acceder a todos los datos almacenados. La app no se bloquea. Con suscripción vencida no puedes ingresar información nueva, como nuevos pacientes, nuevos propietarios o nuevas ventas."-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@id/txt_about_subscription" />-->
 
-                    <TextView
-                        android:id="@+id/label_subscription_until"
-                        style="@style/Base.TextAppearance.AppCompat.Caption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
-                        android:text="@string/subscription_until"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txt_about_subscription_exp" />
-                    <TextView
-                        android:id="@+id/txt_subscription_until"
-                        style="@style/Base.TextAppearance.AppCompat"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textSize="16sp"
-                        app:layout_constraintTop_toBottomOf="@id/label_subscription_until"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        />
-                    <Button
-                        android:id="@+id/btn_extend_subscription"
-                        style="@style/ActionButton"
-                        android:layout_width="match_parent"
-                        android:layout_marginVertical="8dp"
-                        android:text="extender suscripción"
-                        app:layout_constraintTop_toBottomOf="@id/txt_subscription_until" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/label_subscription_until"-->
+<!--                        style="@style/Base.TextAppearance.AppCompat.Caption"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="8dp"-->
+<!--                        android:text="@string/subscription_until"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@id/txt_about_subscription_exp" />-->
+<!--                    <TextView-->
+<!--                        android:id="@+id/txt_subscription_until"-->
+<!--                        style="@style/Base.TextAppearance.AppCompat"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textAppearance="@style/TextAppearance.AppCompat.Title"-->
+<!--                        android:textSize="16sp"-->
+<!--                        app:layout_constraintTop_toBottomOf="@id/label_subscription_until"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        />-->
+<!--                    <Button-->
+<!--                        android:id="@+id/btn_extend_subscription"-->
+<!--                        style="@style/ActionButton"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_marginVertical="8dp"-->
+<!--                        android:text="extender suscripción"-->
+<!--                        app:layout_constraintTop_toBottomOf="@id/txt_subscription_until" />-->
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             </LinearLayout>
 

@@ -84,7 +84,7 @@ public class SearchServiceActivity extends SearchActivityBase implements HelperC
         Intent intent = getIntent();
 
         if (intent.getBooleanExtra(DoctorVetApp.INTENT_SEARCH_VIEW, false)) {
-            Intent activity = new Intent(SearchServiceActivity.this, ViewProductVetActivity.class);
+            Intent activity = new Intent(SearchServiceActivity.this, ViewProductActivity.class);
             activity.putExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_ID.name(), product.getId());
             startActivity(activity);
         } else if (intent.getBooleanExtra(DoctorVetApp.INTENT_SEARCH_RETURN, false)) {

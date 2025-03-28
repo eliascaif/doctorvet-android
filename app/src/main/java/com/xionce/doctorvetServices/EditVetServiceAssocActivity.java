@@ -25,7 +25,7 @@ import java.util.List;
 public class EditVetServiceAssocActivity extends EditBaseActivity {
 
     private static final String TAG = "EditVetServiceAssocActi";
-    private Button btn_end;
+    //private Button btn_end;
 
     private ArrayList<Product> services_assoc = null;
     private ProductsAdapter productsAdapter;
@@ -36,7 +36,7 @@ public class EditVetServiceAssocActivity extends EditBaseActivity {
         setContentView(R.layout.content_edit_vet_service_assoc);
         toolbar_title.setText("Servicios asociados");
         toolbar_subtitle.setText("Marca / desmarca");
-        btn_end = findViewById(R.id.btn_add);
+        //btn_end = findViewById(R.id.btn_add);
         hideToolbarImage();
         hideFab();
 

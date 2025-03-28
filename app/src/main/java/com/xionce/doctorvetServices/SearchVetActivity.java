@@ -152,7 +152,7 @@ public class SearchVetActivity extends SearchActivityBase {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideWaitDialog();
-                DoctorVetApp.get().handle_volley_error(error, /*SearchVetActivity.this,*/ TAG, true);
+                DoctorVetApp.get().handle_volley_error(error, TAG, true);
             }
         })
         {

@@ -11,17 +11,17 @@ public class Vet_point {
     private String name;
     @Expose
     private String type;
-    @Expose
-    private Integer counter;
-    @Expose
-    private Finance_types_receipts finance_types_receipt;
+//    @Expose
+//    private Integer counter;
+//    @Expose
+//    private Finance_types_receipts finance_types_receipt;
 
-    public Finance_types_receipts getFinance_types_receipt() {
-        return finance_types_receipt;
-    }
-    public void setFinance_types_receipt(Finance_types_receipts finance_types_receipt) {
-        this.finance_types_receipt = finance_types_receipt;
-    }
+//    public Finance_types_receipts getFinance_types_receipt() {
+//        return finance_types_receipt;
+//    }
+//    public void setFinance_types_receipt(Finance_types_receipts finance_types_receipt) {
+//        this.finance_types_receipt = finance_types_receipt;
+//    }
     public Integer getId() {
         return id;
     }
@@ -46,12 +46,12 @@ public class Vet_point {
     public void setType(String type) {
         this.type = type;
     }
-    public Integer getCounter() {
-        return counter;
-    }
-    public void setCounter(Integer counter) {
-        this.counter = counter;
-    }
+//    public Integer getCounter() {
+//        return counter;
+//    }
+//    public void setCounter(Integer counter) {
+//        this.counter = counter;
+//    }
 
     public Vet_point getPolish() {
         Vet_point vetPoint = new Vet_point();

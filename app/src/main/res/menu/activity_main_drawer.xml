@@ -39,7 +39,6 @@
     <group
         android:id="@+id/menu_about"
         >
-<!--        android:checkableBehavior="single"-->
 
         <item
             android:id="@+id/nav_about"

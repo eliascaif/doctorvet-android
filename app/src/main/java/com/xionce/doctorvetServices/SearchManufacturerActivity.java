@@ -39,7 +39,7 @@ public class SearchManufacturerActivity extends SearchActivityBase implements He
             @Override
             public void onSuccess(Get_pagination pagination) {
                 hideProgressBar();
-                //hideStartSearch();
+
                 if (pagination != null) {
                     setTotal_pages(pagination.getTotal_pages());
 
@@ -52,7 +52,7 @@ public class SearchManufacturerActivity extends SearchActivityBase implements He
 
                     showSoftKeyboard();
                 } else {
-                    DoctorVetApp.get().handle_null_adapter("Products_manufacturers", /*SearchManufacturerActivity.this,*/ TAG, true);
+                    DoctorVetApp.get().handle_null_adapter("Products_manufacturers", TAG, true);
                     showErrorMessage();
                 }
             }
@@ -72,7 +72,7 @@ public class SearchManufacturerActivity extends SearchActivityBase implements He
                     manufacturersAdapter.addItems(productManufacturers);
                     isLoading = false;
                 } else {
-                    DoctorVetApp.get().handle_null_adapter("Products_manufacturers", /*SearchManufacturerActivity.this,*/ TAG, true);
+                    DoctorVetApp.get().handle_null_adapter("Products_manufacturers", TAG, true);
                     showErrorMessage();
                 }
             }

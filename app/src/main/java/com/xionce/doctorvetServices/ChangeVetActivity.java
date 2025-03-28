@@ -34,6 +34,11 @@ public class ChangeVetActivity extends RecyclerViewActivity {
         toolbar_title.setText(R.string.vets);
     }
 
+    @Override
+    protected void refreshAdapter() {
+        refreshAsociations();
+    }
+
     private void refreshAsociations() {
         showProgressBar();
 
@@ -59,7 +64,7 @@ public class ChangeVetActivity extends RecyclerViewActivity {
                     });
                     recyclerView.setAdapter(vetsAdapter);
                 } catch (Exception e) {
-                    DoctorVetApp.get().handle_onResponse_error(e, /*ChangeVetActivity.this,*/ TAG, true, response);
+                    DoctorVetApp.get().handle_onResponse_error(e, TAG, true, response);
                 } finally {
                     hideProgressBar();
                 }
@@ -74,11 +79,6 @@ public class ChangeVetActivity extends RecyclerViewActivity {
         DoctorVetApp.get().addToRequestQueque(stringRequest);
     }
 
-    @Override
-    protected void refreshAdapter() {
-        refreshAsociations();
-    }
-
     private void changeVet(Integer id_vet, final Integer pos) {
         showWaitDialog();
 
@@ -86,8 +86,8 @@ public class ChangeVetActivity extends RecyclerViewActivity {
         changeVet.setId(id_vet);
         String change_vet_json_object = MySqlGson.postGson().toJson(changeVet);
 
-        URL peticionUrl = NetworkUtils.buildUsersUrl(NetworkUtils.UsersUrlEnum.CHANGE_VET, null, null, null);
-        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.POST, peticionUrl.toString(), new Response.Listener<String>() {
+        URL url = NetworkUtils.buildUsersUrl(NetworkUtils.UsersUrlEnum.CHANGE_VET, null, null, null);
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.POST, url.toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -95,12 +95,13 @@ public class ChangeVetActivity extends RecyclerViewActivity {
                     User responseUser = MySqlGson.getGson().fromJson(data, User.class);
                     DoctorVetApp.get().preferences_deleteLoginInfo();
                     DoctorVetApp.get().preferences_setLoginInfo(null, null, null, responseUser.getAccess_token());
+                    DoctorVetApp.get().deleteDepositRelatedForInputCacheFiles();
                     //DoctorVetApp.get().setUserNullForVetChange();
                     Intent intent = new Intent(ChangeVetActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception ex) {
-                    DoctorVetApp.get().handle_onResponse_error(ex, /*ChangeVetActivity.this,*/ TAG, true, response);
+                    DoctorVetApp.get().handle_onResponse_error(ex, TAG, true, response);
                 } finally {
                     hideWaitDialog();
                 }

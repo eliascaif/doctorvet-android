@@ -34,9 +34,9 @@ public class EditStudyItemActivity extends EditBaseActivity {
 
     private static final String TAG = "EditPetStudyItemActivit";
     private TextInputLayout txtName;
-    private TextInputLayout txtMeasureUnit;
+//    private TextInputLayout txtMeasureUnit;
     private AutoCompleteTextView actvMeasureUnit;
-    private TextInputLayout txtMin;
+//    private TextInputLayout txtMin;
 
     private Pet_study_item item = null;
 
@@ -45,9 +45,9 @@ public class EditStudyItemActivity extends EditBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_edit_study_item);
         txtName = findViewById(R.id.txt_name);
-        txtMeasureUnit = findViewById(R.id.txt_unit);
+//        txtMeasureUnit = findViewById(R.id.txt_unit);
         actvMeasureUnit = findViewById(R.id.actv_unit);
-        txtMin = findViewById(R.id.txt_min);
+//        txtMin = findViewById(R.id.txt_min);
         DoctorVetApp.get().markRequired(txtName);
         hideToolbarImage();
 
@@ -90,15 +90,15 @@ public class EditStudyItemActivity extends EditBaseActivity {
         Pet_study_item petStudyItem = getObject();
         setObjectToUI(petStudyItem);
 
-        ImageView iconSearch_measure_unit = findViewById(R.id.img_search_unit);
-        iconSearch_measure_unit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(EditStudyItemActivity.this, SearchProductMeasureUnitActivity.class);
-                intent.putExtra(DoctorVetApp.REQUEST_SEARCH_FOR, DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name());
-                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
-            }
-        });
+//        ImageView iconSearch_measure_unit = findViewById(R.id.img_search_unit);
+//        iconSearch_measure_unit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(EditStudyItemActivity.this, SearchProductMeasureUnitActivity.class);
+//                intent.putExtra(DoctorVetApp.REQUEST_SEARCH_FOR, DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name());
+//                startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
+//            }
+//        });
     }
 
     @Override
@@ -120,22 +120,22 @@ public class EditStudyItemActivity extends EditBaseActivity {
         item = MySqlGson.getGson().fromJson(objectInString, Pet_study_item.class);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) return;
-
-        //busqueda
-        if (requestCode == HelperClass.REQUEST_SEARCH && data != null) {
-            String searchFor = data.getExtras().getString(DoctorVetApp.REQUEST_SEARCH_FOR, "");
-            if (searchFor.equals(DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name())) {
-                Product_unit productunit = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name()), Product_unit.class);
-                getObject().setUnit(productunit);
-                txtMeasureUnit.getEditText().setText(productunit.getName());
-                DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtMin);
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode != RESULT_OK) return;
+//
+//        //busqueda
+//        if (requestCode == HelperClass.REQUEST_SEARCH && data != null) {
+//            String searchFor = data.getExtras().getString(DoctorVetApp.REQUEST_SEARCH_FOR, "");
+//            if (searchFor.equals(DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name())) {
+//                Product_unit productunit = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_UNIT_OBJ.name()), Product_unit.class);
+//                getObject().setUnit(productunit);
+//                txtMeasureUnit.getEditText().setText(productunit.getName());
+//                DoctorVetApp.get().requestFocusAndShowKeyboard_noModal(txtMin);
+//            }
+//        }
+//    }
 
     @Override
     protected void save() {

@@ -24,8 +24,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewVetUsersActivity extends ViewBaseActivity
-        implements BottomSheetDialog.BottomSheetListener {
+public class ViewVetUsersActivity extends ViewBaseActivity {
 
     private static final String TAG = "ViewVetUsersActivity";
     private RecyclerView recyclerView;
@@ -52,8 +51,8 @@ public class ViewVetUsersActivity extends ViewBaseActivity
     private void showVetUsers() {
         showProgressBar();
 
-        URL usersVetUrl = NetworkUtils.buildUsersMinUrl();
-        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, usersVetUrl.toString(),
+        URL url = NetworkUtils.buildUsersMinUrl();
+        TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.GET, url.toString(),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -79,12 +78,18 @@ public class ViewVetUsersActivity extends ViewBaseActivity
                                     removeUser((User)data);
                                 }
                             });
+                            usersAdapter.setOnEditClickHandler(new HelperClass.AdapterOnClickHandler() {
+                                @Override
+                                public void onClick(Object data, View view, int pos) {
+                                    editUser((User)data);
+                                }
+                            });
 
                             recyclerView.setAdapter(usersAdapter);
                             setLoadedFinished();
                             showActivityContainer();
                         } catch (Exception ex) {
-                            DoctorVetApp.get().handle_onResponse_error(ex, /*ViewVetUsersActivity.this,*/ TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
+                            DoctorVetApp.get().handle_onResponse_error(ex, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE, response);
                         } finally {
                             hideProgressBar();
                             hideSwipeRefreshLayoutProgressBar();
@@ -94,7 +99,7 @@ public class ViewVetUsersActivity extends ViewBaseActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        DoctorVetApp.get().handle_volley_error(error, /*ViewVetUsersActivity.this,*/ TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
+                        DoctorVetApp.get().handle_volley_error(error, TAG, DoctorVetApp.SHOW_ERROR_MESSAGE);
                     }
                 }
         );
@@ -131,14 +136,6 @@ public class ViewVetUsersActivity extends ViewBaseActivity
 
     @Override
     protected void on_delete_complete(Integer deleted_id) {
-    }
-
-    @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
-        if (!loadedFinished) {
-            Snackbar.make(DoctorVetApp.getRootForSnack(this), R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
-            return;
-        }
     }
 
     private void upgradeUser(User user) {
@@ -323,6 +320,16 @@ public class ViewVetUsersActivity extends ViewBaseActivity
             }
         });
 
+    }
+    private void editUser(User user) {
+        if (!DoctorVetApp.get().getUser().getRol().equalsIgnoreCase("owner")) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Privilegios insuficientes para realizar la acción", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(ViewVetUsersActivity.this, EditUserPermissions.class);
+        intent.putExtra(DoctorVetApp.INTENT_VALUES.USER_OBJ.name(), MySqlGson.getGson().toJson(user));
+        startActivityForResult(intent, HelperClass.REQUEST_UPDATE);
     }
 
     private String getUpgradeRol(String rol) {

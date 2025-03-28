@@ -46,6 +46,7 @@ public class User implements DoctorVetApp.IResourceObject {
     private String access_token;
     private Date created;
     private Integer multivet;
+    private Users_permissions permissions;
 
     public User() {
     }
@@ -146,6 +147,12 @@ public class User implements DoctorVetApp.IResourceObject {
     }
     public void setRol(String rol) {
         this.rol = rol;
+    }
+    public Users_permissions getPermissions() {
+        return permissions;
+    }
+    public void setPermissions(Users_permissions permissions) {
+        this.permissions = permissions;
     }
     public void setExternal_thumb_url(String external_thumb_url) {
         this.external_thumb_url = external_thumb_url;

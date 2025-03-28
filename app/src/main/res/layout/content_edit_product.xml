@@ -24,7 +24,7 @@
             android:id="@+id/txt_atributos_globales"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Este producto es global y sólo pueden editarse los atributos propios de la vet."
+            android:text="Este producto es global y solo pueden editarse los atributos propios del establecimiento."
             android:visibility="gone"
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
@@ -120,16 +120,15 @@
                 android:orientation="horizontal"
                 />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                >-->
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txt_unit"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     app:errorTextAppearance="@style/TextLimitError"
                     app:layout_constraintEnd_toStartOf="@+id/img_search_unit"
                     app:layout_constraintStart_toStartOf="parent"
@@ -149,21 +148,21 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
-                    android:id="@+id/img_search_unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="4dp"
-                    android:padding="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_search" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_search_unit"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:layout_marginEnd="8dp"-->
+<!--                    android:layout_marginRight="8dp"-->
+<!--                    android:layout_marginBottom="4dp"-->
+<!--                    android:padding="8dp"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:srcCompat="@drawable/ic_search" />-->
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txt_complex_unit_quantity"
@@ -299,21 +298,27 @@
 
         </LinearLayout>
 
-        <!--atributos de la vet-->
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/txt_cantidad_actual"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:errorTextAppearance="@style/TextLimitError">-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorTextAppearance="@style/TextLimitError">
 
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:hint="@string/cantidad_actual"-->
-<!--                android:maxLength="15"-->
-<!--                android:inputType="numberDecimal"/>-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cantidad actual"
+                android:maxLength="15"
+                android:inputType="numberDecimal"/>
 
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Opcional. Si estas editando, el valor ingresado reseteará la cantidad y trazabilidad para el producto. En escenarios multialmacen, la cantidad se asignará al almacen central."
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_min_quantity"

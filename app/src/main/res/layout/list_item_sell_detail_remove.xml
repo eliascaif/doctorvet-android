@@ -20,7 +20,7 @@
         android:id="@+id/txt_product"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="product/servicio"
+        android:text="producto/servicio"
         app:layout_constraintStart_toEndOf="@+id/img_thumb"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/img_remove"

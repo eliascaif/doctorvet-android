@@ -20,7 +20,7 @@ import com.xionce.doctorvetServices.utilities.TokenStringRequest;
 
 import java.net.URL;
 
-public class ViewAgendaEventActivity extends ViewBaseActivity implements BottomSheetDialog.BottomSheetListener {
+public class ViewAgendaEventActivity extends ViewBaseActivity implements BottomSheetDialog.BottomSheetListener2 {
 
     private static final String TAG = "ViewAgendaEventActivity";
     private Agenda agenda_event = null;
@@ -40,11 +40,8 @@ public class ViewAgendaEventActivity extends ViewBaseActivity implements BottomS
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                b.putString("agenda_especifico", "true");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewAgendaEventActivity.this, "ViewAgendaEventActivity");
+                bottomSheetDialog.show(getSupportFragmentManager(), null);
             }
         });
     }
@@ -57,7 +54,7 @@ public class ViewAgendaEventActivity extends ViewBaseActivity implements BottomS
     @Override
     protected void go_update() {
         if (agenda_event.getExecuted() == 1) {
-            Snackbar.make(DoctorVetApp.getRootForSnack(ViewAgendaEventActivity.this), "Cita/tarea realizada, no es posible modificar", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(DoctorVetApp.getRootForSnack(ViewAgendaEventActivity.this), "Agenda realizada, no es posible modificar", Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -160,10 +157,8 @@ public class ViewAgendaEventActivity extends ViewBaseActivity implements BottomS
 
     @Override
     protected void invisibilizeEmptyViews() {
-//        LinearLayout linear = findViewById(R.id.lista_datos_agenda);
-//        DoctorVetApp.invisibilizeEmptyTextView(linear);
         LinearLayout linearOwners = findViewById(R.id.lista_datos_agenda);
-        DoctorVetApp.visibilizeNonEmptyTextView(linearOwners);
+        DoctorVetApp.setTextViewVisibility(linearOwners);
     }
 
     private Integer getIdAgendaEvent() {
@@ -171,7 +166,7 @@ public class ViewAgendaEventActivity extends ViewBaseActivity implements BottomS
     }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         if (agenda_event == null) {
             Snackbar.make(DoctorVetApp.getRootForSnack(this), R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
             return;
@@ -193,23 +188,27 @@ public class ViewAgendaEventActivity extends ViewBaseActivity implements BottomS
     }
 
     private void check_agenda() {
-        showWaitDialog();
         if (agenda_event.getExecuted() == 1) {
-            Snackbar.make(DoctorVetApp.getRootForSnack(this), "La cita/tarea ya está realizada", Snackbar.LENGTH_SHORT).show();
-            hideWaitDialog();
+            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Agenda ya realizada", Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        DoctorVetApp.get().checkAgenda(agenda_event.getId(), new DoctorVetApp.VolleyCallback() {
+        HelperClass.getOKCancelDialog(this, getString(R.string.action_check_agenda), new DialogInterface.OnClickListener() {
             @Override
-            public void onSuccess(Boolean result) {
-                hideWaitDialog();
-                if (result) {
-                    agenda_event.setExecuted(1);
-                    refreshView();
-                } else {
-                    Snackbar.make(DoctorVetApp.getRootForSnack(ViewAgendaEventActivity.this), getString(R.string.err_action), Snackbar.LENGTH_SHORT).show();
-                }
+            public void onClick(DialogInterface dialog, int which) {
+                showWaitDialog();
+                DoctorVetApp.get().checkAgenda(agenda_event.getId(), new DoctorVetApp.VolleyCallback() {
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        hideWaitDialog();
+                        if (result) {
+                            agenda_event.setExecuted(1);
+                            refreshView();
+                        } else {
+                            Snackbar.make(DoctorVetApp.getRootForSnack(ViewAgendaEventActivity.this), getString(R.string.err_action), Snackbar.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
     }

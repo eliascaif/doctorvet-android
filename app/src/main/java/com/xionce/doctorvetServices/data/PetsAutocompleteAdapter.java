@@ -53,7 +53,7 @@ public class PetsAutocompleteAdapter extends ArrayAdapter<Pet> {
             if (email != null && !email.isEmpty())
                 txt_subtitle.setText(String.format("%s %s %s", txt_subtitle.getText(), " - ", email));
 
-            DoctorVetApp.get().setThumb(pet.getThumb_url(), img_thumb, R.drawable.ic_dog_holo_dark);
+            DoctorVetApp.get().setThumb(pet.getThumb_url(), img_thumb, R.drawable.ic_pets_dark);
         }
 
         return convertView;

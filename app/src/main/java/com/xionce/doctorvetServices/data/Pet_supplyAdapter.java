@@ -24,13 +24,12 @@ import java.util.Calendar;
 
 public class Pet_supplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public enum Pet_supplyAdapter_types { EDIT_SUPPLY, PENDING, PENDING_COMM, NEW_SUPPLY }
+    public enum Pet_supplyAdapter_types { EDIT_SUPPLY, PENDING, PENDING_COMM, NEW_SUPPLY, PLANNING_ACTIVITY, PLANNING_ACTIVITY_NO_EDIT }
 
     private final Pet_supplyAdapter_types adapter_type;
     private final ArrayList<Pet_supply> petsupplies;
     private final ArrayList<Integer> selected_positions;
     private HelperClass.AdapterOnClickHandler clickHandler;
-//    private HelperClass.AdapterOnLongClickHandler longClickHandler;
     private HelperClass.AdapterOnRemoveItemHandler removeItemHandler;
     private HelperClass.AdapterOnClickHandler checkItemHandler;
 
@@ -61,6 +60,10 @@ public class Pet_supplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             case PENDING_COMM:
                 View view_pending_com = inflater.inflate(R.layout.list_item_supply_pending_com, viewGroup, false);
                 return new SupplyPendingCommHolder(view_pending_com);
+            case PLANNING_ACTIVITY:
+            case PLANNING_ACTIVITY_NO_EDIT:
+                View view_sell = inflater.inflate(R.layout.list_item_supply_planning_activity, viewGroup, false);
+                return new SupplyPlanningActivityHolder(view_sell);
             default:
                 throw new RuntimeException("non-existent viewType");
         }
@@ -82,6 +85,12 @@ public class Pet_supplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
             case PENDING_COMM:
                 bindPendingComm(petsupply, (SupplyPendingCommHolder) holder, position);
+                break;
+            case PLANNING_ACTIVITY:
+                bindPlanningActivitySupply(petsupply, (SupplyPlanningActivityHolder)holder, position);
+                break;
+            case PLANNING_ACTIVITY_NO_EDIT:
+                bindPlanningActivitySupplyNoEdit(petsupply, (SupplyPlanningActivityHolder)holder, position);
                 break;
         }
     }
@@ -250,6 +259,43 @@ public class Pet_supplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
         });
 
+    }
+    private void bindPlanningActivitySupply(Pet_supply petsupply, SupplyPlanningActivityHolder holder, int position) {
+        DoctorVetApp.get().setThumb(petsupply.getPet().getThumb_url(), holder.img_thumb, R.drawable.ic_pets_light);
+        holder.txt_pet.setText(petsupply.getPet().getName());
+        holder.txt_product.setText(petsupply.getProduct().getName());
+        holder.txt_date_tentative.setText("A suminstrar: " + HelperClass.getDateInLocale(petsupply.getDate_tentative(), holder.txt_date_tentative.getContext()));
+
+        holder.img_remove.setVisibility(View.GONE);
+        if (petsupply.getPlanning_activity_new() != null && petsupply.getPlanning_activity_new() == 1) {
+            holder.txt_info.setText("Suministro nuevo");
+            holder.img_remove.setVisibility(View.VISIBLE);
+        } else {
+            holder.txt_info.setText("Suministro existente");
+            if (petsupply.getDate_supply() != null)
+                holder.txt_info.setText("Suministro existente que se marcará como suministrado en base a un producto/servicio de la venta");
+        }
+
+        holder.img_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteItem(position);
+            }
+        });
+
+    }
+    private void bindPlanningActivitySupplyNoEdit(Pet_supply petsupply, SupplyPlanningActivityHolder holder, int position) {
+        DoctorVetApp.get().setThumb(petsupply.getPet().getThumb_url(), holder.img_thumb, R.drawable.ic_pets_light);
+        holder.txt_pet.setText(petsupply.getPet().getName());
+        holder.txt_product.setText(petsupply.getProduct().getName());
+        holder.txt_date_tentative.setText("A suminstrar: " + HelperClass.getDateInLocale(petsupply.getDate_tentative(), holder.txt_date_tentative.getContext()));
+
+        holder.img_remove.setVisibility(View.GONE);
+        if (petsupply.getPlanning_activity_new() != null && petsupply.getPlanning_activity_new() == 1) {
+            holder.txt_info.setText("Suministro nuevo");
+        } else {
+            holder.txt_info.setText("Suministro existente que se marcará como suministrado en base a un producto/servicio de la venta");
+        }
     }
 
     private int getSuministroColor(Pet_supply petsupply) {
@@ -445,6 +491,24 @@ public class Pet_supplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 }
             });
+        }
+    }
+    public class SupplyPlanningActivityHolder extends RecyclerView.ViewHolder {
+        private final ImageView img_thumb;
+        private final TextView txt_pet;
+        private final TextView txt_product;
+        private final TextView txt_date_tentative;
+        private final TextView txt_info;
+        private final ImageView img_remove;
+
+        public SupplyPlanningActivityHolder(View view) {
+            super(view);
+            img_thumb = view.findViewById(R.id.img_thumb);
+            txt_pet = view.findViewById(R.id.txt_pet);
+            txt_product = view.findViewById(R.id.txt_product);
+            txt_date_tentative = view.findViewById(R.id.txt_date_tentative);
+            txt_info = view.findViewById(R.id.txt_info);
+            img_remove = view.findViewById(R.id.img_remove);
         }
     }
 

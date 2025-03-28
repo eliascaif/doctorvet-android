@@ -39,6 +39,7 @@ public class EditServiceActivity extends EditBaseActivity {
     private Spinner spinner_p1;
     private Spinner spinner_p2;
     private Spinner spinner_p3;
+    private CheckBox chkIsStudy;
 
     private Product product = null;
     private Products_categoriesAdapter selectedCategoriesAdapter;
@@ -55,6 +56,7 @@ public class EditServiceActivity extends EditBaseActivity {
         spinner_p1 = findViewById(R.id.spinner_calculo_p1);
         spinner_p2 = findViewById(R.id.spinner_calculo_p2);
         spinner_p3 = findViewById(R.id.spinner_calculo_p3);
+        chkIsStudy = findViewById(R.id.chk_is_study);
         DoctorVetApp.get().markRequired(txtName);
 
         if (savedInstanceState == null) {
@@ -173,7 +175,7 @@ public class EditServiceActivity extends EditBaseActivity {
                     DoctorVetApp.get().linkTempAndFinalFiles(product.getResources(), response_product.getResources());
 
                     if (!isUpdate()) {
-                        Intent activity = new Intent(EditServiceActivity.this, ViewProductVetActivity.class);
+                        Intent activity = new Intent(EditServiceActivity.this, ViewProductActivity.class);
                         activity.putExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_ID.name(), response_product.getId());
                         startActivity(activity);
                     }
@@ -223,9 +225,10 @@ public class EditServiceActivity extends EditBaseActivity {
         if (spinner_p2.getSelectedItem() != null) product.setFormat_p2(DoctorVetApp.products_prices.getEnumVal(spinner_p2.getSelectedItem().toString()));
         if (spinner_p3.getSelectedItem() != null) product.setFormat_p3(DoctorVetApp.products_prices.getEnumVal(spinner_p3.getSelectedItem().toString()));
 
-        CheckBox chkIsStudy = findViewById(R.id.chk_is_study);
         if (chkIsStudy.isChecked())
-            product.setIs_study(true);
+            product.setIs_study(1);
+        else
+            product.setIs_study(0);
 
         return product;
     }
@@ -265,6 +268,9 @@ public class EditServiceActivity extends EditBaseActivity {
         if (p.getFormat_p3() != null) spinner_p3.setSelection(p.getFormat_p3().ordinal());
 //        if (p.getFormat_p4() != null) spinner_p4.setSelection(p.getFormat_p4().ordinal());
 
+        chkIsStudy.setChecked(false);
+        if (product.getIs_study() != null && product.getIs_study() == 1)
+            chkIsStudy.setChecked(true);
     }
 
     @Override

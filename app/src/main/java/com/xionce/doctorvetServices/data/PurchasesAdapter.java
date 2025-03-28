@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.xionce.doctorvetServices.R;
 import com.xionce.doctorvetServices.utilities.HelperClass;
 
+import java.security.Provider;
 import java.util.ArrayList;
 
 public class PurchasesAdapter extends RecyclerView.Adapter<PurchasesAdapter.PurchasesHolder> {
@@ -58,6 +59,15 @@ public class PurchasesAdapter extends RecyclerView.Adapter<PurchasesAdapter.Purc
 
         purchasesHolder.txt_total.setText("Total: " + HelperClass.formatCurrency(purchase.getTotal()));
         purchasesHolder.txt_balance.setText("Balance: " + HelperClass.formatCurrency(purchase.getBalance()));
+
+        //provider
+        Product_provider provider = purchase.getProvider();
+        if (provider != null) {
+            purchasesHolder.txt_provider.setVisibility(View.VISIBLE);
+            purchasesHolder.txt_provider.setText("A: " + provider.getName());
+        } else {
+            purchasesHolder.txt_provider.setVisibility(View.GONE);
+        }
     }
 
     public void addItems(ArrayList<Purchase> items) {
@@ -75,6 +85,7 @@ public class PurchasesAdapter extends RecyclerView.Adapter<PurchasesAdapter.Purc
         private final TextView txt_receipt;
         private final TextView txt_total;
         private final TextView txt_balance;
+        private final TextView txt_provider;
 
         public PurchasesHolder(View view) {
             super(view);
@@ -82,6 +93,7 @@ public class PurchasesAdapter extends RecyclerView.Adapter<PurchasesAdapter.Purc
             txt_receipt = view.findViewById(R.id.txt_receipt);
             txt_total = view.findViewById(R.id.txt_total);
             txt_balance = view.findViewById(R.id.txt_balance);
+            txt_provider = view.findViewById(R.id.txt_provider);
             view.setOnClickListener(this);
         }
 

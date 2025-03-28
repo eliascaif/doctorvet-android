@@ -1,8 +1,6 @@
 package com.xionce.doctorvetServices;
 
 import static com.xionce.doctorvetServices.utilities.HelperClass.REQUEST_READ_BARCODE;
-import static com.xionce.doctorvetServices.utilities.HelperClass.REQUEST_TAKE_THUMB;
-import static com.xionce.doctorvetServices.utilities.HelperClass.REQUEST_UPDATE;
 
 import android.Manifest;
 import android.content.Context;
@@ -27,7 +25,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.xionce.doctorvetServices.data.Finance_payment_method;
 import com.xionce.doctorvetServices.data.Owner;
 import com.xionce.doctorvetServices.data.Pet;
-import com.xionce.doctorvetServices.data.RegionsAdapter;
 import com.xionce.doctorvetServices.data.Sell;
 import com.xionce.doctorvetServices.data.VetPointsAdapter;
 import com.xionce.doctorvetServices.data.Sell_itemAdapter;
@@ -45,13 +42,13 @@ public class EditSellActivity_1 extends EditBaseActivity {
 
     private static final String TAG = "EditSellActivity_1";
     private TextView txt_total;
-//    private TextView txt_products_details;
     private View list_item_sell_owner;
     private View list_item_sell_pet;
     private TextInputLayout txtDate;
     private TextInputLayout txtHour;
     private Spinner spinnerDeposit;
     private Spinner spinnerSellPoint;
+    private VetPointsAdapter vetPointsAdapter;
 
     private ArrayList<Finance_payment_method> payments_types;
     private Sell sell = null;
@@ -62,11 +59,10 @@ public class EditSellActivity_1 extends EditBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_edit_sell_1);
         toolbar_title.setText("Venta");
-        toolbar_subtitle.setText("Selecciona fecha, mascota y agrega productos");
+        toolbar_subtitle.setText("Selecciona fecha, " + DoctorVetApp.get().getPetNaming().toLowerCase() + " y agrega productos");
         TextView txt_add_products_by_keyboard = findViewById(R.id.txt_add_products_by_keyboard);
         TextView txt_add_products_by_barcode = findViewById(R.id.txt_add_products_by_barcode);
         txt_total = findViewById(R.id.txt_total);
-        //txt_products_details = findViewById(R.id.txt_products_details);
         txtDate = findViewById(R.id.txt_date);
         txtHour = findViewById(R.id.txt_hour);
         list_item_sell_pet = findViewById(R.id.list_item_pet_selector);
@@ -76,7 +72,7 @@ public class EditSellActivity_1 extends EditBaseActivity {
         spinnerDeposit = findViewById(R.id.spinner_deposit);
         spinnerSellPoint = findViewById(R.id.spinner_sell_point);
         Glide.with(this).load(R.drawable.ic_account_circle_light).apply(RequestOptions.fitCenterTransform()).into(img_thumb_owner);
-        Glide.with(this).load(R.drawable.ic_dog).apply(RequestOptions.fitCenterTransform()).into(img_thumb_pet);
+        Glide.with(this).load(R.drawable.ic_pets_light).apply(RequestOptions.fitCenterTransform()).into(img_thumb_pet);
         hideToolbarImage();
         hideFab();
 
@@ -89,8 +85,18 @@ public class EditSellActivity_1 extends EditBaseActivity {
                     Sell.SellsForInput sellsForInput = (Sell.SellsForInput) resultObject;
                     setDepositAdapter(sellsForInput);
                     getObject().setDeposit(sellsForInput.getDeposits().get(0));
+
                     setPointsAdapter(sellsForInput);
                     getObject().setSell_point(sellsForInput.getSell_points().get(0));
+
+                    //set default sell point
+                    boolean must_set_default_point = sellsForInput.getVet_info().getIs_multi_point_vet() == 1
+                                                        && vetPointsAdapter != null
+                                                        && sellsForInput.getVet_info().getDefault_sell_point() != null;
+
+                    if (must_set_default_point)
+                        spinnerSellPoint.setSelection(vetPointsAdapter.getPositionByName(sellsForInput.getVet_info().getDefault_sell_point().getName()));
+
                     payments_types = sellsForInput.getFinance_types_payments();
                     getObject().setVet_info(sellsForInput.getVet_info());
                 }
@@ -117,6 +123,8 @@ public class EditSellActivity_1 extends EditBaseActivity {
         });
 
         calculateTotal();
+
+        setup_sell_suggested_products();
 
         txt_add_products_by_keyboard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,10 +261,14 @@ public class EditSellActivity_1 extends EditBaseActivity {
         //busquedas
         if (requestCode == HelperClass.REQUEST_SEARCH && data != null) {
             String searchFor = data.getExtras().getString(DoctorVetApp.REQUEST_SEARCH_FOR, "");
+
             if (searchFor.equals(DoctorVetApp.INTENT_VALUES.OWNER_OBJ.name())) {
                 Owner owner = MySqlGson.getGson().fromJson(data.getStringExtra(DoctorVetApp.INTENT_VALUES.OWNER_OBJ.name()), Owner.class);
                 getObject().setOwner(owner);
                 setOwnerInView(owner);
+
+                setup_sell_suggested_products();
+
                 if (owner.getPets().size() > 0) {
                     getObject().setPet(owner.getPets().get(0));
                     setPetInView(owner.getPets().get(0));
@@ -270,6 +282,8 @@ public class EditSellActivity_1 extends EditBaseActivity {
                 Owner owner = pet.getFirstPrincipalOwner();
                 getObject().setOwner(owner);
                 setOwnerInView(owner);
+
+                setup_sell_suggested_products(/*getObject()*/);
             }
         }
 
@@ -336,6 +350,8 @@ public class EditSellActivity_1 extends EditBaseActivity {
 
             if (intent.hasExtra(DoctorVetApp.INTENT_VALUES.OWNER_OBJ.name()))
                 sell.setOwner(MySqlGson.getGson().fromJson(intent.getStringExtra(DoctorVetApp.INTENT_VALUES.OWNER_OBJ.name()), Owner.class));
+
+            sell.setSuggested_values_established(0);
         }
 
         return sell;
@@ -388,9 +404,9 @@ public class EditSellActivity_1 extends EditBaseActivity {
         }
     }
     private void setPointsAdapter(Sell.SellsForInput sellsForInput) {
-        if (sellsForInput.getVet_info().getIs_multi_sell_point_vet() == 1) {
+        if (sellsForInput.getVet_info().getIs_multi_point_vet() == 1) {
             findViewById(R.id.lyt_sell_point).setVisibility(View.VISIBLE);
-            VetPointsAdapter vetPointsAdapter = new VetPointsAdapter(sellsForInput.getSell_points());
+            /*VetPointsAdapter*/ vetPointsAdapter = new VetPointsAdapter(sellsForInput.getSell_points());
             spinnerSellPoint.setAdapter(vetPointsAdapter.getArrayAdapter(EditSellActivity_1.this));
             spinnerSellPoint.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -439,7 +455,7 @@ public class EditSellActivity_1 extends EditBaseActivity {
     private void setPetInView(Pet pet) {
         ImageView img_thumb = list_item_sell_pet.findViewById(R.id.img_thumb);
         TextView txt_name = list_item_sell_pet.findViewById(R.id.txt_item_name);
-        DoctorVetApp.get().setThumb(pet.getThumb_url(), img_thumb, R.drawable.ic_dog);
+        DoctorVetApp.get().setThumb(pet.getThumb_url(), img_thumb, R.drawable.ic_pets_light);
         txt_name.setText(pet.getName());
     }
     private void removePetInView() {
@@ -447,7 +463,7 @@ public class EditSellActivity_1 extends EditBaseActivity {
         ImageView img_thumb = list_item_sell_pet.findViewById(R.id.img_thumb);
         TextView txt_name = list_item_sell_pet.findViewById(R.id.txt_item_name);
         Context ctx = img_thumb.getContext();
-        Glide.with(ctx).load(R.drawable.ic_dog).apply(RequestOptions.fitCenterTransform()).into(img_thumb);
+        Glide.with(ctx).load(R.drawable.ic_pets_light).apply(RequestOptions.fitCenterTransform()).into(img_thumb);
         txt_name.setText("SELECCIONAR");
     }
     private void setOwnerInView(Owner owner) {
@@ -481,6 +497,35 @@ public class EditSellActivity_1 extends EditBaseActivity {
     }
     private void searchTime() {
         DoctorVetApp.get().searchTimeSetInit(txtHour, getSupportFragmentManager());
+    }
+    private void setup_sell_suggested_products(/*Sell sell*/) {
+        if (DoctorVetApp.get().getVet().getSells_accept_suggested() == 0)
+            return;
+
+        //setup sell suggested products, call only once and only if products are not present
+        Sell sell_aux = getObject();
+        if (!sell_aux.getItems().isEmpty())
+            return;
+
+        boolean do_sell_suggested_products_call = sell_aux.getSuggested_values_established() == 0 && sell_aux.getOwner() != null;
+        if (do_sell_suggested_products_call) {
+            incrementRequestNumberInOne();
+            DoctorVetApp.get().getSellSuggestedProducts(sell_aux.getOwner().getId(), new DoctorVetApp.VolleyCallbackArrayList() {
+                @Override
+                public void onSuccess(ArrayList resultList) {
+                    setRequestCompleted();
+
+                    if (resultList.size() > 0) {
+                        Snackbar.make(DoctorVetApp.getRootForSnack(EditSellActivity_1.this), "Sugerencias agregadas", Snackbar.LENGTH_LONG).show();
+
+                        sell_aux.setSuggested_values_established(1);
+                        sell_aux.getItems().addAll(resultList);
+                        sellItemsAdapter.notifyDataSetChanged();
+                        calculateTotal();
+                    }
+                }
+            });
+        }
     }
 
     private boolean validate_something_to_register() {

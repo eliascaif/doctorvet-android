@@ -5,682 +5,282 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.xionce.doctorvetServices.data.User;
+import com.xionce.doctorvetServices.data.Users_permissions;
 
 public class BottomSheetDialog extends BottomSheetDialogFragment {
-    private BottomSheetListener mListener;
-    private TextView txt_owner_especifico;
-    private LinearLayout lyt_owner_especifico;
-    private TextView txt_actions_owners;
-    private LinearLayout lyt_actions_owners;
-    private TextView txt_especifico_comunicacion;
-    private LinearLayout lyt_especifico_comunicacion;
-    private TextView txt_pet_especific;
-    private LinearLayout lyt_pet_especific;
-    private TextView txt_actions_pets;
-    private LinearLayout lyt_actions_pets;
-    private LinearLayout lyt_actions_pets_2;
-    private TextView txt_agenda_especifico;
-    private LinearLayout lyt_agenda_especifico;
-    private TextView txt_user_especifico;
-    private LinearLayout lyt_user_especifico;
-    private TextView txt_veterinaria_especifico;
-    private LinearLayout lyt_veterinaria_especifico;
-    private LinearLayout lyt_veterinaria_especifico_2;
-    private TextView txt_product_especifico;
-    private LinearLayout lyt_product_especifico;
-//    private TextView txt_actions_products;
-//    private LinearLayout lyt_actions_products;
-    private TextView txt_sell_specific;
-    private LinearLayout lyt_sell_specific;
-    private TextView txt_purchase_specific;
-    private LinearLayout lyt_purchase_specific;
-    private TextView txt_movement_specific;
-    private LinearLayout lyt_movement_specific;
-    private TextView txt_provider_specific;
-    private LinearLayout lyt_provider_specific;
-    private TextView txt_actions_providers;
-    private LinearLayout lyt_actions_providers;
-    private TextView txt_service_schedule;
-    private LinearLayout lyt_service_schedule_specific;
-    private TextView txt_cash_movement_specific;
-    private LinearLayout lyt_cash_movement_specific;
-    private TextView txt_spending_specific;
-    private LinearLayout lyt_spending_specific;
+    private Context mContext;
+    private LinearLayout root_linear;
+    private String view_to_show;
 
-    private TextView txt_most_used;
-    private LinearLayout lyt_most_used_general;
-    private LinearLayout lyt_most_used_general_2;
-    private TextView txt_others_general;
-    private LinearLayout lyt_others_general;
-    private LinearLayout lyt_others_general_2;
-    private LinearLayout lyt_others_general_3;
+    public BottomSheetDialog(@NonNull Context context, String view_to_show) {
+        this.mContext = context;
+        this.view_to_show = view_to_show;
+    }
 
-    @Nullable
-    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet_layout, container, false);
-
-        txt_owner_especifico = v.findViewById(R.id.txt_owner_especifico);
-        lyt_owner_especifico = v.findViewById(R.id.lyt_owner_especifico);
-        txt_actions_owners = v.findViewById(R.id.txt_actions_owners);
-        lyt_actions_owners = v.findViewById(R.id.lyt_actions_owners);
-        txt_especifico_comunicacion = v.findViewById(R.id.txt_especifico_comunicacion);
-        lyt_especifico_comunicacion = v.findViewById(R.id.lyt_especifico_comunicacion);
-        txt_pet_especific = v.findViewById(R.id.txt_pet_especific);
-        lyt_pet_especific = v.findViewById(R.id.lyt_pet_especific);
-        txt_actions_pets = v.findViewById(R.id.txt_actions_pets);
-        lyt_actions_pets = v.findViewById(R.id.lyt_actions_pets);
-        lyt_actions_pets_2 = v.findViewById(R.id.lyt_actions_pets_2);
-        txt_agenda_especifico = v.findViewById(R.id.txt_agenda_especifico);
-        lyt_agenda_especifico = v.findViewById(R.id.lyt_agenda_especifico);
-        txt_user_especifico = v.findViewById(R.id.txt_user_especifico);
-        lyt_user_especifico = v.findViewById(R.id.lyt_user_especifico);
-        txt_veterinaria_especifico = v.findViewById(R.id.txt_vet_especific);
-        lyt_veterinaria_especifico = v.findViewById(R.id.lyt_vet_especific);
-        lyt_veterinaria_especifico_2 = v.findViewById(R.id.lyt_vet_especific_2);
-        txt_product_especifico = v.findViewById(R.id.txt_product_especifico);
-        lyt_product_especifico = v.findViewById(R.id.lyt_product_especifico);
-//        txt_actions_products = v.findViewById(R.id.txt_actions_products);
-//        lyt_actions_products = v.findViewById(R.id.lyt_actions_products);
-        txt_sell_specific = v.findViewById(R.id.txt_sell_specific);
-        lyt_sell_specific = v.findViewById(R.id.lyt_sell_specific);
-
-        txt_cash_movement_specific = v.findViewById(R.id.txt_cash_movement_specific);
-        lyt_cash_movement_specific = v.findViewById(R.id.lyt_cash_movement_specific);
-        txt_spending_specific = v.findViewById(R.id.txt_spending_specific);
-        lyt_spending_specific = v.findViewById(R.id.lyt_spending_specific);
-
-        txt_purchase_specific = v.findViewById(R.id.txt_purchase_specific);
-        lyt_purchase_specific = v.findViewById(R.id.lyt_purchase_specific);
-
-        txt_movement_specific = v.findViewById(R.id.txt_movement_specific);
-        lyt_movement_specific = v.findViewById(R.id.lyt_movement_specific);
-        txt_provider_specific = v.findViewById(R.id.txt_provider_especific);
-        lyt_provider_specific = v.findViewById(R.id.lyt_provider_especific);
-        txt_actions_providers = v.findViewById(R.id.txt_actions_providers);
-        lyt_actions_providers = v.findViewById(R.id.lyt_actions_providers);
-        txt_service_schedule = v.findViewById(R.id.txt_service_schedule);
-        lyt_service_schedule_specific = v.findViewById(R.id.lyt_service_schedule_especific);
-
-        txt_most_used = v.findViewById(R.id.txt_most_used_general);
-        lyt_most_used_general = v.findViewById(R.id.lyt_most_used_general);
-        lyt_most_used_general_2 = v.findViewById(R.id.lyt_most_used_general_2);
-        txt_others_general = v.findViewById(R.id.txt_others_general);
-        lyt_others_general = v.findViewById(R.id.lyt_others_general);
-        lyt_others_general_2 = v.findViewById(R.id.lyt_others_general_2);
-        lyt_others_general_3 = v.findViewById(R.id.lyt_others_general_3);
-
-        //search
-        ImageButton btnSearchMascota = v.findViewById(R.id.btn_search_pet);
-        ((TextView)v.findViewById(R.id.txt_search_pet_2)).setText(DoctorVetApp.get().getPetNaming().toLowerCase());
-        btnSearchMascota.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PETS_SEARCH);
-                dismiss();
-            }
-        });
-        ImageButton btnSearchPropietario = v.findViewById(R.id.btn_search_owner);
-        ((TextView)v.findViewById(R.id.txt_search_owner_2)).setText(DoctorVetApp.get().getOwnerNaming().toLowerCase());
-        btnSearchPropietario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.OWNERS_SEARCH);
-                dismiss();
-            }
-        });
-        ImageButton btnSearchProducto = v.findViewById(R.id.btn_search_product);
-        btnSearchProducto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PRODUCTS_SEARCH);
-                dismiss();
-            }
-        });
-
-        //actions
-        ImageButton btnNewMascota = v.findViewById(R.id.btn_new_pet);
-        ((TextView)v.findViewById(R.id.txt_new_pet_2)).setText(DoctorVetApp.get().getPetNaming().toLowerCase());
-        btnNewMascota.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PETS_NEW);
-                dismiss();
-            }
-        });
-        ImageButton btnNewPropietario = v.findViewById(R.id.btn_new_owner);
-        ((TextView)v.findViewById(R.id.txt_new_owner_2)).setText(DoctorVetApp.get().getOwnerNaming().toLowerCase());
-        btnNewPropietario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.OWNERS_NEW);
-                dismiss();
-            }
-        });
-        ImageButton btnNewProducto = v.findViewById(R.id.btn_new_product);
-        btnNewProducto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PRODUCTS_NEW);
-                dismiss();
-            }
-        });
-        ImageButton btnNewService = v.findViewById(R.id.btn_new_service);
-        btnNewService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PRODUCTS_NEW_SERVICE);
-                dismiss();
-            }
-        });
-        ImageButton btnAsocProduct = v.findViewById(R.id.btn_asoc_product);
-        btnAsocProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PRODUCTS_ASSOC);
-                dismiss();
-            }
-        });
-        ImageButton btnNewProvider = v.findViewById(R.id.btn_new_provider);
-        btnNewProvider.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PROVIDER_NEW);
-                dismiss();
-            }
-        });
-        ImageButton btnNewSpending = v.findViewById(R.id.btn_new_spending);
-        btnNewSpending.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.SPENDING_NEW);
-                dismiss();
-            }
-        });
-        ImageButton btnNewSell = v.findViewById(R.id.btn_new_sell);
-        btnNewSell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.SELLS_NEW);
-                dismiss();
-            }
-        });
-        ImageButton btnNewManualInOut = v.findViewById(R.id.btn_new_manual_in_out);
-        btnNewManualInOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.MANUAL_IN_OUT);
-                dismiss();
-            }
-        });
-        ImageButton btnNewPurchase = v.findViewById(R.id.btn_new_purchase);
-        btnNewPurchase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PURCHASES_NEW);
-                dismiss();
-            }
-        });
-        ImageButton btnNewImport = v.findViewById(R.id.btn_new_import);
-        btnNewImport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.IMPORT_NEW);
-                dismiss();
-            }
-        });
-        ImageButton btnNewAgenda = v.findViewById(R.id.btn_new_agenda_global);
-        btnNewAgenda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.AGENDA_NEW);
-                dismiss();
-            }
-        });
-
-        //especifico propietarios
-        ImageButton btnPropietarioEspecificoEditar = v.findViewById(R.id.btn_modificar_owner);
-        btnPropietarioEspecificoEditar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.OWNER_UPDATE);
-                dismiss();
-            }
-        });
-        ImageButton btnPropietarioEspecificoEliminar = v.findViewById(R.id.btn_eliminar_owner);
-        btnPropietarioEspecificoEliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.OWNER_DELETE);
-                dismiss();
-            }
-        });
-        ImageButton btnAgregarMascota = v.findViewById(R.id.btn_agregar_pet);
-        ((TextView)v.findViewById(R.id.txt_agregar_pet_2)).setText(DoctorVetApp.get().getPetNaming().toLowerCase());
-        btnAgregarMascota.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.OWNER_ADD_PET);
-                dismiss();
-            }
-        });
-        ImageButton btnNewSellToOwner = v.findViewById(R.id.btn_new_sell_to_owner);
-        btnNewSellToOwner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.SELLS_TO_OWNER_NEW);
-                dismiss();
-            }
-        });
-
-        //especifico propietarios comunicacion
-        ImageButton btnPropietarioEspecificoComLlamar = v.findViewById(R.id.btn_com_telefono);
-        btnPropietarioEspecificoComLlamar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.COMUNICATION_CALL);
-                dismiss();
-            }
-        });
-        ImageButton btnPropietarioEspecificoComWhatsApp = v.findViewById(R.id.btn_com_whatsapp);
-        btnPropietarioEspecificoComWhatsApp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.COMUNICATION_WHATSAPP);
-                dismiss();
-            }
-        });
-        ImageButton btnPropietarioEspecificoComSms = v.findViewById(R.id.btn_com_sms);
-        btnPropietarioEspecificoComSms.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.COMUNICATION_SMS);
-                dismiss();
-            }
-        });
-        ImageButton btnPropietarioEspecificoComEmail = v.findViewById(R.id.btn_com_email);
-        btnPropietarioEspecificoComEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.COMUNICATION_EMAIL);
-                dismiss();
-            }
-        });
-
-        //especifico mascotas
-        ImageButton btnMascotaEspecificoModificar = v.findViewById(R.id.btn_modificar_pet);
-        btnMascotaEspecificoModificar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PET_UPDATE);
-                dismiss();
-            }
-        });
-        ImageButton btnMascotaEspecificoEliminar = v.findViewById(R.id.btn_eliminar_pet);
-        btnMascotaEspecificoEliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PET_DELETE);
-                dismiss();
-            }
-        });
-        ImageButton btnNewClinic = v.findViewById(R.id.btn_new_clinic);
-        btnNewClinic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PETS_NEW_CLINIC);
-                dismiss();
-            }
-        });
-        ImageButton btnNewClinic2 = v.findViewById(R.id.btn_new_clinic_2);
-        btnNewClinic2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PETS_NEW_CLINIC_2);
-                dismiss();
-            }
-        });
-        ImageButton btnNewSuministro = v.findViewById(R.id.btn_new_suministro);
-        btnNewSuministro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PETS_NEW_SUPPLY);
-                dismiss();
-            }
-        });
-        ImageButton btnNewEstudio = v.findViewById(R.id.btn_new_estudio);
-        btnNewEstudio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PETS_NEW_STUDY);
-                dismiss();
-            }
-        });
-        ImageButton btnNewRecipe = v.findViewById(R.id.btn_new_recipe);
-        btnNewRecipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PETS_NEW_RECIPE);
-                dismiss();
-            }
-        });
-        ImageButton btnNewAgendaPet = v.findViewById(R.id.btn_new_pet_agenda);
-        btnNewAgendaPet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PETS_NEW_AGENDA);
-                dismiss();
-            }
-        });
-        ImageButton btnNewSellToPet = v.findViewById(R.id.btn_new_sell_to_pet);
-        btnNewSellToPet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.SELLS_TO_PET_NEW);
-                dismiss();
-            }
-        });
-        ImageButton btnWaitingRoomPet = v.findViewById(R.id.btn_new_waiting_room_pet);
-        btnWaitingRoomPet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.WAITING_ROOM_PET);
-                dismiss();
-            }
-        });
-
-        //especifico de agenda
-        ImageButton btnAgendaEspecificoModificar = v.findViewById(R.id.btn_modificar_agenda);
-        btnAgendaEspecificoModificar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.AGENDA_UPDATE);
-                dismiss();
-            }
-        });
-        ImageButton btnAgendaEspecificoEliminar = v.findViewById(R.id.btn_eliminar_agenda);
-        btnAgendaEspecificoEliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.AGENDA_DELETE);
-                dismiss();
-            }
-        });
-        ImageButton btnAgendaEspecificoMarcar = v.findViewById(R.id.btn_marcar_agenda);
-        btnAgendaEspecificoMarcar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.AGENDA_CHECK);
-                dismiss();
-            }
-        });
-
-        //users specific
-        ImageButton btnUsuarioEspecificoModificar = v.findViewById(R.id.btn_modificar_user);
-        btnUsuarioEspecificoModificar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.USER_UPDATE);
-                dismiss();
-            }
-        });
-//        ImageButton btnUserSpecificEditServices = v.findViewById(R.id.btn_edit_user_services_schedules);
-//        btnUserSpecificEditServices.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mListener.onButtonClicked(BottomSheetButtonClicked.USER_EDIT_SERVICES_SCHEDULES);
-//                dismiss();
-//            }
-//        });
-        ImageButton btnUserChangePassword = v.findViewById(R.id.btn_user_change_password);
-        btnUserChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.USER_CHANGE_PASSWORD);
-                dismiss();
-            }
-        });
-        ImageButton btnUserLogout = v.findViewById(R.id.btn_user_close_session);
-        btnUserLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.USER_LOGOUT);
-                dismiss();
-            }
-        });
-
-        //especific vets
-        ImageButton btnVeterinariaEspecificoModificar = v.findViewById(R.id.btn_modificar_veterinaria);
-        btnVeterinariaEspecificoModificar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.VET_UPDATE);
-                dismiss();
-            }
-        });
-        ImageButton btnVetSpecificEditSchedules = v.findViewById(R.id.btn_edit_vet_schedules);
-        btnVetSpecificEditSchedules.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.VET_EDIT_SCHEDULES);
-                dismiss();
-            }
-        });
-//        ImageButton btnVetSpecificEditServices = v.findViewById(R.id.btn_edit_vet_services);
-//        btnVetSpecificEditServices.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mListener.onButtonClicked(BottomSheetButtonClicked.VET_EDIT_SERVICES);
-//                dismiss();
-//            }
-//        });
-        ImageButton btnVetSpecificUsers = v.findViewById(R.id.btn_edit_vet_users);
-        btnVetSpecificUsers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.VET_USERS);
-                dismiss();
-            }
-        });
-        ImageButton btnVetSpecificCreateBranch = v.findViewById(R.id.btn_create_branch);
-        btnVetSpecificCreateBranch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.VET_CREATE_BRANCH);
-                dismiss();
-            }
-        });
-        ImageButton btnVetSpecificSellPoints = v.findViewById(R.id.btn_points_of_sell);
-        btnVetSpecificSellPoints.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.VET_SELL_POINTS);
-                dismiss();
-            }
-        });
-        ImageButton btnVetSpecificDeposits = v.findViewById(R.id.btn_deposits);
-        btnVetSpecificDeposits.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.VET_DEPOSITS);
-                dismiss();
-            }
-        });
-
-        //products specific
-        ImageButton btnProductoEspecificoModificar = v.findViewById(R.id.btn_modificar_product);
-        btnProductoEspecificoModificar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PRODUCT_UPDATE);
-                dismiss();
-            }
-        });
-        ImageButton btnProductoEspecificoEliminar = v.findViewById(R.id.btn_eliminar_product);
-        btnProductoEspecificoEliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PRODUCT_DELETE);
-                dismiss();
-            }
-        });
-//        ImageButton btnProductoEspecificoAsociar = v.findViewById(R.id.btn_asociar_product);
-//        btnProductoEspecificoAsociar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mListener.onButtonClicked(BottomSheetButtonClicked.PRODUCT_ASSOCIATE);
-//                dismiss();
-//            }
-//        });
-
-        //sells specific
-        ImageButton btnSellSpecificDelete = v.findViewById(R.id.btn_delete_sell);
-        btnSellSpecificDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.SELL_CANCEL);
-                dismiss();
-            }
-        });
-        ImageButton btnSellSpecificGetPDF = v.findViewById(R.id.btn_get_pdf);
-        btnSellSpecificGetPDF.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.SELL_PDF);
-                dismiss();
-            }
-        });
-
-        //purchases specific
-        ImageButton btnPurchaseSpecificDelete = v.findViewById(R.id.btn_delete_purchase);
-        btnPurchaseSpecificDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PURCHASE_CANCEL);
-                dismiss();
-            }
-        });
-
-        //movements specific
-        ImageButton btnMovementSpecificDelete = v.findViewById(R.id.btn_delete_movement);
-        btnMovementSpecificDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.MOVEMENT_CANCEL);
-                dismiss();
-            }
-        });
-        ImageButton btnMovementSpecificGetPDF = v.findViewById(R.id.btn_get_pdf_movement);
-        btnMovementSpecificGetPDF.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.MOVEMENT_PDF);
-                dismiss();
-            }
-        });
-        ImageButton btnMovementSpecificAccept = v.findViewById(R.id.btn_accept_movement);
-        btnMovementSpecificAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.MOVEMENT_ACCEPT);
-                dismiss();
-            }
-        });
-
-        //cash_movements specific
-        ImageButton btnCashMovementsSpecificDelete = v.findViewById(R.id.btn_delete_cash_movement);
-        btnCashMovementsSpecificDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.CASH_MOVEMENT_CANCEL);
-                dismiss();
-            }
-        });
-
-        //spending specific
-        ImageButton btnSpendingSpecificDelete = v.findViewById(R.id.btn_delete_spending);
-        btnSpendingSpecificDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.SPENDING_CANCEL);
-                dismiss();
-            }
-        });
-
-        //providers specific
-        ImageButton btnProviderSpecificBuy = v.findViewById(R.id.btn_new_purchase_to_provider);
-        btnProviderSpecificBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PROVIDER_BUY);
-                dismiss();
-            }
-        });
-        ImageButton btnProviderSpecificEdit = v.findViewById(R.id.btn_update_provider);
-        btnProviderSpecificEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PROVIDER_UPDATE);
-                dismiss();
-            }
-        });
-        ImageButton btnProviderSpecific = v.findViewById(R.id.btn_delete_provider);
-        btnProviderSpecific.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PROVIDER_DELETE);
-                dismiss();
-            }
-        });
-        //service schedule specific
-        ImageButton btnServiceScheduleNew = v.findViewById(R.id.btn_add_service_schedule);
-        btnServiceScheduleNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.SERVICES_SCHEDULES_NEW);
-                dismiss();
-            }
-        });
-        //search provider
-        ImageButton btnSearchProvider = v.findViewById(R.id.btn_search_provider);
-        btnSearchProvider.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.PROVIDERS_SEARCH);
-                dismiss();
-            }
-        });
-        //search manufacturer
-        ImageButton btnSearchManufacturer = v.findViewById(R.id.btn_search_manufacturer);
-        btnSearchManufacturer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.MANUFACTURERS_SEARCH);
-                dismiss();
-            }
-        });
-        //new movement
-        ImageButton btnNewMovement = v.findViewById(R.id.btn_new_movement);
-        btnNewMovement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClicked(BottomSheetButtonClicked.MOVEMENTS_NEW);
-                dismiss();
-            }
-        });
-
+        root_linear = v.findViewById(R.id.bottom_sheet_linear_root);
+        createBottomSheet();
         return v;
     }
 
-    public enum BottomSheetButtonClicked {
+    private void createBottomSheet() {
+        if (view_to_show.equalsIgnoreCase("MainActivity")) createMain();
+        if (view_to_show.equalsIgnoreCase("ViewAgendaEventActivity")) createAgendaEvent();
+        if (view_to_show.equalsIgnoreCase("ViewCashMovementActivity")) createCashMovement();
+        if (view_to_show.equalsIgnoreCase("ViewManufacturerActivity")) createViewManufacturer();
+        if (view_to_show.equalsIgnoreCase("ViewMovementActivity")) createViewMovement();
+        if (view_to_show.equalsIgnoreCase("ViewOwnerActivity")) createViewOwner();
+        if (view_to_show.equalsIgnoreCase("ViewPetActivity")) createViewPet();
+        if (view_to_show.equalsIgnoreCase("ViewProductVetActivity")) createViewProductVet();
+        if (view_to_show.equalsIgnoreCase("ViewProviderActivity")) createViewProvider();
+        if (view_to_show.equalsIgnoreCase("ViewPurchaseActivity")) createViewPurchase();
+        if (view_to_show.equalsIgnoreCase("ViewSellActivity")) createViewSell();
+        if (view_to_show.equalsIgnoreCase("ViewSpendingActivity")) createViewSpending();
+        if (view_to_show.equalsIgnoreCase("ViewUserActivity")) createViewUser();
+        if (view_to_show.equalsIgnoreCase("ViewUserActivityOnlyComm")) createViewUserOnlyComm();
+        if (view_to_show.equalsIgnoreCase("ViewVetActivity")) createViewVet();
+    }
+
+    private void createMain() {
+        //most used
+        GridLayout gridMostUsed = getGrid();
+        Users_permissions permissions = DoctorVetApp.get().getUser().getPermissions();
+
+        //row1
+        if (permissions.actions_permissions.pets.create == 1) gridMostUsed.addView(getButton(gridMostUsed, Buttons.PETS_NEW, R.drawable.ic_add_pet_2, "Nuevo", DoctorVetApp.get().getPetNaming()));
+        if (permissions.actions_permissions.pets.read == 1) gridMostUsed.addView(getButton(gridMostUsed, Buttons.PETS_SEARCH, R.drawable.ic_search_pet_2, "Buscar", DoctorVetApp.get().getPetNaming()));
+        if (permissions.actions_permissions.owners.create == 1) gridMostUsed.addView(getButton(gridMostUsed, Buttons.OWNERS_NEW, R.drawable.ic_add_person_2, "Nuevo", DoctorVetApp.get().getOwnerNaming()));
+        if (permissions.actions_permissions.owners.read == 1) gridMostUsed.addView(getButton(gridMostUsed, Buttons.OWNERS_SEARCH, R.drawable.ic_search_owner_2, "Buscar", DoctorVetApp.get().getOwnerNaming()));
+
+        //row2
+        if (permissions.actions_permissions.products.read == 1) gridMostUsed.addView(getButton(gridMostUsed, Buttons.PRODUCTS_SEARCH, R.drawable.ic_search_product, "Buscar", "producto"));
+        if (permissions.actions_permissions.sells.create == 1) gridMostUsed.addView(getButton(gridMostUsed, Buttons.SELLS_NEW, R.drawable.ic_add_sell, "Venta", null));
+        if (permissions.actions_permissions.spendings.create == 1) gridMostUsed.addView(getButton(gridMostUsed, Buttons.SPENDING_NEW, R.drawable.ic_add_spending_2, "Gasto", null));
+        if (permissions.actions_permissions.agenda.create == 1) gridMostUsed.addView(getButton(gridMostUsed, Buttons.AGENDA_NEW, R.drawable.ic_add_task, "Agenda", null));
+
+        AddToRoot(gridMostUsed, "Más usados");
+
+        //others
+        GridLayout gridOthers = getGrid();
+
+        //row1
+        if (permissions.actions_permissions.purchases.create == 1) gridOthers.addView(getButton(gridOthers, Buttons.PURCHASES_NEW, R.drawable.ic_add_buy_2, "Compra", null));
+        if (permissions.actions_permissions.cash_movements.create == 1) gridOthers.addView(getButton(gridOthers, Buttons.MANUAL_IN_OUT, R.drawable.ic_add_in_out_2, "Ingreso / egreso", "manual"));
+        if (DoctorVetApp.get().getUser().getRol().equalsIgnoreCase("OWNER")) gridOthers.addView(getButton(gridOthers, Buttons.IMPORT_NEW, R.drawable.ic_add_import_2, "Importar", "productos"));
+        if (DoctorVetApp.get().getUser().getRol().equalsIgnoreCase("OWNER")) gridOthers.addView(getButton(gridOthers, Buttons.PRODUCTS_ASSOC, R.drawable.ic_assoc_products, "Asociar", "productos"));
+
+        //row2
+        if (permissions.actions_permissions.products.create == 1) gridOthers.addView(getButton(gridOthers, Buttons.PRODUCTS_NEW, R.drawable.ic_add_product_2, "Nuevo", "producto"));
+        if (permissions.actions_permissions.products.create == 1) gridOthers.addView(getButton(gridOthers, Buttons.PRODUCTS_NEW_SERVICE, R.drawable.ic_add_service_2, "Nuevo", "servicio"));
+        if (permissions.actions_permissions.products_providers.create == 1) gridOthers.addView(getButton(gridOthers, Buttons.PROVIDER_NEW, R.drawable.ic_add_provider_2, "Nuevo", "distribuidor"));
+        if (permissions.actions_permissions.products_providers.read == 1) gridOthers.addView(getButton(gridOthers, Buttons.PROVIDERS_SEARCH, R.drawable.ic_search_provider, "Buscar", "distribuidor"));
+
+        //row3
+        if (permissions.actions_permissions.products_manufacturers.read == 1) gridOthers.addView(getButton(gridOthers, Buttons.MANUFACTURERS_SEARCH, R.drawable.ic_search_manufacturer, "Buscar", "fabricante"));
+        if (permissions.actions_permissions.internal_movements.create == 1) gridOthers.addView(getButton(gridOthers, Buttons.MOVEMENTS_NEW, R.drawable.ic_arrow_right_alt_48px, "Remito", null));
+
+        AddToRoot(gridOthers, "Otros");
+    }
+    private void createViewVet() {
+        if (DoctorVetApp.get().getUser().getRol().equalsIgnoreCase("OWNER")) {
+            GridLayout gridVet = getGrid();
+            gridVet.addView(getButton(gridVet, Buttons.VET_UPDATE, R.drawable.ic_action_edit_light, "Editar", null));
+            gridVet.addView(getButton(gridVet, Buttons.VET_EDIT_SCHEDULES, R.drawable.ic_design_services, "Servicios", "y horarios"));
+            gridVet.addView(getButton(gridVet, Buttons.VET_USERS, R.drawable.ic_users, "Usuarios", null));
+            gridVet.addView(getButton(gridVet, Buttons.VET_CREATE_BRANCH, R.drawable.ic_vet_create_branch, "Crear", "sucursal"));
+            gridVet.addView(getButton(gridVet, Buttons.VET_SELL_POINTS, R.drawable.ic_add_sell, "Comprobantes", null));
+            gridVet.addView(getButton(gridVet, Buttons.VET_DEPOSITS, R.drawable.ic_warehouse, "Almacenes", null));
+            gridVet.addView(getButton(gridVet, Buttons.VET_ELECTRONIC_INVOICING, R.drawable.ic_creditors_tolerance, "Facturación", "electrónica"));
+
+            AddToRoot(gridVet, "Veterinaria");
+        }
+
+        AddToRoot(getCommGrid(), "Comunicación");
+    }
+    private void createViewUser() {
+        GridLayout grid = getGrid();
+        grid.addView(getButton(grid, Buttons.USER_UPDATE, R.drawable.ic_action_edit_light, "Editar", null));
+        grid.addView(getButton(grid, Buttons.USER_CHANGE_PASSWORD, R.drawable.ic_change_password, "Cambiar", "contraseña"));
+        grid.addView(getButton(grid, Buttons.USER_LOGOUT, R.drawable.ic_close_session, "Cerrar", "sesión"));
+        AddToRoot(grid, "Usuario");
+    }
+    private void createViewUserOnlyComm() {
+        AddToRoot(getCommGrid(), "Comunicación");
+    }
+    private void createViewSpending() {
+        GridLayout grid = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.spendings.delete == 1) grid.addView(getButton(grid, Buttons.SPENDING_CANCEL, R.drawable.ic_action_delete, "Eliminar", null));
+        AddToRoot(grid, "Gasto");
+    }
+    private void createViewSell() {
+        GridLayout grid = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.sells.delete == 1) grid.addView(getButton(grid, Buttons.SELL_CANCEL, R.drawable.ic_action_delete, "Eliminar", null));
+        grid.addView(getButton(grid, Buttons.SELL_PDF, R.drawable.ic_receipt, "PDF", null));
+        AddToRoot(grid, "Venta");
+   }
+    private void createViewPurchase() {
+        GridLayout grid = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.purchases.delete == 1) grid.addView(getButton(grid, Buttons.PURCHASE_CANCEL, R.drawable.ic_action_delete, "Eliminar", null));
+        AddToRoot(grid, "Compra");
+    }
+    private void createViewProvider() {
+        GridLayout gridActions = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.purchases.create == 1) gridActions.addView(getButton(gridActions, Buttons.PROVIDER_BUY, R.drawable.ic_add_buy_2, "Compra", null));
+        AddToRoot(gridActions, "Acciones");
+
+        GridLayout gridProvider = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.purchases.create == 1) gridProvider.addView(getButton(gridProvider, Buttons.PROVIDER_UPDATE, R.drawable.ic_action_edit_light, "Editar", null));
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.purchases.create == 1) gridProvider.addView(getButton(gridProvider, Buttons.PROVIDER_DELETE, R.drawable.ic_action_delete, "Eliminar", null));
+        AddToRoot(gridProvider, "Distribuidor");
+    }
+    private void createViewProductVet() {
+        GridLayout grid = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.products.update == 1) grid.addView(getButton(grid, Buttons.PRODUCT_UPDATE, R.drawable.ic_action_edit_light, "Editar", null));
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.products.delete == 1) grid.addView(getButton(grid, Buttons.PRODUCT_DELETE, R.drawable.ic_action_delete, "Eliminar", null));
+        AddToRoot(grid, "Producto");
+    }
+    private void createViewPet() {
+        GridLayout gridActions = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.pets_clinic.create == 1) {
+            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_CLINIC, R.drawable.ic_clinic, "Clínica", null));
+            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_CLINIC_2, R.drawable.ic_clinic_est_2, "Clínica", "extendida"));
+            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_SUPPLY, R.drawable.ic_vac, "Suministro", null));
+            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_STUDY, R.drawable.ic_labs_48px, "Estudio", "complementario"));
+            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_RECIPE, R.drawable.ic_add_recipe, "Receta", null));
+            gridActions.addView(getButton(gridActions, Buttons.SELLS_TO_PET_NEW, R.drawable.ic_add_sell, "Venta", null));
+            gridActions.addView(getButton(gridActions, Buttons.WAITING_ROOM_PET, R.drawable.ic_hourglass, "Sala", "de espera"));
+            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_AGENDA, R.drawable.ic_add_task, "Agenda", null));
+//            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_CLINIC, R.drawable.ic_clinic, "Nueva", "clínica"));
+//            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_CLINIC_2, R.drawable.ic_clinic_est_2, "Nueva", "clínica ext."));
+//            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_SUPPLY, R.drawable.ic_vac, "Nuevo", "suministro"));
+//            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_STUDY, R.drawable.ic_labs_48px, "Nuevo", "estudio"));
+//            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_RECIPE, R.drawable.ic_add_recipe, "Nueva", "receta"));
+//            gridActions.addView(getButton(gridActions, Buttons.SELLS_TO_PET_NEW, R.drawable.ic_add_sell, "Venta", null));
+//            gridActions.addView(getButton(gridActions, Buttons.WAITING_ROOM_PET, R.drawable.ic_hourglass, "Sala", "de espera"));
+//            gridActions.addView(getButton(gridActions, Buttons.PETS_NEW_AGENDA, R.drawable.ic_add_task, "Nuevo", "agenda"));
+        }
+        AddToRoot(gridActions, "Acciones");
+
+        GridLayout grid = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.pets.update == 1) grid.addView(getButton(grid, Buttons.PET_UPDATE, R.drawable.ic_action_edit_light, "Editar", null));
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.pets.delete == 1) grid.addView(getButton(grid, Buttons.PET_DELETE, R.drawable.ic_action_delete, "Eliminar", null));
+        AddToRoot(grid, DoctorVetApp.get().getPetNaming());
+    }
+    private void createViewOwner() {
+        GridLayout gridActions = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.pets.create == 1) gridActions.addView(getButton(gridActions, Buttons.OWNER_ADD_PET, R.drawable.ic_add_pet_2, "Agregar", DoctorVetApp.get().getPetNaming().toLowerCase()));
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.sells.create == 1) gridActions.addView(getButton(gridActions, Buttons.SELLS_TO_OWNER_NEW, R.drawable.ic_add_sell, "Venta", null));
+        AddToRoot(gridActions, "Acciones");
+
+        GridLayout grid = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.owners.update == 1) grid.addView(getButton(grid, Buttons.OWNER_UPDATE, R.drawable.ic_action_edit_light, "Editar", null));
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.owners.delete == 1) grid.addView(getButton(grid, Buttons.OWNER_DELETE, R.drawable.ic_action_delete, "Eliminar", null));
+        AddToRoot(grid, DoctorVetApp.get().getOwnerNaming());
+
+        AddToRoot(getCommGrid(), "Comunicación");
+    }
+    private void createViewMovement() {
+        GridLayout grid = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.internal_movements.delete == 1) grid.addView(getButton(grid, Buttons.MOVEMENT_CANCEL, R.drawable.ic_action_delete, "Eliminar", null));
+        grid.addView(getButton(grid, Buttons.MOVEMENT_PDF, R.drawable.ic_receipt, "PDF", null));
+        AddToRoot(grid, "Remito");
+    }
+    private void createViewManufacturer() {
+        AddToRoot(getCommGrid(), "Comunicación");
+    }
+    private void createCashMovement() {
+        GridLayout grid = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.cash_movements.delete == 1) grid.addView(getButton(grid, Buttons.CASH_MOVEMENT_CANCEL, R.drawable.ic_action_delete, "Eliminar", null));
+        AddToRoot(grid, "Movimiento manual");
+    }
+    private void createAgendaEvent() {
+        GridLayout grid = getGrid();
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.agenda.update == 1) grid.addView(getButton(grid, Buttons.AGENDA_UPDATE, R.drawable.ic_action_edit_light, "Editar", null));
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.agenda.delete == 1) grid.addView(getButton(grid, Buttons.AGENDA_DELETE, R.drawable.ic_action_delete, "Eliminar", null));
+        if (DoctorVetApp.get().getUser().getPermissions().actions_permissions.agenda.create == 1) grid.addView(getButton(grid, Buttons.AGENDA_CHECK, R.drawable.ic_check_light, "Realizado", null));
+        AddToRoot(grid, "Agenda");
+    }
+
+    private void fixLastRow(GridLayout gridLayout) {
+        int COLUMNS = 4;
+        int itemsToCompleteRow = COLUMNS - (gridLayout.getChildCount() % 4);
+        for (int i = 0; i < itemsToCompleteRow; i++)
+            gridLayout.addView(getEmptyButton(gridLayout));
+    }
+
+    private RelativeLayout getButton(GridLayout grid, Buttons type, int drawable, String title, String subtitle) {
+        RelativeLayout button = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.bottom_sheet_layout_button, grid, false);
+
+        ImageButton imageButton = button.findViewById(R.id.btn_image);
+        imageButton.setImageResource(drawable);
+
+        TextView txtTitle = button.findViewById(R.id.txt_title);
+        txtTitle.setText(title);
+
+        if (subtitle != null) {
+            TextView txtSubitle = button.findViewById(R.id.txt_subtitle);
+            txtSubitle.setText(subtitle);
+        }
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((BottomSheetListener2)mContext).onButtonClicked(type);
+                dismiss();
+            }
+        });
+
+        return button;
+    }
+    private RelativeLayout getEmptyButton(GridLayout grid) {
+        RelativeLayout button = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.bottom_sheet_layout_button_empty, grid, false);
+        return button;
+    }
+
+    private GridLayout getGrid() {
+        GridLayout gridLayout = (GridLayout) LayoutInflater.from(mContext).inflate(R.layout.bottom_sheet_layout_grid, root_linear, false);
+        return gridLayout;
+    }
+
+    private TextView getTitle(String title) {
+        TextView textView = (TextView) LayoutInflater.from(mContext).inflate(R.layout.bottom_sheet_layout_title, root_linear, false);
+        textView.setText(title);
+        return textView;
+    }
+    private GridLayout getCommGrid() {
+        GridLayout gridComm = getGrid();
+
+        //row1
+        gridComm.addView(getButton(gridComm, Buttons.COMUNICATION_CALL, R.drawable.ic_phone_2, "Llamar", null));
+        gridComm.addView(getButton(gridComm, Buttons.COMUNICATION_WHATSAPP, R.drawable.ic_whatsapp_svg, "WhatsApp", null));
+        gridComm.addView(getButton(gridComm, Buttons.COMUNICATION_SMS, R.drawable.ic_sms, "SMS", null));
+        gridComm.addView(getButton(gridComm, Buttons.COMUNICATION_EMAIL, R.drawable.ic_email, "Email", null));
+
+        return gridComm;
+    }
+
+    private void AddToRoot(GridLayout grid, String title) {
+        if (grid.getChildCount() == 0)
+            return;
+
+        fixLastRow(grid);
+
+        root_linear.addView(getTitle(title));
+        root_linear.addView(grid);
+    }
+
+    public enum Buttons {
         PETS_SEARCH, PETS_NEW, PETS_NEW_CLINIC, PETS_NEW_CLINIC_2,
         PETS_NEW_SUPPLY, PETS_NEW_STUDY, PETS_NEW_AGENDA, PETS_NEW_RECIPE,
         OWNERS_SEARCH, OWNERS_NEW,
@@ -705,202 +305,15 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         PROVIDERS_SEARCH,
         MANUFACTURERS_SEARCH,
         WAITING_ROOM_PET,
-        VET_USERS, VET_CREATE_BRANCH, VET_SELL_POINTS, VET_DEPOSITS,
+        VET_USERS, VET_CREATE_BRANCH, VET_SELL_POINTS, VET_DEPOSITS, VET_ELECTRONIC_INVOICING,
         USER_CHANGE_PASSWORD, USER_LOGOUT,
         MOVEMENTS_NEW, MOVEMENT_CANCEL, MOVEMENT_ACCEPT, MOVEMENT_PDF,
         CASH_MOVEMENT_CANCEL,
         SPENDING_CANCEL,
     }
 
-    public interface BottomSheetListener {
-        void onButtonClicked(BottomSheetButtonClicked buttonClicked);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        try {
-            mListener = (BottomSheetListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement BottomSheetListener");
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Bundle b = getArguments();
-        if (b != null) {
-            if (b.containsKey("propietario_especifico")) {
-                showOwnerSpecific();
-                showEspecificoComunicacion();
-            }
-            if (b.containsKey("producto_especifico")) {
-                showProductoEspecifico();
-            }
-            if (b.containsKey("mascota_especifico")) {
-                showMascotaEspecifico();
-            }
-            if (b.containsKey("agenda_especifico")) {
-                showAgendaEspecifico();
-            }
-            if (b.containsKey("usuario_especifico")) {
-                showUsuarioEspecifico();
-                //showEspecificoComunicacion();
-            }
-            if (b.containsKey("veterinaria_especifico")) {
-                showVeterinariaEspecifico();
-                //showEspecificoComunicacion();
-            }
-            if (b.containsKey("sell_specific")) {
-                showSellSpecific();
-            }
-            if (b.containsKey("purchase_specific")) {
-                showPurchaseSpecific();
-            }
-            if (b.containsKey("cash_movement_specific")) {
-                showCashMovementSpecific();
-            }
-            if (b.containsKey("spending_specific")) {
-                showSpendingSpecific();
-            }
-            if (b.containsKey("movement_specific")) {
-                showMovementSpecific();
-            }
-            if (b.containsKey("provider_specific")) {
-                showProviderSpecific();
-                showEspecificoComunicacion();
-            }
-            if (b.containsKey("manufacturer_specific")) {
-                showEspecificoComunicacion();
-            }
-
-            if (b.containsKey("general")) {
-                String value = b.get("general").toString();
-                if (value == "false") {
-                    hideMostUsedGeneral();
-                    hideOthersGeneral();
-                } else {
-                    showMostUsedGeneral();
-                    showOthersGeneral();
-                }
-            }
-
-            if (b.containsKey("service_schedule_specific")) {
-                showServiceScheduleSpecific();
-            }
-
-            if (b.containsKey("communication_specific")) {
-                showEspecificoComunicacion();
-            }
-
-        }
-    }
-
-    public void showMostUsedGeneral() {
-        txt_most_used.setVisibility(View.VISIBLE);
-        lyt_most_used_general.setVisibility(View.VISIBLE);
-        lyt_most_used_general_2.setVisibility(View.VISIBLE);
-    }
-    public void hideMostUsedGeneral() {
-        txt_most_used.setVisibility(View.GONE);
-        lyt_most_used_general.setVisibility(View.GONE);
-        lyt_most_used_general_2.setVisibility(View.GONE);
-    }
-    public void showOthersGeneral() {
-        if (!DoctorVetApp.get().userIsAdmin()) {
-            lyt_others_general.findViewById(R.id.relative_new_import).setVisibility(View.GONE);
-            lyt_others_general.findViewById(R.id.relative_assoc).setVisibility(View.GONE);
-            lyt_others_general_2.findViewById(R.id.relative_new_product).setVisibility(View.GONE);
-            lyt_others_general_2.findViewById(R.id.relative_new_service).setVisibility(View.GONE);
-            lyt_others_general_2.findViewById(R.id.relative_new_provider).setVisibility(View.GONE);
-        }
-
-        txt_others_general.setVisibility(View.VISIBLE);
-        lyt_others_general.setVisibility(View.VISIBLE);
-        lyt_others_general_2.setVisibility(View.VISIBLE);
-        lyt_others_general_3.setVisibility(View.VISIBLE);
-    }
-    public void hideOthersGeneral() {
-        txt_others_general.setVisibility(View.GONE);
-        lyt_others_general.setVisibility(View.GONE);
-        lyt_others_general_2.setVisibility(View.GONE);
-        lyt_others_general_3.setVisibility(View.GONE);
-    }
-
-    public void showOwnerSpecific() {
-        txt_owner_especifico.setVisibility(View.VISIBLE);
-        lyt_owner_especifico.setVisibility(View.VISIBLE);
-        txt_actions_owners.setVisibility(View.VISIBLE);
-        lyt_actions_owners.setVisibility(View.VISIBLE);
-    }
-    public void showEspecificoComunicacion() {
-        txt_especifico_comunicacion.setVisibility(View.VISIBLE);
-        lyt_especifico_comunicacion.setVisibility(View.VISIBLE);
-    }
-    public void showMascotaEspecifico() {
-        txt_pet_especific.setVisibility(View.VISIBLE);
-        lyt_pet_especific.setVisibility(View.VISIBLE);
-        txt_actions_pets.setVisibility(View.VISIBLE);
-        lyt_actions_pets.setVisibility(View.VISIBLE);
-        lyt_actions_pets_2.setVisibility(View.VISIBLE);
-    }
-    public void showAgendaEspecifico() {
-        txt_agenda_especifico.setVisibility(View.VISIBLE);
-        lyt_agenda_especifico.setVisibility(View.VISIBLE);
-    }
-    private void showUsuarioEspecifico() {
-        txt_user_especifico.setVisibility(View.VISIBLE);
-        lyt_user_especifico.setVisibility(View.VISIBLE);
-
-        User user = DoctorVetApp.get().getUser();
-        if (user.getLogin_type().equalsIgnoreCase("GOOGLE") || user.getLogin_type().equalsIgnoreCase("FACEBOOK")) {
-            lyt_user_especifico.findViewById(R.id.relative_change_password).setVisibility(View.GONE);
-        }
-    }
-    private void showVeterinariaEspecifico() {
-        txt_veterinaria_especifico.setVisibility(View.VISIBLE);
-        lyt_veterinaria_especifico.setVisibility(View.VISIBLE);
-        lyt_veterinaria_especifico_2.setVisibility(View.VISIBLE);
-    }
-    private void showProductoEspecifico() {
-        txt_product_especifico.setVisibility(View.VISIBLE);
-        lyt_product_especifico.setVisibility(View.VISIBLE);
-//        txt_actions_products.setVisibility(View.VISIBLE);
-//        lyt_actions_products.setVisibility(View.VISIBLE);
-    }
-    private void showSellSpecific() {
-        txt_sell_specific.setVisibility(View.VISIBLE);
-        lyt_sell_specific.setVisibility(View.VISIBLE);
-    }
-    private void showPurchaseSpecific() {
-        txt_purchase_specific.setVisibility(View.VISIBLE);
-        lyt_purchase_specific.setVisibility(View.VISIBLE);
-    }
-    private void showCashMovementSpecific() {
-        txt_cash_movement_specific.setVisibility(View.VISIBLE);
-        lyt_cash_movement_specific.setVisibility(View.VISIBLE);
-    }
-    private void showSpendingSpecific() {
-        txt_spending_specific.setVisibility(View.VISIBLE);
-        lyt_spending_specific.setVisibility(View.VISIBLE);
-    }
-
-    private void showMovementSpecific() {
-        txt_movement_specific.setVisibility(View.VISIBLE);
-        lyt_movement_specific.setVisibility(View.VISIBLE);
-    }
-    private void showProviderSpecific() {
-        txt_provider_specific.setVisibility(View.VISIBLE);
-        lyt_provider_specific.setVisibility(View.VISIBLE);
-        txt_actions_providers.setVisibility(View.VISIBLE);
-        lyt_actions_providers.setVisibility(View.VISIBLE);
-    }
-    public void showServiceScheduleSpecific() {
-        txt_service_schedule.setVisibility(View.VISIBLE);
-        lyt_service_schedule_specific.setVisibility(View.VISIBLE);
+    public interface BottomSheetListener2 {
+        void onButtonClicked(Buttons buttonClicked);
     }
 
 }

@@ -29,7 +29,7 @@ import com.xionce.doctorvetServices.utilities.TokenStringRequest;
 import java.net.URL;
 
 public class ViewUserActivity extends ViewBaseActivity
-        implements BottomSheetDialog.BottomSheetListener {
+        implements BottomSheetDialog.BottomSheetListener2 {
 
     private static final String TAG = "ViewUserActivity";
     private User user = null;
@@ -39,17 +39,17 @@ public class ViewUserActivity extends ViewBaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_view_user);
 
-        boolean userViewingHimself = getIdUser().equals(DoctorVetApp.get().getUser().getId());
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                if (userViewingHimself) b.putString("usuario_especifico", "true");
-                if (!userViewingHimself) b.putString("communication_specific", "true");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                boolean userViewingHimself = getIdUser().equals(DoctorVetApp.get().getUser().getId());
+                if (userViewingHimself) {
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewUserActivity.this, "ViewUserActivity");
+                    bottomSheetDialog.show(getSupportFragmentManager(), null);
+                } else {
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewUserActivity.this, "ViewUserActivityOnlyComm");
+                    bottomSheetDialog.show(getSupportFragmentManager(), null);
+                }
             }
         });
 
@@ -147,7 +147,7 @@ public class ViewUserActivity extends ViewBaseActivity
     @Override
     protected void invisibilizeEmptyViews() {
         LinearLayout linearUsers = findViewById(R.id.linear_user_data);
-        DoctorVetApp.invisibilizeEmptyTextView(linearUsers);
+        DoctorVetApp.setTextViewVisibility(linearUsers);
     }
 
     private Integer getIdUser() {
@@ -155,7 +155,7 @@ public class ViewUserActivity extends ViewBaseActivity
     }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         if (!loadedFinished) {
             Snackbar.make(DoctorVetApp.getRootForSnack(this), R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
             return;

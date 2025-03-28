@@ -18,6 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.reflect.TypeToken;
 import com.xionce.doctorvetServices.data.Finance_payment_method;
 import com.xionce.doctorvetServices.data.Finance_payment_methodsAdapter;
+import com.xionce.doctorvetServices.data.Owner;
 import com.xionce.doctorvetServices.data.Sell;
 import com.xionce.doctorvetServices.utilities.HelperClass;
 import com.xionce.doctorvetServices.utilities.MySqlGson;
@@ -227,7 +228,43 @@ public class EditSellActivity_2 extends EditBaseActivity {
                 paymentsAdapter.addItem(getCurrentPayment());
         }
 
+        //sells planning activity
+        boolean display_sells_planning_activity = DoctorVetApp.get().getVet().getSells_planning_activity() == 1
+                                                    && getSell().getOwner() != null;
+
+        if (display_sells_planning_activity) {
+            if (!getSell().getOwner().getPets().isEmpty()) {
+                startSellPlanningActivity();
+                return;
+            }
+
+            incrementRequestNumberInOne();
+            DoctorVetApp.get().getOwner(getSell().getOwner().getId(), 0, new DoctorVetApp.VolleyCallbackOwner() {
+                @Override
+                public void onSuccess(Owner resultOwner) {
+                    setRequestCompleted();
+                    if (resultOwner.getPets().isEmpty()) {
+                        startSellFinalActivity();
+                        return;
+                    }
+
+                    getSell().getOwner().setPets(resultOwner.getPets());
+                    getIntent().putExtra(DoctorVetApp.INTENT_VALUES.SELL_OBJ.name(), MySqlGson.getGson().toJson(sell));
+                    startSellPlanningActivity();
+                }
+            });
+            return;
+        }
+
+        startSellFinalActivity();
+    }
+    private void startSellPlanningActivity() {
         Intent intent = new Intent(EditSellActivity_2.this, EditSellActivity_3.class);
+        intent.putExtra(DoctorVetApp.INTENT_VALUES.SELL_OBJ.name(), MySqlGson.getGson().toJson(sell));
+        startActivityForResult(intent, 1);
+    }
+    private void startSellFinalActivity() {
+        Intent intent = new Intent(EditSellActivity_2.this, EditSellActivity_4.class);
         intent.putExtra(DoctorVetApp.INTENT_VALUES.SELL_OBJ.name(), MySqlGson.getGson().toJson(sell));
         startActivityForResult(intent, 1);
     }

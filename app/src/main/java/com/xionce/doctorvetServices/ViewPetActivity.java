@@ -39,7 +39,7 @@ import java.net.URL;
 
 //No hereda de viewBase, se complico con los tabs
 public class ViewPetActivity extends AppCompatActivity
-        implements DoctorVetApp.PlayableContent, BottomSheetDialog.BottomSheetListener {
+        implements DoctorVetApp.PlayableContent, BottomSheetDialog.BottomSheetListener2 {
 
     private static final String TAG = "ViewPetActivity";
     public Toolbar toolbar;
@@ -70,11 +70,8 @@ public class ViewPetActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                b.putString("mascota_especifico", "true");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewPetActivity.this, "ViewPetActivity");
+                bottomSheetDialog.show(getSupportFragmentManager(), null);
             }
         });
 
@@ -151,7 +148,7 @@ public class ViewPetActivity extends AppCompatActivity
     }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         if (getPet() == null) {
             Snackbar.make(tabLayout, R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
             return;
@@ -214,6 +211,7 @@ public class ViewPetActivity extends AppCompatActivity
     }
 
     public Integer getIdPet() {
+        android.util.Log.w("PETID", "showNotificationExecuted PETID:" + String.valueOf(getIntent().getIntExtra(DoctorVetApp.INTENT_VALUES.PET_ID.name(), 0)));
         return getIntent().getIntExtra(DoctorVetApp.INTENT_VALUES.PET_ID.name(), 0);
     }
     public Pet getPet() {
@@ -311,7 +309,7 @@ public class ViewPetActivity extends AppCompatActivity
                 }
             });
         } else {
-            Glide.with(getApplicationContext()).load(R.drawable.ic_dog_holo_dark).apply(RequestOptions.fitCenterTransform()).into(toolbar_image);
+            Glide.with(getApplicationContext()).load(R.drawable.ic_pets_dark).apply(RequestOptions.fitCenterTransform()).into(toolbar_image);
         }
     }
 

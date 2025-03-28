@@ -43,10 +43,13 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         if (init_date != null)
             calendar.setTime(init_date);
 
+        boolean is24HourSystem = DateFormat.is24HourFormat(getContext());
+
         hour = calendar.get(Calendar.HOUR);
         minute = calendar.get(Calendar.MINUTE);
 
-        boolean is24HourSystem = DateFormat.is24HourFormat(getContext());
+        if (is24HourSystem)
+            hour = calendar.get(Calendar.HOUR_OF_DAY);
 
         // Create a new instance of DatePickerDialog and return it
         return new TimePickerDialog(getActivity(), this, hour, minute, is24HourSystem);

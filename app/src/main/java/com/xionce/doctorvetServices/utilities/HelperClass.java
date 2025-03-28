@@ -3,7 +3,6 @@ package com.xionce.doctorvetServices.utilities;
 /**
  * Created by Elias on 18/8/2017.
  */
-import static com.bumptech.glide.load.resource.bitmap.TransformationUtils.rotateImage;
 
 import android.Manifest;
 import android.app.Activity;
@@ -35,8 +34,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.annotation.ColorRes;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -61,7 +60,6 @@ import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.xionce.doctorvetServices.BuildConfig;
 import com.xionce.doctorvetServices.DoctorVetApp;
@@ -122,6 +120,8 @@ public class HelperClass {
     public static final int REQUEST_FINISH = 15;
     public static final int REQUEST_TAKE_IMAGE = 16;
     public static final int REQUEST_GET = 17;
+    public static final int REQUEST_READ_KEY_PEM = 18;
+//    public static final int REQUEST_READ_PEM = 19;
 
     public static final String INTENT_IMAGE_URL = "imageUrl";
     public static final String INTENT_VIDEO_URL = "videoUrl";
@@ -1029,6 +1029,7 @@ public class HelperClass {
                 .create()
                 .show();
     }
+
     public static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;

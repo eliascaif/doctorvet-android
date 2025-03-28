@@ -26,7 +26,7 @@ import com.xionce.doctorvetServices.utilities.TokenStringRequest;
 import java.net.URL;
 
 public class ViewMovementActivity extends ViewBaseActivity
-        implements BottomSheetDialog.BottomSheetListener, DoctorVetApp.IProgressBarActivity {
+        implements BottomSheetDialog.BottomSheetListener2, DoctorVetApp.IProgressBarActivity {
 
     private static final String TAG = "ViewMovementsActivity";
     private TextView txt_date;
@@ -58,11 +58,8 @@ public class ViewMovementActivity extends ViewBaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                Bundle b = new Bundle();
-                b.putString("movement_specific", "true");
-                bottomSheet.setArguments(b);
-                bottomSheet.show(getSupportFragmentManager(), "bottomSheetDialog");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ViewMovementActivity.this, "ViewMovementActivity");
+                bottomSheetDialog.show(getSupportFragmentManager(), null);
             }
         });
 
@@ -187,7 +184,7 @@ public class ViewMovementActivity extends ViewBaseActivity
     }
 
     @Override
-    public void onButtonClicked(BottomSheetDialog.BottomSheetButtonClicked buttonClicked) {
+    public void onButtonClicked(BottomSheetDialog.Buttons buttonClicked) {
         if (!loadedFinished) {
             Snackbar.make(DoctorVetApp.getRootForSnack(this), R.string.error_cargando_registro, Snackbar.LENGTH_SHORT).show();
             return;

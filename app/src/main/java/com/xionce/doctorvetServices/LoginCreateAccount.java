@@ -92,7 +92,7 @@ public class LoginCreateAccount extends AppCompatActivity {
             return;
 
         if (!humanVerify) {
-            Snackbar.make( DoctorVetApp.getRootForSnack(LoginCreateAccount.this), "Valida que no eres robot", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make( DoctorVetApp.getRootForSnack(LoginCreateAccount.this), "Presiona sobre 'No soy robot'", Snackbar.LENGTH_SHORT).show();
             return;
         }
 

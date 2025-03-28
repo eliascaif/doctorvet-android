@@ -45,11 +45,15 @@ public class VetPointsAdapter extends RecyclerView.Adapter<VetPointsAdapter.VetP
 
         holder.txt_title.setText(vetPoint.getName());
 
-        String subtitle = String.format("Denominación: %s | Denominación corta: %s | Tipo: %s | Contador: %s",
-                vetPoint.getFinance_types_receipt().getDenomination(),
-                vetPoint.getFinance_types_receipt().getShort_denomination(),
-                vetPoint.getType(),
-                vetPoint.getCounter()
+//        String subtitle = String.format("Denominación: %s | Denominación corta: %s | Tipo: %s | Contador: %s",
+//                vetPoint.getFinance_types_receipt().getDenomination(),
+//                vetPoint.getFinance_types_receipt().getShort_denomination(),
+//                vetPoint.getType(),
+//                vetPoint.getCounter()
+//        );
+        String subtitle = String.format("Número: %s | Tipo: %s ",
+                vetPoint.getNumber(),
+                vetPoint.getType()
         );
         holder.txt_subtitle.setText(subtitle);
 
@@ -72,10 +76,19 @@ public class VetPointsAdapter extends RecyclerView.Adapter<VetPointsAdapter.VetP
         return new ArrayAdapter<Vet_point>(ctx, android.R.layout.simple_dropdown_item_1line, vetPoints);
     }
 
+    public int getPositionByName(String name) {
+        for (Vet_point sellPoint : vetPoints) {
+            if (sellPoint.getName().equalsIgnoreCase(name))
+                return vetPoints.indexOf(sellPoint);
+        }
+        return -1;
+    }
+
     @Override
     public Integer getIdByValue(String value) {
+//            if (sellPoint.getFinance_types_receipt().getDenomination().equals(value))
         for (Vet_point sellPoint : vetPoints) {
-            if (sellPoint.getFinance_types_receipt().getDenomination().equals(value))
+            if (sellPoint.getName().equals(value))
                 return sellPoint.getId();
         }
         return null;

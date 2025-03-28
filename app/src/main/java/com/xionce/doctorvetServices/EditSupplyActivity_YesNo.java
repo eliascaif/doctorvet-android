@@ -110,8 +110,8 @@ public class EditSupplyActivity_YesNo extends EditBaseActivity {
 //            }
 //        }
 
-        ImageView productoSearch = findViewById(R.id.img_search_product);
-        productoSearch.setOnClickListener(new View.OnClickListener() {
+        ImageView productSearch = findViewById(R.id.img_search_product);
+        productSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EditSupplyActivity_YesNo.this, SearchProductActivity.class);
@@ -120,8 +120,8 @@ public class EditSupplyActivity_YesNo extends EditBaseActivity {
                 startActivityForResult(intent, HelperClass.REQUEST_SEARCH);
             }
         });
-        ImageView productoSearchBarcode = findViewById(R.id.img_search_barcode);
-        productoSearchBarcode.setOnClickListener(new View.OnClickListener() {
+        ImageView productSearchBarcode = findViewById(R.id.img_search_barcode);
+        productSearchBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EditSupplyActivity_YesNo.this, ScannerActivity.class);
@@ -219,7 +219,7 @@ public class EditSupplyActivity_YesNo extends EditBaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                setLabelFechaLarga(editable.toString());
+                setLabelLongDate(editable.toString());
             }
         });
 
@@ -443,10 +443,10 @@ public class EditSupplyActivity_YesNo extends EditBaseActivity {
         toolbar_title.setText(pet_supply.getPet().getName());
         toolbar_subtitle.setText("¿Que vas a suministrar?");
 
-        DoctorVetApp.get().setThumb(pet_supply.getPet().getThumb_url(), toolbar_image, R.drawable.ic_dog_holo_dark);
+        DoctorVetApp.get().setThumb(pet_supply.getPet().getThumb_url(), toolbar_image, R.drawable.ic_pets_dark);
 
         DoctorVetApp.ObjectToTextInputLayout(findViewById(R.id.lista), pet_supply, "txt_");
-        setLabelFechaLarga(txtDate.getEditText().getText().toString());
+        setLabelLongDate(txtDate.getEditText().getText().toString());
     }
 
     @Override
@@ -515,11 +515,13 @@ public class EditSupplyActivity_YesNo extends EditBaseActivity {
         txtDate.getEditText().setText(HelperClass.getDateInLocaleShort(HelperClass.sumar_dias(dt_actual, dias)));
         toggleButton.setChecked(false);
     }
-    private void setLabelFechaLarga(String input_text) {
+    private void setLabelLongDate(String input_text) {
         if (HelperClass.isValidDate(input_text, EditSupplyActivity_YesNo.this)) {
+            labelFecha.setVisibility(View.VISIBLE);
             Date fechaDate = HelperClass.getShortDate(input_text, EditSupplyActivity_YesNo.this);
             labelFecha.setText(DateFormat.getDateInstance(DateFormat.FULL).format(fechaDate));
         } else {
+            labelFecha.setVisibility(View.GONE);
             labelFecha.setText("");
         }
     }

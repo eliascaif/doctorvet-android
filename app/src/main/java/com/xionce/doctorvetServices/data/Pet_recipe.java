@@ -12,16 +12,6 @@ public class Pet_recipe {
     private Integer id;
     @Expose
     private Date date;
-//    @Expose
-//    private Date starting_date;
-//    @Expose
-//    private Date ending_date;
-//    @Expose
-//    private String dosage;
-//    @Expose
-//    private BigDecimal every_hours;
-//    @Expose
-//    private Integer total_days;
     @Expose
     private String notes;
     @Expose
@@ -31,10 +21,9 @@ public class Pet_recipe {
     @Expose
     private Treatment treatment;
 
+    private String age;
     private Vet vet;
     private User user;
-
-//    private Product product;
 
     public Vet getVet() {
         return vet;
@@ -61,36 +50,6 @@ public class Pet_recipe {
     public void setDate(Date date) {
         this.date = date;
     }
-//    public Date getStarting_date() {
-//        return starting_date;
-//    }
-//    public void setStarting_date(Date starting_date) {
-//        this.starting_date = starting_date;
-//    }
-//    public Date getEnding_date() {
-//        return ending_date;
-//    }
-//    public void setEnding_date(Date ending_date) {
-//        this.ending_date = ending_date;
-//    }
-//    public String getDosage() {
-//        return dosage;
-//    }
-//    public void setDosage(String dosage) {
-//        this.dosage = dosage;
-//    }
-//    public BigDecimal getEvery_hours() {
-//        return every_hours;
-//    }
-//    public void setEvery_hours(BigDecimal every_hours) {
-//        this.every_hours = every_hours;
-//    }
-//    public Integer getTotal_days() {
-//        return total_days;
-//    }
-//    public void setTotal_days(Integer total_days) {
-//        this.total_days = total_days;
-//    }
     public String getNotes() {
         return notes;
     }
@@ -109,12 +68,6 @@ public class Pet_recipe {
     public void setTreatment(Treatment treatment) {
         this.treatment = treatment;
     }
-//    public Product getProduct() {
-//        return product;
-//    }
-//    public void setProduct(Product product) {
-//        this.product = product;
-//    }
     public Pet getPet() {
         return pet;
     }
@@ -126,6 +79,9 @@ public class Pet_recipe {
     }
     public void setItems(ArrayList<Pet_recipe_item> items) {
         this.items = items;
+    }
+    public String getAge() {
+        return age;
     }
 
     public class Pets_recipes_for_input {

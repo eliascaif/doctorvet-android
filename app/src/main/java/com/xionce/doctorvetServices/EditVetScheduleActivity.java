@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -94,7 +95,6 @@ public class EditVetScheduleActivity extends EditBaseActivity {
     private TextInputLayout txtService;
     private TextInputLayout txtStartingHour;
     private TextInputLayout txtEndingHour;
-    private RecyclerView recyclerServicesSchedules;
     private Button btn_add;
     private View list_item_selected_user;
 
@@ -113,7 +113,6 @@ public class EditVetScheduleActivity extends EditBaseActivity {
         actvService = findViewById(R.id.actv_service);
         txtStartingHour = findViewById(R.id.txt_starting_hour);
         txtEndingHour = findViewById(R.id.txt_ending_hour);
-        recyclerServicesSchedules = findViewById(R.id.recycler_products);
         list_item_selected_user = findViewById(R.id.list_item_selected_user);
         btn_add = findViewById(R.id.btn_add);
         hideToolbarImage();
@@ -281,6 +280,7 @@ public class EditVetScheduleActivity extends EditBaseActivity {
         showWaitDialog();
 
         final String jsonObject = MySqlGson.postGson().toJson(selectedServicesAdapter.getArrayList());
+        Log.d(TAG, jsonObject);
         TokenStringRequest stringRequest = new TokenStringRequest(Request.Method.POST, getUrl().toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -383,7 +383,6 @@ public class EditVetScheduleActivity extends EditBaseActivity {
     }
 
     private void insert_schedule() {
-//        if (!spinnerDays.getSelectedItem().toString().equals("Ninguno"))
         if (!validateStartingHour() || !validateEndingHour())
             return;
 
@@ -400,33 +399,23 @@ public class EditVetScheduleActivity extends EditBaseActivity {
             return;
         }
 
-//        if (spinnerDays.getSelectedItem().toString().equals("Ninguno"))
-//            if (!validateService())
-//                return;
-
         Service_schedule serviceSchedule = (Service_schedule) getObjectFromUI().clone();
 
-        //if (!spinnerDays.getSelectedItem().toString().equals("Ninguno")) {
-            Date startingHourDate = HelperClass.getShortTime(txtStartingHour.getEditText().getText().toString(), EditVetScheduleActivity.this);
-            Date endingHourDate = HelperClass.getShortTime(txtEndingHour.getEditText().getText().toString(), EditVetScheduleActivity.this);
-            if (endingHourDate.before(startingHourDate)) {
-                Snackbar.make(DoctorVetApp.getRootForSnack(this), "Hora fin debe ser mayor a hora inicio", Snackbar.LENGTH_LONG).show();
-                return;
-            }
+        Date startingHourDate = HelperClass.getShortTime(txtStartingHour.getEditText().getText().toString(), EditVetScheduleActivity.this);
+        Date endingHourDate = HelperClass.getShortTime(txtEndingHour.getEditText().getText().toString(), EditVetScheduleActivity.this);
+        if (endingHourDate.before(startingHourDate)) {
+            Snackbar.make(DoctorVetApp.getRootForSnack(this), "Hora fin debe ser mayor a hora inicio", Snackbar.LENGTH_LONG).show();
+            return;
+        }
 
-            String startingHourStr = HelperClass.getTimeInLocale(startingHourDate, EditVetScheduleActivity.this);
-            serviceSchedule.setStarting_hour_local(startingHourStr);
-            serviceSchedule.setStarting_hour(HelperClass.getTimeForMySQL(startingHourDate));
-            String endingHourStr = HelperClass.getTimeInLocale(endingHourDate, EditVetScheduleActivity.this);
-            serviceSchedule.setEnding_hour_local(endingHourStr);
-            serviceSchedule.setEnding_hour(HelperClass.getTimeForMySQL(endingHourDate));
-        //}
+        String startingHourStr = HelperClass.getTimeInLocale(startingHourDate, EditVetScheduleActivity.this);
+        serviceSchedule.setStarting_hour_local(startingHourStr);
+        serviceSchedule.setStarting_hour(HelperClass.getTimeForMySQL(startingHourDate));
+        String endingHourStr = HelperClass.getTimeInLocale(endingHourDate, EditVetScheduleActivity.this);
+        serviceSchedule.setEnding_hour_local(endingHourStr);
+        serviceSchedule.setEnding_hour(HelperClass.getTimeForMySQL(endingHourDate));
 
         serviceSchedule.setWeekday(weekdays.getEnumVal(spinnerDays.getSelectedItem().toString()));
-
-//        serviceSchedule.setTable_name("vets");
-//        if (serviceSchedule.getTable_id() != null)
-//            serviceSchedule.setTable_name("users");
 
         selectedServicesAdapter.addItem(serviceSchedule);
     }

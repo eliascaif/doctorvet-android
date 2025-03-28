@@ -12,7 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -161,7 +160,7 @@ public class SearchProductActivity extends AppCompatActivity implements HelperCl
                 public void onSuccess(Object resultObject) {
                     if (resultObject != null) {
                         Product product = (Product)resultObject;
-                        Intent activity = new Intent(SearchProductActivity.this, ViewProductVetActivity.class);
+                        Intent activity = new Intent(SearchProductActivity.this, ViewProductActivity.class);
                         activity.putExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_ID.name(), product.getId());
                         startActivity(activity);
                         finish();
@@ -441,7 +440,7 @@ public class SearchProductActivity extends AppCompatActivity implements HelperCl
         Intent intent = getIntent();
 
         if (intent.getBooleanExtra(DoctorVetApp.INTENT_SEARCH_VIEW, false)) {
-            Intent activity = new Intent(SearchProductActivity.this, ViewProductVetActivity.class);
+            Intent activity = new Intent(SearchProductActivity.this, ViewProductActivity.class);
             activity.putExtra(DoctorVetApp.INTENT_VALUES.PRODUCT_ID.name(), product.getId());
             startActivity(activity);
         } else if (intent.getBooleanExtra(DoctorVetApp.INTENT_SEARCH_RETURN, false)) {

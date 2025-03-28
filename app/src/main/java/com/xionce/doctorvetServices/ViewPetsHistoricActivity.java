@@ -1,5 +1,6 @@
 package com.xionce.doctorvetServices;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -37,6 +38,18 @@ public class ViewPetsHistoricActivity extends RecyclerViewActivity implements He
                     if (petsAdapter.getItemCount() == 0) {
                         showEmptyListMessage();
                     } else {
+
+                        petsAdapter.setOnClickHandler(new HelperClass.AdapterOnClickHandler() {
+                            @Override
+                            public void onClick(Object data, View view, int pos) {
+                                Pet pet = (Pet) data;
+                                Intent activity = new Intent(ViewPetsHistoricActivity.this, ViewPetActivity.class);
+                                activity.putExtra(DoctorVetApp.INTENT_VALUES.PET_ID.name(), pet.getId());
+                                startActivity(activity);
+                                finish();
+                            }
+                        });
+
                         recyclerView.setAdapter(petsAdapter);
 
                         //pagination

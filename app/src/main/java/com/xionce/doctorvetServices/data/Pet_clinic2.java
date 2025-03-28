@@ -45,6 +45,7 @@ public class Pet_clinic2 implements DoctorVetApp.IResourceObject, Cloneable {
     @Expose
     private ArrayList<Resource> resources;
 
+    private String age;
     private User user;
     private Vet vet;
     private Product_unit temp_unit;
@@ -178,6 +179,9 @@ public class Pet_clinic2 implements DoctorVetApp.IResourceObject, Cloneable {
     }
     public void setResources(ArrayList<Resource> resources) {
         this.resources = resources;
+    }
+    public String getAge() {
+        return age;
     }
 
     @Override

@@ -54,6 +54,15 @@ public class SellsAdapter extends RecyclerView.Adapter<SellsAdapter.SellsHolder>
 
         sellsHolder.txt_total.setText("Total: " + HelperClass.formatCurrency(sell.getTotal()));
         sellsHolder.txt_balance.setText("Balance: " + HelperClass.formatCurrency(sell.getBalance()));
+
+        //owner
+        Owner owner = sell.getOwner();
+        if (owner != null) {
+            sellsHolder.txt_owner.setVisibility(View.VISIBLE);
+            sellsHolder.txt_owner.setText("A: " + owner.getName());
+        } else {
+            sellsHolder.txt_owner.setVisibility(View.GONE);
+        }
     }
 
     public void addItems(ArrayList<Sell> items) {
@@ -71,6 +80,7 @@ public class SellsAdapter extends RecyclerView.Adapter<SellsAdapter.SellsHolder>
         private final TextView txt_sell_number;
         private final TextView txt_total;
         private final TextView txt_balance;
+        private final TextView txt_owner;
 
         public SellsHolder(View view) {
             super(view);
@@ -78,6 +88,7 @@ public class SellsAdapter extends RecyclerView.Adapter<SellsAdapter.SellsHolder>
             txt_sell_number = view.findViewById(R.id.txt_sell_number);
             txt_total = view.findViewById(R.id.txt_total);
             txt_balance = view.findViewById(R.id.txt_balance);
+            txt_owner = view.findViewById(R.id.txt_owner);
             view.setOnClickListener(this);
         }
 

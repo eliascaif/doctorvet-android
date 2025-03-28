@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -62,19 +63,16 @@ public class LoginActivity extends AppCompatActivity {
     private SignInClient oneTapClient;
     private BeginSignInRequest signUpRequest;
 
-    //Facebook
-    //CallbackManager facebookCallbackManager;
-
     CoordinatorLayout rootCordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //if there is token then proceed to main
+        //if there is a token proceed to main
         String token = DoctorVetApp.get().preferences_getUserToken();
         if (!token.isEmpty()) {
-            tokenSignIn(DoctorVetApp.get().preferences_getUserToken());
+            tokenSignIn();
             return;
         }
 
@@ -152,8 +150,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!humanVerify) {
-                    Snackbar.make(DoctorVetApp.getRootForSnack(LoginActivity.this), "Valida que no eres robot", Snackbar.LENGTH_SHORT).show();
-                    //Snackbar.make(rootCordinatorLayout, "Valida que no eres robot", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(DoctorVetApp.getRootForSnack(LoginActivity.this), "Presiona sobre 'No soy robot'", Snackbar.LENGTH_SHORT).show();
+                    //Snackbar.make(rootCordinatorLayout, "Presiona sobre 'No soy robot'", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -161,15 +159,6 @@ public class LoginActivity extends AppCompatActivity {
                 googleSignIn();
             }
         });
-
-        //facebook
-//        findViewById(R.id.fb_login_button).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                initFacebookSignIn();
-//                facebookSignIn();
-//            }
-//        });
 
         //privacy policy
         TextView txt_privacy_policy = findViewById(R.id.txt_privacy_policy);
@@ -204,8 +193,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
 
         if (!humanVerify) {
-            Snackbar.make( DoctorVetApp.getRootForSnack(LoginActivity.this), "Valida que no eres robot", Snackbar.LENGTH_SHORT).show();
-            //Snackbar.make(rootCordinatorLayout, "Valida que no eres robot", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(DoctorVetApp.getRootForSnack(LoginActivity.this), "Presiona sobre 'No soy robot'", Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -214,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
 
         emailContrasenaSignIn(email, password);
     }
-    private void tokenSignIn(String token) {
+    private void tokenSignIn() {
         if (pb_loading_indicator != null) pb_loading_indicator.setVisibility(View.VISIBLE);
         final Dialog mOverlayDialog = HelperClass.getOverlayDialog(LoginActivity.this);
         mOverlayDialog.show();
@@ -225,11 +213,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     String data = MySqlGson.getDataFromResponse(response).toString();
-                    //User user = MySqlGson.getGson().fromJson(data, User.class);
-                    //DoctorVetApp.get().setUser(user);
                     DoctorVetApp.get().preferences_set_user(data);
-                    Intent activity = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(activity);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+                    if (existsFCMMessageWithPetID())
+                        intent.putExtra(DoctorVetApp.INTENT_VALUES.PET_ID.name(), getFCMMessagePetID());
+
+                    startActivity(intent);
                     finish();
                 } catch (Exception e) {
                     DoctorVetApp.get().handle_onResponse_error(e, TAG, true, response);
@@ -259,6 +249,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         DoctorVetApp.get().addToRequestQueque(stringRequest);
     }
+
     private void emailContrasenaSignIn(String email, final String password) {
         if (pb_loading_indicator != null) pb_loading_indicator.setVisibility(View.VISIBLE);
         final Dialog mOverlayDialog = HelperClass.getOverlayDialog(LoginActivity.this);
@@ -269,8 +260,8 @@ public class LoginActivity extends AppCompatActivity {
         login_user.setPassword(password);
         final String json_user_object = MySqlGson.getPostJsonString(login_user);
 
-        URL login_checkUrl = NetworkUtils.buildUsersUrl(NetworkUtils.UsersUrlEnum.EMAIL_PRE_AUTH, null, null, null);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, login_checkUrl.toString(), new Response.Listener<String>() {
+        URL url = NetworkUtils.buildUsersUrl(NetworkUtils.UsersUrlEnum.EMAIL_PRE_AUTH, null, null, null);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url.toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -475,65 +466,19 @@ public class LoginActivity extends AppCompatActivity {
         }
     });
 
-    /*
-    private void initFacebookSignIn() {
-        if (facebookCallbackManager != null) return;
-
-        facebookCallbackManager = CallbackManager.Factory.create();
-
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        if (accessToken != null && !accessToken.isExpired()) {
-            Intent activity = new Intent(LoginActivity.this, LoginChoiceActivity.class);
-            startActivity(activity);
-            finish();
-            return;
+    private boolean existsFCMMessageWithPetID() {
+        //FCM message
+        if (getIntent().getExtras() != null) {
+            Object id_pet = getIntent().getExtras().get("id_pet");
+            if (id_pet != null)
+                return true;
         }
 
-        LoginManager.getInstance().registerCallback(facebookCallbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        // App code
-                        facebookDoRequest(loginResult.getAccessToken());
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        DoctorVetApp.get().handle_error(exception, TAG, true);
-                    }
-                });
+        return false;
     }
-    private void facebookSignIn() {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email","public_profile"));
+    private Integer getFCMMessagePetID() {
+        return Integer.parseInt(getIntent().getStringExtra("id_pet"));
     }
-    private void facebookDoRequest(AccessToken accessToken) {
-        GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                try {
-                    final User login_user = new User();
-                    login_user.setName(object.getString("name"));
-                    login_user.setEmail(object.getString("email"));
-                    login_user.setLogin_type(DoctorVetApp.login_types.FACEBOOK.name());
-                    login_user.setExternal_thumb_url(object.getJSONObject("picture").getJSONObject("data").getString("url"));
-
-                    googleFacebookCreateAccount(login_user);
-                } catch (JSONException ex) {
-                    Snackbar.make(rootCordinatorLayout, ex.getMessage(), Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,cover,picture.type(large)");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-    */
 
     private boolean validateEmail() {
         return HelperClass.validateEmail(txtEmail, false);

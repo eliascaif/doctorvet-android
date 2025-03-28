@@ -203,6 +203,12 @@ public class EditSellActivity_1_1 extends EditBaseActivity {
                 return false;
             }
         });
+
+        if (DoctorVetApp.get().getVet().getSells_lock_price().equals(1)) {
+            txtPrice.getEditText().setEnabled(false);
+            txtPrice.getEditText().setFocusable(false);
+            txtPrice.getEditText().setClickable(false);
+        }
     }
 
     @Override
